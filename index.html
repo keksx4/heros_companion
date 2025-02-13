@@ -635,13 +635,19 @@ var LZString={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234
     animation: flicker 1.2s infinite;
     margin: 20px 16px;
     text-underline-offset: 3px;
+    cursor: pointer;
+    
+    border: 3px solid #ffb500;
+    padding: 8px 30px 10px 18px;
+    border-radius: 20px;
+    line-height: 1.6em;
 }
 
 .link_event:hover {
     text-decoration: underline solid;
     color: #ffb500;
     animation: none;
-    transform: scaleX(1.05);
+    transform: scale(1.1, 1.1);
 
     .link_event__image--non-hover {
         display: none;
@@ -654,7 +660,7 @@ var LZString={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234
 
 .link_event > .link-internal {
     color: #ffb500; /* base color */
-    font-size: 1.25em;
+    font-size: 1.5em;
     font-style: italic;
     font-weight: bold;
     text-decoration: dotted;
@@ -2507,7 +2513,7 @@ const scene_list = {
 
         <<br>> 
         <div class="link-passage">
-            <<link 'Head downstairs for a meal' 'Prologue'>> <<set $temp.cur_scene = 'prologue_23'>> <</link>> 
+            <<link 'Head downstairs for a meal' 'Prologue'>> <<set $temp.cur_scene = 'prologue_23'; $interface.menu_info = 1;>> <</link>> 
         </div>
     `,
     'prologue_23': `
@@ -3083,7 +3089,7 @@ Please select mode of media displaying:
 
 If you agree with terms and condtiotions mentioned in Disclaimer and want to procced, click the button below: 
 &lt;div class=&quot;link-system&quot;&gt;
-[[Confirm and start|Prologue][$temp.cur_scene = &#39;prologue_1&#39;]]
+[[Confirm and start|Prologue][$temp.cur_scene = &#39;prologue_1&#39;; $interface.menu_settings = 1;]]
 
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="4" name="End_Of_Content" tags="system nobr shadowing" position="650,500" size="100,100">&lt;&lt;fadein 2s&gt;&gt;
   &lt;p class=&quot;eoc-prologue &quot;&gt;END of the Prologue&lt;/p&gt;
@@ -3137,41 +3143,60 @@ Please choose if you want to see shadowing: &lt;&lt;br&gt;&gt;
 [[Return back|$temp.previous]]
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="7" name="PassageFooter" tags="System nobr" position="1200,200" size="100,100">&lt;div id=&quot;shade&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;notification-container&quot;&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="8" name="Prologue" tags="System nobr shadowing" position="650,500" size="100,100">&lt;&lt;= setup.getScene($temp.cur_scene)&gt;&gt;</tw-passagedata><tw-passagedata pid="9" name="StoryBanner" tags="System" position="900,100" size="100,100">&lt;img class=&quot;game-logo sidebar-width--enlarge-1&quot; src=&quot;media/icons/logo.svg&quot; alt=&quot;Hero&#39;s companion&quot; title=&quot;Hero&#39;s companion logo&quot;/&gt;</tw-passagedata><tw-passagedata pid="10" name="StoryCaption" tags="System nobr" position="775,100" size="100,100">&lt;&lt;if $interface.debug_mode == 1&gt;&gt;
-    Cur. page: 
-    &lt;&lt;if passage() !== &quot;Prologue&quot;&gt;&gt; 
-        &quot;&lt;&lt;= passage()&gt;&gt;&quot; 
-    &lt;&lt;else&gt;&gt;
-        &quot;$temp.cur_scene&quot; 
-    &lt;&lt;/if&gt;&gt;
-    &lt;&lt;br 2&gt;&gt;
+    &lt;p&gt;
+        Cur. page: 
+        &lt;&lt;if passage() !== &quot;Prologue&quot;&gt;&gt; 
+            &quot;&lt;&lt;= passage()&gt;&gt;&quot; 
+        &lt;&lt;else&gt;&gt;
+            &quot;$temp.cur_scene&quot; 
+        &lt;&lt;/if&gt;&gt;
+    &lt;/p&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;&lt;if $interface.training_day == 1&gt;&gt;
-    Training day : $counters.training_day &lt;&lt;br&gt;&gt;
-&lt;&lt;else&gt;&gt;&lt;&lt;br&gt;&gt;&lt;&lt;/if&gt;&gt;
+    &lt;p&gt;Training day : $counters.training_day &lt;/p&gt;
+&lt;&lt;/if&gt;&gt;
 
 &lt;&lt;if $interface.money == 1&gt;&gt;
-    &lt;img src=&quot;media/icons/money.png&quot; class=&quot;sidebar_money&quot; alt=&quot;money&quot; title=&quot;money&quot;/&gt; : 
-    $player.money &lt;&lt;br&gt;&gt;
-&lt;&lt;else&gt;&gt;&lt;&lt;br&gt;&gt;&lt;&lt;/if&gt;&gt;
+    &lt;p&gt;
+        &lt;img src=&quot;media/icons/money.png&quot; class=&quot;sidebar_money&quot; alt=&quot;money&quot; title=&quot;money&quot;/&gt; : 
+        $player.money 
+    &lt;/p&gt;
+&lt;&lt;/if&gt;&gt; 
 
 
-&lt;&lt;br 5&gt;&gt;
+&lt;&lt;if $interface.debug_mode !== 1&gt;&gt;&lt;&lt;br 2&gt;&gt;&lt;&lt;/if&gt;&gt;
+&lt;&lt;if $interface.training_day !== 1&gt;&gt;&lt;&lt;br&gt;&gt;&lt;&lt;/if&gt;&gt;
+&lt;&lt;if $interface.money !== 1&gt;&gt;&lt;&lt;br 2&gt;&gt;&lt;&lt;/if&gt;&gt; 
+
+&lt;&lt;br 4&gt;&gt;
+
+
+&lt;&lt;set $interface.menu_all = ($interface.menu_info == 1 || $interface.menu_settings == 1) ? 1 : 0&gt;&gt;
 
 &lt;&lt;if $interface.menu_all == 1&gt;&gt;
-&lt;nav id=&quot;menu&quot; role=&quot;navigation&quot;&gt;
-    &lt;ul id=&quot;menu-core&quot; class=&quot;menu-core-custom&quot;&gt;
-        &lt;&lt;if $interface.menu_info == 1&gt;&gt;
-            &lt;li&gt; &lt;&lt;link &quot;Info&quot; &quot;Menu_Info&quot;&gt;&gt;&lt;&lt;/link&gt;&gt; &lt;/li&gt;
-        &lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $interface.menu_settings == 1&gt;&gt;
-            &lt;li&gt; &lt;&lt;link &quot;Settings&quot; &quot;Menu_Settings&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/li&gt;
-        &lt;&lt;/if&gt;&gt;
-    &lt;/ul&gt;
-&lt;/nav&gt;
+    &lt;&lt;if $interface.menu_info !== 1&gt;&gt;&lt;&lt;br 2&gt;&gt;&lt;&lt;/if&gt;&gt;
+    &lt;&lt;if $interface.menu_settings !== 1&gt;&gt;&lt;&lt;br 2&gt;&gt;&lt;&lt;/if&gt;&gt;
+
+    &lt;nav id=&quot;menu&quot; role=&quot;navigation&quot;&gt;
+        &lt;ul id=&quot;menu-core&quot; class=&quot;menu-core-custom&quot;&gt;
+            &lt;&lt;if $interface.menu_info == 1&gt;&gt;
+                &lt;li&gt; &lt;&lt;link &quot;Info&quot; &quot;Menu_Info&quot;&gt;&gt; &lt;&lt;/link&gt;&gt; &lt;/li&gt;
+            &lt;&lt;/if&gt;&gt;
+            &lt;&lt;if $interface.menu_settings == 1&gt;&gt;
+                &lt;li&gt; &lt;&lt;link &quot;Settings&quot; &quot;Menu_Settings&quot;&gt;&gt; &lt;&lt;/link&gt;&gt; &lt;/li&gt;
+            &lt;&lt;/if&gt;&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
 &lt;&lt;else&gt;&gt;
 &lt;&lt;br 4&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="11" name="StoryInit" tags="System" position="1025,100" size="100,100">&lt;&lt;set $player = {
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="11" name="StoryInit" tags="System" position="1025,100" size="100,100">&lt;!-- 0 - off, 1 - 3rd party pictures, 2- AI   --&gt;
+&lt;&lt;set $settings = {
+    media_mode: 1, 
+    shadowing: 1
+}&gt;&gt;
+
+&lt;&lt;set $player = {
     id_name: &#39;corin&#39;,
     name: &#39;Corin&#39;,
     surname: &#39;Brick&#39;,
@@ -3192,6 +3217,33 @@ Please choose if you want to see shadowing: &lt;&lt;br&gt;&gt;
 }&gt;&gt;
 
 
+&lt;&lt;set $interface = {
+    debug_mode: 0,
+    money: 0,
+    training_day: 0,
+    menu_all: 0,
+    menu_info: 0,
+    menu_settings: 0
+}&gt;&gt;
+
+&lt;&lt;set $counters = {
+    training_day: 0
+}&gt;&gt;
+
+&lt;&lt;set $temp = {
+    cur_scene: false    
+}&gt;&gt;
+
+&lt;&lt;set $flags = {
+    prologue_spoke_margaret: 0,
+    prologue_spoke_sena: 0
+}&gt;&gt;
+
+&lt;&lt;set $lists = {
+    scenes_seen: []    
+}&gt;&gt;
+
+
 &lt;&lt;set $characters = {
     alaric: {
         id_name: &#39;alaric&#39;,
@@ -3207,7 +3259,7 @@ Please choose if you want to see shadowing: &lt;&lt;br&gt;&gt;
         desc: `
             The flirtatious hero of the Salaris Kingdom with a nickname &quot;The Tempting Hero&quot;. &lt;br&gt;
             The leader of this countries hero squad and Jina&#39;s boyfriend.
-        `
+        `,
     },
     jina: {
         id_name: &#39;jina&#39;,
@@ -3347,40 +3399,6 @@ Please choose if you want to see shadowing: &lt;&lt;br&gt;&gt;
         `
     }
 
-}&gt;&gt;
-
-
-&lt;&lt;set $flags = {
-    prologue_spoke_margaret: 0,
-    prologue_spoke_sena: 0
-}&gt;&gt;
-
-&lt;&lt;set $counters = {
-    training_day: 0
-}&gt;&gt;
-
-
-&lt;!-- 0 - off, 1 - 3rd party pictures, 2- AI   --&gt;
-&lt;&lt;set $settings = {
-    media_mode: 1, 
-    shadowing: 1
-}&gt;&gt;
-
-&lt;&lt;set $interface = {
-    debug_mode: 1,
-    money: 0,
-    training_day: 0,
-    menu_all: 1,
-    menu_info: 1,
-    menu_settings: 1 
-}&gt;&gt;
-
-&lt;&lt;set $temp = {
-    cur_scene: false    
-}&gt;&gt;
-
-&lt;&lt;set $lists = {
-    scenes_seen: []    
 }&gt;&gt;</tw-passagedata><tw-passagedata pid="12" name="Tavern__Bedroom" tags="nobr shadowing" position="650,500" size="100,100">&lt;&lt;thought &quot;Bright new day, huh?&quot;&gt;&gt;
 
 
@@ -3535,7 +3553,7 @@ Please choose if you want to see shadowing: &lt;&lt;br&gt;&gt;
 
 	&lt;&lt;if _once &amp;&amp; !_is_seen&gt;&gt; 
 
-		&lt;div @class=_class&gt;
+		&lt;div @class=_class title=&quot;Event&quot;&gt;
 			&lt;img src=&quot;media\icons\scene.png&quot; class=&quot;link_event__image link_event__image--non-hover&quot;&gt;
 			&lt;img src=&quot;media\icons\scene_hover.png&quot; class=&quot;link_event__image link_event__image--hover&quot;&gt;
 
