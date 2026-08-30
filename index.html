@@ -543,17 +543,6 @@ var LZString={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234
     margin-bottom: 40px;
 }
 
-.eoc-release-note {
-    margin: 18px 0 0;
-    font-size: 1rem;
-    line-height: 1.55;
-    color: #d8d8d8;
-}
-
-.eoc-release-note p {
-    margin: 0 0 10px;
-}
-
 .eoc_socials {
     text-align: center;
     font-family: 'Georgia', serif;
@@ -2527,7 +2516,110 @@ Macro.add('dialogclose', {
         Dialog.close();
     } 
 });
-/* twine-user-script #2: "character_card.js" */
+/* twine-user-script #2: "beer_work.js" */
+/* Beer tryout is disabled for this release. */
+
+function initTryoutBeer() {
+  return false;
+}
+/* twine-user-script #3: "behavior_stats.js" */
+setup.calcCorinConfidence = () => {
+    const { flags } = State.variables;
+
+    let stat_value = 0;
+
+    if (flags.prologue_vote === 1) stat_value += 2;
+    else if (flags.prologue_vote === 2) stat_value = 0;
+    else if (flags.prologue_vote === 3) stat_value -= 1;
+
+    flags.mc_confidence = stat_value;
+}
+
+setup.calcCorinTeamSpirit = () => {
+    const { flags } = State.variables;
+
+    let stat_value = 0;
+
+    if (flags.prologue_vote === 1) stat_value += 2;
+    else if (flags.prologue_vote === 2) stat_value += 1;
+    else if (flags.prologue_vote === 3) stat_value += 0;
+
+    flags.mc_team_spirit = stat_value;
+};
+
+setup.calcCorinCautiousness = () => {
+    const { flags } = State.variables;
+
+    let stat_value = 0;
+
+    if (flags.prologue_seraphis_reaction == 1) stat_value += 1;
+
+    if (flags.day1_read_admin_contract == 2) stat_value += 1;
+    else if (flags.day1_read_admin_contract == 1) stat_value -= 1;
+
+    flags.mc_cautiousness = stat_value;
+}
+
+setup.calcCorinFollowFlow = () => {
+    const { flags } = State.variables;
+
+    let stat_value = 0;
+
+    if (flags.prologue_vote === 1) stat_value -= 1;
+    else if (flags.prologue_vote === 2) stat_value += 1;
+    else if (flags.prologue_vote === 3) stat_value -= 1;
+
+    flags.mc_follow_flow = stat_value;
+}
+
+setup.calcCorinSubmission = () => {
+    const { flags } = State.variables;
+
+    let stat_value = 0;
+
+    if (flags.prologue_vote === 1) stat_value -= 1;
+    else if (flags.prologue_vote === 2) stat_value += 0;
+    else if (flags.prologue_vote === 3) stat_value += 1;
+
+    flags.mc_submission = stat_value;
+}
+
+setup.calcCorinTeasing = () => {
+    State.variables.flags.mc_teasing = 0;
+}
+
+setup.calcCorinCourage = () => {
+    const { flags } = State.variables;
+
+    let stat_value = 0;
+
+    if (flags.prologue_vote === 1) stat_value += 2;
+    else if (flags.prologue_vote === 2) stat_value += 0;
+    else if (flags.prologue_vote === 3) stat_value -= 1;
+
+    flags.mc_courage = stat_value;
+};
+
+
+setup.getDominantBehaviorStats = () => {
+    const { flags } = State.variables;
+    const stats = {
+        confidence: flags.mc_confidence || 0,
+        team_spirit: flags.mc_team_spirit || 0,
+        cautiousness: flags.mc_cautiousness || 0,
+        follow_flow: flags.mc_follow_flow || 0,
+        submission: flags.mc_submission || 0,
+        teasing: flags.mc_teasing || 0,
+        courage: flags.mc_courage || 0
+    };
+    const max = Math.max(...Object.values(stats));
+    return Object.keys(stats).filter((key) => stats[key] === max);
+}
+
+setup.isDominantBehaviorStat = (stat) => {
+    return setup.getDominantBehaviorStats().includes(stat);
+}
+/* twine-user-script #4: "character_card.js" */
 Macro.add('character_card', {
     handler() {
         const character = this.args[0];
@@ -2767,7 +2859,7 @@ function createCharacterBars(characterId) {
     //     barContainer.append(bar);
     // });
 }
-/* twine-user-script #3: "compatability.js" */
+/* twine-user-script #5: "compatability.js" */
 // Save migration handlers.
 // Fires on every save load. Patches State.variables in-place for any fields
 // missing because they were added after the save's version was current.
@@ -2869,7 +2961,7 @@ Save.onLoad.add(function (save) {
         // if (v < 0.3) { ... }
     });
 });
-/* twine-user-script #4: "daily_activity.js" */
+/* twine-user-script #6: "daily_activity.js" */
 
 
 function getActivityOptions() {
@@ -2979,7 +3071,7 @@ setup.passActivityConditions = (activity, activity_session = 1, session_stamp = 
 
     return pass_condition;
 };
-/* twine-user-script #5: "day_change.js" */
+/* twine-user-script #7: "day_change.js" */
 
 setup.dayChange = (type = "add", amount = 1, new_period = 0) => {
   // --- Validate `type` ---
@@ -3015,6 +3107,13 @@ function dayChangeTriggerUpdates() {
     clearDailyActivities()
     clearStatusEffects()
 
+    setup.calcCorinTeamSpirit()
+    setup.calcCorinConfidence()
+    setup.calcCorinCautiousness()
+    setup.calcCorinFollowFlow()
+    setup.calcCorinSubmission()
+    setup.calcCorinTeasing()
+    setup.calcCorinCourage()
     setup.calcPartyAlignment()
     
     // Objectives update
@@ -3035,7 +3134,7 @@ function clearStatusEffects() {
     const status_effects = State.variables.temp.status_effects;
     for (let status_effect in status_effects) status_effect = 0;
 }
-/* twine-user-script #6: "dyn_link.js" */
+/* twine-user-script #8: "dyn_link.js" */
 // How to use:
 // <<show_dyn_links>> - on any passage/custom location
 
@@ -3137,9 +3236,25 @@ function getNextBranch(current_passage, destination_passage) {
 }
 
 const always = () => true;
+const isDayOne = () => State.variables.counters.training_day === 1;
+const timeIs = period => State.variables.time.period === period;
 
 const passage_links = {
     'Tavern__Bedroom': {
+        'Sleep': {
+            defaults: {
+                link_label: 'Prepare to sleep',
+                passage_type: 'scene',
+                next_passage: 'system.default.sleep_calm'
+            },
+            rules: [
+                {
+                    condition: function () {
+                        return isDayOne() && State.variables.time.period >= 8;
+                    }
+                }
+            ]
+        },
         'Tavern__Corridor': {
             defaults: {
                 link_label: 'Exit the room',
@@ -3162,10 +3277,42 @@ const passage_links = {
             rules: [
                 { condition: always }
             ]
+        },
+        'Tavern__Hall': {
+            defaults: {
+                link_label: 'Go downstairs',
+                passage_type: 'passage',
+                next_passage: 'Tavern__Hall'
+            },
+            rules: [
+                {
+                    condition: function () {
+                        return isDayOne() && (timeIs(0) || timeIs(7));
+                    }
+                }
+            ]
         }
     },
 
     'Tavern__Hall': {
+        'Breakfast': {
+            defaults: {
+                link_label: 'Have a Breakfast',
+                passage_type: 'scene',
+                next_passage: 'system.default.breakfast'
+            },
+            rules: [
+                {
+                    condition: function () {
+                        return isDayOne() && timeIs(0);
+                    },
+                    next_passage: 'day1.breakfast',
+                    commands: [
+                        '<<set $time.period += 1>>'
+                    ]
+                }
+            ]
+        },
         'Tavern__Corridor': {
             defaults: {
                 link_label: 'Go upstairs',
@@ -3173,6 +3320,13 @@ const passage_links = {
                 next_passage: 'Tavern__Corridor'
             },
             rules: [
+                {
+                    condition: function () {
+                        return isDayOne() && timeIs(1);
+                    },
+                    is_blocked: true,
+                    blocked_text: 'I need to go to the city.'
+                },
                 { condition: always }
             ]
         },
@@ -3259,6 +3413,41 @@ const passage_links = {
         }
     },
 
+    'City__Entrance': {
+        'City__Center': {
+            defaults: {
+                link_label: 'City Center',
+                passage_type: 'passage',
+                next_passage: 'City__Center'
+            },
+            rules: [
+                {
+                    condition: function () {
+                        const { time } = State.variables;
+                        return isDayOne() && time.period >= 2 && time.period <= 6;
+                    }
+                }
+            ]
+        },
+        'City__Road': {
+            link_label: 'Head to the tavern',
+            passage_type: 'passage',
+            next_passage: 'City__Road',
+            rules: [
+                {
+                    condition: function () {
+                        const { time } = State.variables;
+                        return isDayOne() && time.period >= 5 && setup.isSceneSeen('day1.sensei.intro');
+                    },
+                    commands: [
+                        '<<set $time.period += 1>>',
+                        '<<set $temp.move_from = "city">>'
+                    ]
+                }
+            ]
+        }
+    },
+
     'City__Center': {
         'City__Marketplace': {
             link_label: 'Visit Marketplace',
@@ -3309,6 +3498,23 @@ const passage_links = {
     },
 
     'Penny_Shop__Entrance': {
+        'Penny_Shop__Inside': {
+            link_label: 'Enter the store',
+            passage_type: 'passage',
+            next_passage: 'Penny_Shop__Inside',
+            rules: [
+                {
+                    condition: function () {
+                        return isDayOne() && !setup.isSceneSeen('day1.penny_visit1');
+                    },
+                    passage_type: 'scene',
+                    next_passage: 'day1.penny_visit1',
+                    commands: [
+                        '<<run setup.updateDailyValue("penny_visits")>>'
+                    ]
+                }
+            ]
+        },
         'City__Marketplace': {
             link_label: 'Return to Marketplace',
             passage_type: 'passage',
@@ -3331,6 +3537,21 @@ const passage_links = {
     },
 
     'City__Westroad_Street': {
+        'Sensei_Mansion__Entrance': {
+            link_label: "Visit Sensei's Mansion",
+            passage_type: 'passage',
+            next_passage: 'Sensei_Mansion__Entrance',
+            rules: [
+                {
+                    condition: function () {
+                        return isDayOne() && !setup.isSceneSeen('day1.sensei.intro');
+                    },
+                    link_label: "Check Oldman's place",
+                    passage_type: 'scene',
+                    next_passage: 'day1.sensei.intro'
+                }
+            ]
+        },
         'City__Center': {
             link_label: 'Go to the City Center',
             passage_type: 'passage',
@@ -3352,7 +3573,7 @@ const passage_links = {
         }
     }
 };
-/* twine-user-script #7: "fading.js" */
+/* twine-user-script #9: "fading.js" */
 window.FadeController = {
     active: 0,
     usedInPassage: false,
@@ -3458,7 +3679,7 @@ Macro.add('fadeout', {
             .fadeOut(time, () => FadeController.finishOne());
     }
 });
-/* twine-user-script #8: "general.js" */
+/* twine-user-script #10: "general.js" */
 Config.history.maxStates = 20;
 Config.history.controls = true;
 Config.ui.stowBarInitially = false;
@@ -3563,7 +3784,7 @@ window.pronoun = function (char, form) {
 
     return sets[pronouns][form] || form;
 };
-/* twine-user-script #9: "gifting.js" */
+/* twine-user-script #11: "gifting.js" */
 window.giveGift = function () {
     Dialog.setup('Unavailable');
     Dialog.wiki('Gifting is not available in this version.');
@@ -3728,7 +3949,7 @@ const capitalizePronoun = function (char, form='they') {
     return p.charAt(0).toUpperCase() + p.slice(1);
 };
 
-/* twine-user-script #10: "init.js" */
+/* twine-user-script #12: "init.js" */
 
 setup.storyInit = () => {
 
@@ -4057,7 +4278,7 @@ setup.storyInit = () => {
         }
     }
 }
-/* twine-user-script #11: "inventory.js" */
+/* twine-user-script #13: "inventory.js" */
 Macro.add('showInventory', {
     handler() {
         const v = State.variables;
@@ -4241,7 +4462,7 @@ function removeInventoryItem(item_id) {
 setup.removeInventoryItem = function(item_id){
     removeInventoryItem(item_id);
 }
-/* twine-user-script #12: "leveling.js" */
+/* twine-user-script #14: "leveling.js" */
 // Leveling is disabled for this release.
 // Public function names are kept so story calls and existing saves remain safe.
 
@@ -4258,7 +4479,7 @@ setup.recalculateLevels = function () {};
 setup.addXp = function () {
     return false;
 };
-/* twine-user-script #13: "lists.js" */
+/* twine-user-script #15: "lists.js" */
 
 const time_naming = {
     0: 'Early morning', // Breakfast
@@ -4401,7 +4622,7 @@ $(document).on(':passageinit', function () {
         }
     }
 });
-/* twine-user-script #14: "modal.js" */
+/* twine-user-script #16: "modal.js" */
 window.showModal = function(type) {
     if (!type || typeof type !== 'string') {
         console.error('showModal: invalid type', type);
@@ -4473,7 +4694,7 @@ window.showModal = function(type) {
 
     postdisplay['modal-open'] = openLater;
 };
-/* twine-user-script #15: "notifications.js" */
+/* twine-user-script #17: "notifications.js" */
 
 let notificationIndex = 0;
 let new_page = false;
@@ -4650,7 +4871,7 @@ setup.ntfy = function (character_idn, sign, amount = 0, type='aff') {
 
     return '';
 }
-/* twine-user-script #16: "objectives.js" */
+/* twine-user-script #18: "objectives.js" */
 setup.createDefaultObjectivesState = function () {
   return {
     version: "1.0",
@@ -4701,7 +4922,7 @@ Macro.add('showTracked', {
     $('<div id="tracked-widget"></div>').appendTo(this.output);
   }
 });
-/* twine-user-script #17: "on_hold.js" */
+/* twine-user-script #19: "on_hold.js" */
 
 // Set check also for correct passage to not triger it eveytime
 
@@ -4758,7 +4979,13 @@ function onHoldFinish() {
 */
 
 // ---
-/* twine-user-script #18: "party_alignment.js" */
+/* twine-user-script #20: "paperwork.js" */
+/* Paperwork tryout is disabled for this release. */
+
+function initTryoutPaperwork() {
+  return false;
+}
+/* twine-user-script #21: "party_alignment.js" */
 setup.calcPartyAlignment = () => {
     const { counters } = State.variables;
 
@@ -4772,7 +4999,7 @@ setup.calcPartyAlignment = () => {
 
     counters.party_alignment = alignment;
 };
-/* twine-user-script #19: "party_road.js" */
+/* twine-user-script #22: "party_road.js" */
 setup.canRoadTravel = (charter_idn) => {
     const travel_schedule = {};
 
@@ -4803,7 +5030,7 @@ setup.isInParty = (charter_idn) => {
     return State.variables.party.composition.includes(charter_idn);
 };
 
-/* twine-user-script #20: "portrait_picker.js" */
+/* twine-user-script #23: "portrait_picker.js" */
 (function () {
   const OPTIONS_AMOUNT = 6;
 
@@ -4842,14 +5069,14 @@ setup.isInParty = (charter_idn) => {
     updatePortraitPicker(root, this.dataset.portraitPick);
   });
 })();
-/* twine-user-script #21: "prologue_skip.js" */
+/* twine-user-script #24: "prologue_skip.js" */
 setup.applySkipPrologueState = function () {
     Dialog.setup('Unavailable');
     Dialog.wiki('Prologue skip is not available in this version.');
     Dialog.open();
     return false;
 };
-/* twine-user-script #22: "protection.js" */
+/* twine-user-script #25: "protection.js" */
 // --- Helper Functions ---
 
 // Protects an object's property by replacing it with a getter/setter pair.
@@ -5022,7 +5249,7 @@ function protectProperty(obj, prop_name, initial_value) {
     window._protected_properties = setupProtectedProperties();
   });
   
-/* twine-user-script #23: "region_travel.js" */
+/* twine-user-script #26: "region_travel.js" */
 /* Region travel is disabled for this release. */
 
 function TravelFight() {}
@@ -5043,7 +5270,7 @@ window.renderRegionTravel = function () {
     `;
   });
 };
-/* twine-user-script #24: "saves.js" */
+/* twine-user-script #27: "saves.js" */
 // Config.saves.autoload = "prompt"; // to ask to whether load autosave or not at he beginning of the game initialization
 
 Config.saves.version = 0.1;
@@ -5111,7 +5338,6 @@ $(document).on(':passagedisplay', function () {
 
 
 Save.onSave.add(function (save) {
-
     const day = State.variables.counters.training_day;
     const player_name = State.variables.player.name;
     const location_or_scene = (passage() == "ScenePassage") ? `Scene: '${State.variables.temp.cur_scene}'` : `Location: '${passage()}'`;
@@ -5202,7 +5428,7 @@ Save.onSave.add(function (save) {
 //         }
 //     }
 // });
-/* twine-user-script #25: "scene_list.js" */
+/* twine-user-script #28: "scene_list.js" */
 setup.getScene = function(scene_idn) {
     const cur_scene = scene_list[scene_idn];
     State.variables.lists.scenes_seen.push(scene_idn); // saves what scenes were watched
@@ -5211,6 +5437,19 @@ setup.getScene = function(scene_idn) {
 
 const scene_list = {
 
+    // #region Defaults
+    'system.default.breakfast': `
+        <<narration "The hall is quiet at this hour, most seats still empty.">>
+        <<narration "You settle in and eat without much company.">>
+        <<styledlink "Head out" 'Tavern__Hall'>><</styledlink>>
+    `,
+
+    'system.default.supper': `
+        <<narration "The hall fills slowly as evening comes in.">>
+        <<narration "You have supper without much conversation tonight.">>
+        <<styledlink "Head out" 'Tavern__Hall'>><</styledlink>>
+    `,
+    // #endregion Defaults
 
     // #region Prologue
     'prologue.page1': `
@@ -6302,12 +6541,968 @@ const scene_list = {
             You decide to leave it untouched for now, it's not something you want to deal with first thing in the morning.">>
         <<thought "Alright... let's see what this day will bring.">>
 
-        <<blocked_link "Start the free roam" "In the next release">>            
-        <<styledlink "End of Content" "End_Of_Content">><</styledlink>>
+        <<styledlink "Start the free roam" "Tavern__Bedroom">> <</styledlink>>
     `,
-   // #endregion Prologue
+
+    // #endregion Prologue
+
+    // #region Locations
+
+
+    'location_dialogs__Tavern__Bedroom': `
+        <<if $counters.training_day == 1>>
+            <<if $time.period == 0>>
+                <<show_dialog 'loc.Tavern__Bedroom.day1.new_day.page2'>>
+            <</if>>  
+
+            <<if $time.period == 7>>
+                <<show_dialog 'loc.Tavern__Bedroom.day1.eat_alone'>>
+            <</if>>
+        <</if>>   
+    `,
+
+    'location_dialogs__Tavern__Corridor':  `
+        <<if $counters.training_day == 1>>
+            <<if $time.period == 0 >>
+                <<show_dialog 'loc.Tavern__Corridor.day1' 'true'>>
+                <<if !setup.isSceneSeen('event.day1.morning.margaret_alaric') >>
+                    <<show_dialog 'loc.Tavern__Corridor.day1.before_morning_event'>>
+                <</if>>
+                <<scene_event_link "Check voices from Alaric's room" 'event.day1.morning.margaret_alaric' 'true' 'true'>>
+                <<show_dialog 'loc.Tavern__Corridor.day1.morning_event_skip_option' 'true'>>
+            <</if>>
+
+            <<if $time.period == 8 >>
+                <<show_dialog 'loc.Tavern__Corridor.day1.before_evening_event' 'true'>>
+                <<if !setup.isSceneSeen('event.day1.evening.margaret_alaric') >>
+                    <<show_dialog 'loc.Tavern__Corridor.day1.evening_event_prompt'>>
+                <</if>>            
+                <<scene_event_link "Get closer to the door" 'event.day1.evening.margaret_alaric' 'true' 'true'>>
+                <<if !setup.isSceneSeen('event.day1.evening.margaret_alaric') >>
+                    <<show_dialog 'loc.Tavern__Corridor.day1.evening_event_skip_option'>>
+                <</if>>            
+                <<if setup.isSceneSeen('event.day1.evening.margaret_alaric') >>
+                    <<show_dialog 'loc.Tavern__Corridor.day1.after_evening_event'>>
+                <</if>>
+            <</if>>           
+        <</if>>
+
+    `,
+    
+    'location_dialogs__Tavern__Hall': `    
+        <<if $time.period <= 3 >>
+            <<if setup.passActivityConditions('job_tavern_talk', 1, 'before')>>   
+                <<show_dialog 'loc.Tavern__Hall.job.tavern.step1'>> 
+            <</if>>
+            <<if setup.passActivityConditions('job_tavern_talk', 2, 'before')>>   
+                <<show_dialog 'loc.Tavern__Hall.job.tavern.step2'>> 
+            <</if>>
+            <<if setup.passActivityConditions('job_tavern_talk', 3, 'before')>>   
+                <<show_dialog 'loc.Tavern__Hall.job.tavern.step3'>> 
+            <</if>>
+        <</if>>
+
+        <<if $counters.training_day == 1>>
+            <<if $time.period == 1 >>
+                <<show_dialog 'loc.Tavern__Hall.day1.morning'>>
+            <</if>>
+
+            <<if $time.period == 7 >>
+                <<if setup.isSceneSeen('loc.Tavern__Hall.day1.evening') >>
+                    <<show_dialog 'loc.Tavern__Hall.day1.evening.line2'>>
+                <</if>>
+                <<show_dialog 'loc.Tavern__Hall.day1.evening' true>>
+            <</if>>
+        <</if>>
+    `,
+
+
+    'location_dialogs__Tavern__Outside': `
+    `,
+
+    
+    'location_dialogs__City__Road' : `
+        <<if $counters.training_day == 1>>
+            <<show_dialog 'loc.City__Road.day1' 'true'>>
+
+            <<if $time.period > 5>>
+                <<show_dialog 'loc.City__Road.day1.tired_walk' 'true'>>
+            <</if>>
+        <</if>>
+    `,
+
+    'location_dialogs__City__Entrance': `        
+        <<if $time.period > 5>>
+            <<show_dialog 'loc.City__Entrance.late'>>
+        <</if>>
+
+        <<if $counters.training_day == 1>>
+            <<if !setup.isSceneSeen('day1.sensei.intro') && setup.isSceneSeen('loc.City__Entrance.day1')>>
+                <<show_dialog 'loc.City__Entrance.day1.need_oldman_visit'>>
+            <</if>>
+            <<if !setup.isSceneSeen('day1.penny_visit1') && setup.isSceneSeen('loc.City__Entrance.day1')>>
+                <<show_dialog 'loc.City__Entrance.day1.need_penny_visit'>>
+            <</if>>
+            <<show_dialog 'loc.City__Entrance.day1' 'true'>>
+        <</if>>
+    `,
+
+
+    'location_dialogs__City__Center': `
+        <<if $counters.training_day == 1>>
+            <<show_dialog 'loc.City__Center.day1'>>
+            
+            <<if setup.isSceneSeen('day1.penny_visit1') && !setup.isSceneSeen('day1.sensei.intro')>>
+                <<show_dialog 'loc.City__Center.day1.page2'>>
+            <</if>>
+            
+            <<if setup.isSceneSeen('day1.penny_visit1') && setup.isSceneSeen('day1.sensei.intro')>>
+                <<show_dialog 'loc.City__Center.day1.page3'>>
+            <</if>>
+        <</if>>
+    `,
+
+    'location_dialogs__City__Marketplace': `
+        <<if $counters.training_day == 1>>
+            <<if !setup.isSceneSeen('loc.Penny_Shop__Entrance.day1') >>
+                <<show_dialog 'loc.City__Marketplace.day1' >>
+            <</if>>
+            <<if setup.isSceneSeen('loc.Penny_Shop__Entrance.day1') && !setup.isSceneSeen('day1.penny_visit1')>>
+                <<show_dialog 'loc.City__Marketplace.day1.find_penny_shop' >>
+            <</if>>
+            <<if setup.isSceneSeen('loc.City__Marketplace.day1.after_penny_visit') >>
+                <<show_dialog 'loc.City__Marketplace.day1.no_business_left'>>
+            <</if>>
+            <<if setup.isSceneSeen('day1.penny_visit1') >>
+                <<show_dialog 'loc.City__Marketplace.day1.after_penny_visit' 'true'>>
+            <</if>>
+        <</if>>
+    `,
+
+    'location_dialogs__City__Marketplace_Shops': `
+    
+    `,
+
+    'location_dialogs__Shops': `
+      
+    `,
+
+    'location_dialogs__Penny_Shop__Entrance': `
+        <<if $counters.training_day == 1>>
+            <<show_dialog 'loc.Penny_Shop__Entrance.day1' 'true'>>
+            <<if !setup.isSceneSeen('day1.penny_visit1') >>
+                <<show_dialog 'loc.Penny_Shop__Entrance.day1.penny_not_outside'>>
+            <</if>>
+            <<if setup.isSceneSeen('day1.penny_visit1') >>
+                <<show_dialog 'loc.Penny_Shop__Entrance.day1.done_here_today'>>
+            <</if>>
+        <</if>>
+    `,
+
+    'location_dialogs__Penny_Shop__Inside': `
+
+    `,
+
+    'location_dialogs__City__Westroad_Street': `
+        <<if $counters.training_day == 1>>        
+            <<if !setup.isSceneSeen('day1.sensei.intro') >>
+                <<show_dialog 'loc.City__Westroad_Street.day1'>>
+            <</if>>            
+            <<if setup.isSceneSeen('day1.sensei.intro') >>
+                <<show_dialog 'loc.City__Westroad_Street.day1.no_business_left'>>
+                <<show_dialog 'loc.City__Westroad_Street.day1.move_on' 'true'>>
+            <</if>>                  
+        <</if>>
+        
+    `,
+
+    'location_dialogs__Sensei_Mansion__Entrance': `
+        <<if $counters.training_day == 1>>  
+            <<if setup.isSceneSeen('day1.sensei.intro') >>
+                <<show_dialog 'loc.Sensei_Mansion__Entrance.day1.exit' 'true'>>
+            <</if>>             
+        <</if>>
+    `,
+
+    'location_dialogs__Sensei_Mansion__Yard': `
+    `,
+
+    'location_dialogs__Sensei_Mansion__Headroom': `        
+    `,
+
+    'location_dialogs__Sensei_Mansion__Archery_Grounds': `
+    `,
+
+    'location_dialogs__Sensei_Mansion__Combat_Room': `
+    `,
+    
+    'location_dialogs__Sensei_Mansion__Baths': `
+    `,
+
+    'location_dialogs__City__Parchment_Lane': `
+    `,
+
+    'location_dialogs__City__Administration': `
+    `,
+    
+    // #endregion Locations
+
+
+    // #region Tavern_Job
+
+
+    'loc.Tavern__Hall.job.tavern.step1': `
+        <<narration "You see the tavern owner's daughter.">>
+        <<thought "I can ask her about a job.">>
+        <<run ObjectiveManager.unhideObjective("work_tavern")>> 
+     
+        <<styledlink 'Ask about a job' 'job.tavern.step1' 'job-beer'>> 
+            <<run ObjectiveManager.nextStep("work_tavern")>> 
+            <<run setup.updateDailyValue('job_tavern_talk')>>
+        <</styledlink>> 
+    `,
+
+    'job.tavern.step1': `
+        <<narration "You approach the girl you know as the tavern owner's daughter. <br>
+            She wipes her hands on her apron again, though the cloth seems already clean, then notices you and offers a practiced smile.">>
+        <<speech 'nancy' "Well now, if it isn't our recovering guest. Need something, darling?" 'girl'>>
+        <<speech 'corin' "Hi. I wanted to ask... do you know if the tavern needs help with anything? Paid work, I mean.">>
+        <<speech 'nancy' "Straight to business? I like that.">>
+        <<narration "She tilts her head, studying you with amused eyes.">>
+        <<speech 'nancy' "And since you looked so serious saying it, I suppose I should remind you of my name first. Nancy.">>
+        <<speech 'corin' "R-right, Nancy... Sorry, I had a lot going on lately.">>
+        <<narration "She gives you a look that tells it is not one of the most impressive excuses she has seen.">>
+        <<speech 'corin' "I'll remember it from now on!">>
+        <<speech 'nancy' "Good answer. Not fully convincing, but good enough.">>
+        <<narration "Her smile turns a little warmer, though she keeps her teasing tone.">>
+        <<speech 'nancy' "As for work, we are not rich enough to pay someone for standing around and looking useful. 
+            But there may be a few real chores that need extra hands.">>
+        <<speech 'nancy' "I'll ask Father and check what we can spare. Come find me tomorrow, and I'll tell you what if I found something.">>
+        <<speech 'corin' "Thanks. I appreciate it, Nancy.">>
+        <<speech 'nancy' "Uh-huh.">>
+        <<narration "She waves you off with a small grin and returns to her chores, leaving you with the first step of a possible job arranged.">>
+
+        <<styledlink "Leave her" "Tavern__Hall">><</styledlink>>
+    `,    
+    
+    // #endregion Tavern_Job
+
+    // #region Repeatable
+    'system.default.sleep_calm': `
+        <<system_note "Please save here.">>
+
+        <<fadein 3s 0s>>
+            <<narration "You lay on the bed trying to relax.">>
+        <</fadein>>
+
+        <<fadein 3s 3s>>
+            <<narration "Images from the day's events flash before your eyes...">>
+        <</fadein>>
+
+        <<fadein 3s 6s>>
+            <<narration "...and disappear in the void...">>
+        <</fadein>>
+
+        <<fadein 3s 9s>>
+            <<narration "...as you fall asleep.">>
+        <</fadein>> 
+
+        <<br>>
+        <<fadein 3s 12s>>
+            <<media_scene "tranquil_dreams" "video" "image" >>
+        <</fadein>> 
+
+        <<br>>
+        <<fadein 3s 15s>>
+            <<narration "Your dreams are tranquil and uneventful.">>
+        <</fadein>>
+
+        <<br>>
+        <<fadein 6s 16s>>
+            <<blocked_link "Wake Up" "In the next release">>            
+            <<styledlink "End of Content" "End_Of_Content">><</styledlink>>
+        <</fadein>>
+    `,
+
+    
+    'loc.City__Entrance.late': `
+        <<thought "It's getting late, I need to return to the tavern.">>
+    `,
+
+    'loc.City__Entrance.evening.repeatable': `
+        <<thought "Should I go back to the tavern already?">>  
+        <<thought "I guess I can, but if I do I will not be able to do any more activities in the city today. ">>  
+        <<thought "But well, I can also do it tomorrow. ">>  
+    `,
+
+    
+    // #endregion Repeatable
+
+
+    // #region Day 1
+
+    'loc.Tavern__Bedroom.day1.new_day': `
+        <<thought "Bright new day, huh?">>
+        <<thought "But anyway...">>
+    `,
+    'loc.Tavern__Bedroom.day1.new_day.page2': `
+        <<thought "Lots of things to do today, need to get moving.">>
+    `,
+
+    'loc.Tavern__Corridor.day1': `
+        <<narration "As you leave the room and head toward the stairs to the second floor, you hear voices from one of the doors.">>
+    `,
+    'loc.Tavern__Corridor.day1.before_morning_event': `
+        <<thought "Should I take a look, I wonder?">>
+    `,
+    'loc.Tavern__Corridor.day1.morning_event_skip_option': `
+        <<thought "Or should I just move along...">>
+    `,
+
+    'event.day1.morning.margaret_alaric': `
+        <<narration "You lean against the doorframe, straining to catch the heated words from inside.">>
+        <<speech 'alaric' "...this could inflict punishment.">>
+        <<speech 'margaret' "Come on, Alaric. Are you even serious?">>
+        <<speech 'alaric' "You know the reasons. Maybe that way you'll get it better.">>
+        <<speech 'margaret' "I'm not a child to be lectured!">>
+        <<narration "As voices rise, the sound of footsteps on the stairway catches your attention.">>
+        <<narration "You decide not to risk being noticed. 
+            Quietly, you slip away and head downstairs for breakfast.">>
+
+        <<styledlink 'Move to Hall' 'Tavern__Hall'>><</styledlink>> 
+    `,
+
+    'day1.breakfast': `
+        <<narration "The breakfast is unusually quiet.">>
+        <<narration "Alaric is busy rechecking some notes in his notebook.">>
+        <<narration "Jina looks too exhausted even to eat, let alone to chit-chat. <br> 
+            She must have overdone it with her morning workout today.">>
+        <<narration "And Sena is not someone to initiate a conversation first unless it's mission-related.">>
+        <<narration "Even Margaret, who typically ignites most of idle chatter, is silent. She's completely lost in thoughts, which is very unlike her.">>
+
+        <<if setup.isSceneSeen('event.day1.morning.margaret_alaric') >>
+            <<thought "Maybe it's because of her today's quarrel with Alaric.">>
+            <<thought "It was something about punishment, I guess.">>
+        <</if>>
+
+        <<speech 'corin' "Troubles on your mind?">>
+        <<speech 'margaret' "Not really, just a small nuisance.">>
+        <<narration "She glances at Alaric with an almost child-like resentment.">>
+        <<speech 'margaret' "But thank you for attention.">>
+        <<narration "She turns her gaze back to you and smiles warmly.">>
+        <<speech 'margaret' "Really, thanks.">>
+        <<narration "This brief exchange finally pulls Alaric's attention away from his notebook.">>
+
+        <<speech 'alaric' "Alright, party, things are about to get moving.">>
+        <<speech 'alaric' "Sena and I are off to research some useful leads today.">>
+        <<speech 'alaric' "Margaret, you should earn and prepare a few coins for that mage tutor, 
+            I still need to talk to him one of these days, but his time surely won't be free.">>
+        <<narration "Margaret makes a sour face.">>
+        <<speech 'alaric' "Jina will be leaving the party for a bit on a solo quest that we discussed before.">>
+        <<speech 'jina' "Yup.">>
+        <<narration "She confirms unenergetically.">>
+        <<speech 'alaric' "And $player.name, well, I wish you luck finding a good way of training.">>
+        <<narration "For a brief moment it seems like he smirks.">>
+        <<thought "Did he try to encourage me or make fun of me?">>
+        <<narration "On that note, Alaric grabs his notebook and leaves the table first.">>
+
+        <<relation_notification 'margaret' '+' '1'>>
+        <<relation_notification 'alaric' '+' '1'>>
+        <<relation_notification 'jina' '=' >>
+
+        <<styledlink "Try to talk with Jina" 'day1.after_breakfast.jina'>> <</styledlink>>
+        <<styledlink "Finish breakfast" 'Tavern__Hall'>> <</styledlink>>
+    `,
+
+    'day1.after_breakfast.jina' : `
+        <<narration "You approach Jina to have a few words with her.">>
+        <<thought "Things are getting too weird lately. <br>
+            And well, she's not someone to overwork herself before an important quest.">>
+        <<thought "Maybe she could uncover at least something before she leaves.">>
+        <<speech 'corin' "Hi, Jina. Have a few minutes to spare?">>
+        <<narration "She looks at you, first surprised, but then with a strange mix of apology and anger.">>
+        <<speech 'jina' "Sorry, I'm too tired right now and still have preparations to finish.">>
+        <<speech 'jina' "But...khm...">>
+        <<speech 'jina' "I guess we DO need to have a talk, a proper one.">>
+        <<speech 'jina' "Let's then have this conversation... open and clear conversation... after I return.">>
+        <<speech 'corin' "But...">>
+        <<speech 'jina' "Please, $player.name...">>
+        <<speech 'jina' "Just... just not now.">>
+        <<narration "Her expression makes it seem like you are really torturing her right now.">>
+        <<speech 'corin' "Yes, okay, sure.">>
+        <<thought "I doubt my insistence will lead to anything good at the moment.">>
+        <<speech 'corin' "Good luck on a quest.">>
+        <<speech 'jina' "Thank you.">>
+        <<narration "She offers a half-hearted smile and heads toward the stairway.">>
+        
+        <<relation_notification 'jina' '+' '1'>>
+        
+        <<styledlink "Get yourself back together" 'Tavern__Hall'>> <</styledlink>>
+    `,
+
+    'loc.Tavern__Hall.day1.morning' : `
+        <<thought "It's time to leave the inn and move to the city.">>     
+    `,
+
+    'loc.City__Road.day1':  `
+    <<thought "I need to start working on my improvement plan.">>
+    <<thought "So...">> 
+    <<thought "I need to visit that oldman and see what he can offer. <br>
+        If I remember correctly, his house is on Westroad Street.">>
+
+    <<thought "I should also visit Penny, the girl from yesterday. <br>
+        Besides spending more time with her, she might have leads on some good jobs or training opportunities. <br>
+        She should be somewhere around her store at the Marketplace.">>        
+    `,
+
+    'loc.City__Road.day1.tired_walk':  `
+        <<thought "Phew... I wouldn't mind if someone could carry me straight to my room.">>
+        <<thought "And I have to walk back and forth like this every day.">>
+    `,
+
+    'loc.City__Entrance.day1': `
+        <<thought "Did we really had to get settled so far from the city?">>
+        <<thought "I know all that security, secrecy and stuff, but it's so long to walk here.">>
+    `,
+
+    'loc.City__Entrance.day1.need_oldman_visit': `
+        <<thought "I still need to visit the oldman in the city.">>
+    `,
+
+    'loc.City__Entrance.day1.need_penny_visit': `
+        <<thought "Penny should wait for me in her shop.">>
+    `,
+
+    'loc.City__Center.day1': `
+        <<thought "A lot of people here, as always, I guess.">>
+    `,
+
+    'loc.City__Center.day1.page2': `
+        <<thought "I still need to visit the oldman at his mansion on Westroad Street.">>
+    `,
+
+    'loc.City__Center.day1.page3': `
+        <<thought "Too late, too tired to do anything else in the city today.">>
+    `,
+
+    'loc.City__Marketplace.day1': `
+        <<thought "Okay, here is the Marketplace. Where was her shop again?">>
+    `,
+
+    'loc.City__Marketplace.day1.find_penny_shop': `
+        <<thought "Need to visit Penny at her shop.">>
+    `,
+
+    'loc.City__Marketplace.day1.after_penny_visit': `
+        <<thought "Those last moments were odd...">>
+        <<thought "But I guess everyone has their worries and a past they deal with.">>
+    `,
+
+    'loc.City__Marketplace.day1.no_business_left': `
+        <<thought "I don't have anything else to do here today.">>
+    `,
+
+    'loc.Penny_Shop__Entrance.day1': `
+        <<thought "Ah, here is her shop.">>
+    `,
+
+    'loc.Penny_Shop__Entrance.day1.penny_not_outside': `
+        <<thought "I don't see Penny anywhere, probably should go inside.">>
+    `,
+
+    'loc.Penny_Shop__Entrance.day1.done_here_today': `
+        <<thought "I think I need to be elsewhere right now.">>
+    `,
+
+    'day1.penny_visit1': `
+        <<narration "As you open the shop door, you hear the bell above it ring.">>
+        <<media_location "Penny_Shop__Inside">>
+
+        <<narration "Sunlight filters through the window, illuminating rows of handcrafted trinkets and neatly stacked scroll-like items.">>  
+        <<speech 'penny' "Hello, dear customer!">>
+        <<speech 'penny' "Oh, wait, it's you.">>
+        <<speech 'corin' "Hm?">>
+        <<narration "You can't hide your surprise at that kind of greeting.">>
+        <<narration "Penny brushes a loose strand of hair behind her ear, her apron smudged with a few paint stains.">>
+        <<speech 'corin' "I'm sorry, I guess. I can come back later if...">>
+        <<speech 'penny' "Oh, crumbs! No, it's me the one who should apologize!">>
+        <<speech 'penny' "It's just... it's going really badly.">>
+        <<speech 'corin' "Well, it's only the first day.">>
+        <<speech 'penny' "Yes, I know, and I know my goods aren't for everyone. That's why I've paid for advertising, so at least a few people should have stopped by.">>
+        <<speech 'corin' "Well, a sad face doesn't suit you very well. ">>
+        <<narration "You offer her a reassuring grin.">>
+        <<speech 'corin' "Let's try to sort it out, shall we?">>
+        <<narration "Her face brightens instantly, a genuine smile spreading across her features.">>
+        <<speech 'penny' "Thanks for the cozy lines, Mr. Charmer.">>
+        <<speech 'corin' "I try my best.">>
+        <<narration "You chuckle softly as you step further into the shop.">>
+        <<speech 'corin' "So, who did you pay exactly? ">>
+        <<speech 'penny' "An advertising agency called <i>'Scroll & Seal Advertising'</i>, I was at one of their new offices on Randor Street.">>
+        <<speech 'penny' "They are a pretty big and well-known agency in this kingdom, so I used their services.">>
+        <<speech 'corin' "I can head over there now and ask if there's a mix-up with the posters or flyers. ">>
+        <<speech 'penny' "Yes, please do. I'll stay here in case the issue is solved on their side and some clients finally come in. ">>
+        <<speech 'penny' "Here's their address. It's a decorated building with a bright sign, you can't miss it.">>
+        <<narration "You tuck the note into your pocket and give Penny an encouraging nod. Then you step back into the street, 
+            determined to help your new acquaintance and bring the shining smile that so charmed you yesterday back to her face. ">>
+
+        <<styledlink "Check the address" 'day1.penny_visit1.page2'>> <<set $time.period +=1>>   <</styledlink>>
+    `,
+
+    'day1.penny_visit1.page2': `
+        <<narration "You follow Penny's directions down Randor Street. ">>
+        <<narration "When you arrive, you see rows of plain brick buildings line the road, but the one you're looking for stands empty, with no bright sign or hint of life inside.">>
+        <<speech 'corin' "What the...?">>
+        <<thought "Doesn't look like the place of a famous agency.">>
+        <<narration "You try the door, it's locked and silent. No sign of <i>'Scroll & Seal Advertising'</i> here.">>
+        <<thought "Maybe I should ask around.">>
+        <<narration "You try approaching people nearby, but most of them rush past without stopping or make quick excuses.">>
+        <<narration "Only two people seem willing to talk.">>
+        <<narration "One, a disheveled man pacing in a narrow alley, who rants about you being watched and that the great darkness soon to come.">>
+        <<thought "He'd have been more convincing if he hadn't had drool dripping down his chin while saying all of that.">>
+        <<narration "The other is an elderly woman sweeping leaves on her porch.">>
+        <<speech 'corin' "Excuse me, ma'am. Do you know anything about what happened with the building over there?">>
+        <<speech 'default' "Oh, that place? A small group of people rented it for a bit. "  'old_woman1'>>
+        <<speech 'default' "Yesterday they suddenly packed up and left, just as quick as when they arrived."  'old_woman1'>>
+        <<narration "She squints at you kindly over her glasses.">>
+        <<speech 'default' "That's all I know, dear. To know more you'd have to ask the building's owner if you find him."  'old_woman1'>>
+        <<thought "I don't think the owner is anywhere around at the moment and local folks aren't much help.">>
+        <<thought "Hm, cities usually have some kind of administration that might or might noot help with this sort of thing.">>
+        <<narration "By asking people around, you find the location of the city administrative bureau.">>
+        <<narration "Stopping in front of it, you see a stout stone building with arched windows and a heavy wooden door.">>
+        <<media_location "City__Administration">>
+
+        <<styledlink "Enter the Administration" 'day1.penny_visit1.page3'>> <<set $time.period +=1>>   <</styledlink>>
+    `,
+
+    'day1.penny_visit1.page3': `
+        <<narration "Inside the building, you try asking the passing staff about the building on Randor Street and its owner.">>
+        <<thought "No one seems to know a thing. <br> 
+            Feels like all they do here is shuffle papers and spin in circles like squirrels on a wheel.">>
+        <<thought "At least the one in charge has to know something.">>
+        <<narration "You check the floor plan posted near the lobby and find your way to the office of the administration chairman.">>
+        <<narration "When you reach the door, you notice the secretary's desk is empty.">>
+        <<narration "The chairman's office door isn't fully closed.">>
+        <<narration "You pause, then slowly push it open and take a quick peek inside.">>
+        <<narration "Inside, you spot the administrator, a chubby man in his late forties. <br>
+            He leans back in his chair, eyes closed, looking as if he's in deep thought... or dozing off.">>
+        <<narration "Beneath the desk, you catch a glimpse of movement: a young woman, probably his secretary, kneeling beside him, partly hidden from view.">>
+        <<media_scene "administration_peeking">>
+
+        <<narration "You blink, take a quiet step back, and turn toward the secretary's desk again.">>
+        <<thought "Well, it's their business alright, but I've already spent a lot of time on it.">>
+        <<narration "With a purposeful cough and a bit of shuffling around, you make sure your presence is known.">>
+        <<narration "You hear movement from inside the office. Moments later, the flustered secretary slips out, avoiding eye contact as she hurries past you, likely heading for the restroom.">>
+        <<speech 'corin' "Uh... Hello? May I come in?">>
+        <<speech 'administrator' "Ehh... yeah, yeah. Come on in already." 'unintroduced'>>
+
+        <<styledlink "Enter his office" 'day1.penny_visit1.page4'>> <</styledlink>>
+    `,
+
+    'day1.penny_visit1.page4': `
+        <<narration "As you enter the room, the administration chief gives you a long, evaluating gaze.">>
+        <<narration "The air inside the chairman's office is thick with the scent of candle smoke and dusty parchment. <br>
+            ...and a bit of something else. ">>
+        <<narration "You introduce yourself and briefly explain the situation and why you are here.">>
+        <<speech 'administrator' "Seriously, kid? I thought this was something important. <br>
+            You dragged me from my <i>'dinner-time business'</i> for that?" 'unintroduced'>>
+        <<narration "He taps his finger on the table. It looks like he's about to yell at you any second. <br>
+            But then he pauses, rubbing his chin as if calculating something.">>
+        <<speech 'administrator' "Alright, listen. I can help you. But nothing's free. You'll have to work for the info or pay for it." 'unintroduced'>>
+        <<speech 'corin' "What exactly does that imply?" >>
+        <<speech 'administrator' "Option one: you pay me 50 coins, no questions asked. I'll give you what I know once I see the money. <br>
+            Option two: you work here. Three days minimum. A nominal pay of 1 coin. You'll sign in as probationary staff." 'unintroduced'>>
+        <<narration "He reaches into a drawer and pulls out a plain parchment form.">>
+        <<speech 'administrator' "Due to bureaucratic red tape, I need to keep filling roles even if people don't stick around. So if you vanish after your debt is clear, I'm fine with that." 'unintroduced'>>
+        <<speech 'administrator' "But if you do stick around, you'll get paid per day. Come and go as needed, no one here tracks schedules properly anyway." 'unintroduced'>>
+        <<narration "His eyes scan over you again, this time with a smirk.">>
+        <<if $settings.bi_allowed>>
+            <<speech 'administrator' "Or... you could always finish what the secretary didn't manage to." 'unintroduced'>>
+            <<narration "He chuckles to himself.">>
+        <</if>>
+
+        <<system_note "Some options may be unavailable to <span style='text-decoration: underline; font-weight: bold;' class='corin character'>$player.name</span>. 
+            This may happen because their conditions haven't been met. <br>
+            These can include: money, characteristics, events or story progress." >>
+
+        <<blocked_link "First option: Money" "I don't have that much money on me right now.">>    
+        <<styledlink "Second option: Work" 'day1.penny_visit1.page5'>> <</styledlink>>
+        <<if $settings.bi_allowed>>
+            <<blocked_link "Third option: Intimate favor" "Why would I do such a thing?">>   
+        <</if>>
+    `,
+    
+    'day1.penny_visit1.page5': `
+        <<speech 'corin' "I think I'll stick with the second option." >>
+        <<speech 'corin' "The actual work, that is." >>
+        <<speech 'administrator' "Suit yourself." 'unintroduced'>> 
+        <<speech 'administrator' "Name's Quistbane. You can call me Mr. Quistbane or Master Quistbane, as I'm the master of this fine institution and all its little squirrels." 'unintroduced'>>
+        <<narration "He pulls out some paper from a stack and places it in front of you.">>
+        <<speech 'administrator' "But hear this, kid. If you think you're getting a free ride, think again. ">>
+        <<speech 'administrator' "That form you're about to sign? It's fair, yet binding if used right. You sign, you commit.">>
+        <<speech 'administrator' "So don't think you can just forget it the moment you leave this building.">>
+        <<speech 'corin' "I understand." >>
+        <<speech 'administrator' "Good. Then it's all on the table." >>
+        
+        <<styledlink "Sign the deal" 'day1.penny_visit1.page6'>> 
+            <<set $flags.day1_read_admin_contract = 1>> 
+            <<set $counters.admin_service +=1 >> 
+            <<set $counters.admin_worker +=1 >> 
+        <</styledlink>> 
+        <<styledlink "Read carefully" 'day1.penny_visit1.page6'>> 
+            <<set $flags.day1_read_admin_contract = 2>> 
+            <<set $counters.admin_control +=1 >>
+        <</styledlink>>
+    `,
+
+    'day1.penny_visit1.page6': `
+        <<if $flags.day1_read_admin_contract == 2>>
+            <<speech 'administrator' "Cautious, huh? I guess someone warned you how this place works." >>
+            <<speech 'corin' "Not much, but my party once tangled with a shady merchant, that left a mark." >>
+            <<speech 'administrator' "Your party, huh? That's quite interesting." >>
+            <<speech 'administrator' "Anyway, finish it up there, I don't have all day for this." >>
+            <<narration "You rush through the form. Luckily, it's mostly straightforward: three days of mandatory work, anything extra is pretty liberal.">>
+            <<narration "You sign it.">>
+            <<speech 'administrator' "Finally!" >>
+        <</if>>
+
+        <<if $flags.day1_read_admin_contract == 1>>
+            <<thought "Hmm, hope this information's worth it.">>
+            <<thought "But Penny needs help!">>
+            <<thought "And also, I'm already in all of this.">>
+            <<narration "You sign it.">>
+            <<speech 'administrator' "Great!" >>
+        <</if>>
+        
+        <<system_note "From now on <span style='text-decoration: underline; font-weight: bold;' class='corin character'>$player.name</span> 
+            can work in the administration to earn money, peek at or participate in certain events. <br> 
+            Based on player's choices the administration job arc with time will go into different directions." >>
+
+        <<narration "His face takes on a more relaxed expression.">>
+        <<speech 'administrator' "Alright, now let's talk business." >>
+        <<speech 'administrator' "So again, why do you need the owner of that building?" >>
+
+        <<styledlink "Remind him" 'day1.penny_visit1.page7'>> <</styledlink>> 
+    `,
+
+    'day1.penny_visit1.page7': `
+        <<speech 'corin' "There was an advertising agency renting it, <i>'Scroll & Seal Advertising'</i>. But the place is completely empty now..." >>
+        <<speech 'administrator' "Agency? Shit, again..." >>
+        <<speech 'administrator' "I see what this is. Kid, that wasn't an actual agency, it was a scam." >>
+        <<speech 'administrator' "The building's owner got into deep shit because of that, poor guy's in serious trouble now. <br>
+            I doubt he'll compensate anyone, even if you manage to find him." >>
+        <<speech 'administrator' "Turns out, a bunch of important people got duped too. So now it's all on the owner's head." >>
+        <<narration "Quistbane leans back in his chair, as if recalling some memories.">>
+        <<speech 'administrator' "Ehh, shame, he was a fine lad." >>
+        <<speech 'corin' "But wasn't <i>'Scroll & Seal'</i> a known group?" >>
+        <<speech 'administrator' "Yes and no." >>
+        <<speech 'administrator' "There is a reputable agency by that name, but they never opened a branch here. " >>
+        <<speech 'administrator' "These fraudsters faked the paperwork. Some documents were forgeries, others used manipulated approvals from newbie clerks." >>
+        <<speech 'administrator' "Here, look at this." >>
+        <<narration "He slides a paper across the desk.">>
+        <<speech 'administrator' "See that? They called themselves <i>'Scrol1 & Seal Advertising'</i>. <br>
+            That's a number one instead of the second 'L'. Cheap trick, but it worked." >>
+        <<narration "You take a closer look.">>
+        <<thought "It's really not noticeable unless you look closely at that specific part.">>
+        <<speech 'administrator' "The real agency's furious about the whole thing." >>
+        <<speech 'administrator' "These bastards prepared almost perfectly, stole a ton of money and vanished." >>
+        <<speech 'administrator' "But they angered a lot of big people. There's a bounty on those scammers now. A highly rewarding one." >>
+        <<speech 'administrator' "You said you're an adventurer, right?" >>
+        <<speech 'corin' "Yes." >>
+        <<speech 'administrator' "Well, maybe you'll catch them yourself, ha-ha!" >>
+        <<speech 'administrator' "Here, take this poster. Might help you recognize them if they show up again." >>
+        <<narration "He presses a wanted poster into your hand, the edges pinned with red wax.">>
+        <<speech 'administrator' "Though I doubt they'll come back to this city anytime soon. " >>
+        <<speech 'administrator' "Still, would be hilarious if they did." >>
+        <<narration "He makes a pause, looking thoughtful.">>
+        <<speech 'administrator' "A-a-and that's all I've got." >> 
+        <<speech 'administrator' "Don't forget to show up tomorrow, your three mandatory work days start then." >>
+
+        <<styledlink "Return to Penny" 'day1.penny_visit1.page8'>> 
+            <<set $time.period +=1;>>  
+            <<run ObjectiveManager.unhideObjective("wanted_gang")>> 
+        <</styledlink>> 
+    `,
+
+    'day1.penny_visit1.page8': `
+        <<narration "You return to Penny's shop and explain everything you uncovered: the fake agency, the missing owner, the bounty on the scammers.">>
+        <<narration "At first, Penny looks stunned, her usual bright smile fading into disappointment. ">>
+        <<narration "She glances down at the parchment you handed her, then back up at you, eyes wide.">>
+        <<speech 'penny' "Um... well..." >>
+        <<speech 'penny' "Thank you so much for all your effort... but this... this is a disaster." >>
+        <<speech 'penny' "I need some time to rethink my whole selling strategy.">>
+        <<speech 'penny' "...and probably cut some of my commissions." >> 
+        <<speech 'penny' "...and dip into the rest of my savings to cover the costs." >> 
+        <<speech 'penny' "...and..." >> 
+        <<narration "She trails off, her shoulders slumping. You see a flicker of panic in her eyes as she runs a hand through her hair.">>
+        <<narration "Her gaze returns to you, apologetic.">>
+        <<speech 'penny' "I'm so sorry for dragging you into this... mess. I'm sure you didn't come here to get tangled up in all of this." >> 
+        <<speech 'penny' "I'm going to close the store for today.">> 
+        <<speech 'penny' "And... we can walk around the city or something. I need to do the thing I promised, and for the new help..." >> 
+        <<speech 'corin' "Are you sure you can focus on sightseeing or things like that right now?" >> 
+        <<narration "Penny looks down at her muddy floor, biting her lip. The silence stretches for a moment.">>
+        <<speech 'penny' "No... I cannot. I can't think of anything but the shop's future at the moment." >> 
+        <<speech 'penny' "Sorry again." >> 
+        <<narration "Her apology sounds as genuine as it can be, her usual cheerful energy replaced by regret.">> 
+
+        <<styledlink "Try to calm and reassure her" 'day1.penny_visit1.page9'>> <</styledlink>> 
+    `,
+
+    'day1.penny_visit1.page9': `
+        <<speech 'corin' "It's fine, it's fine. I'll just take you up on the promise another time." >> 
+        <<speech 'corin' "We'll have a nice time then and all that." >> 
+        <<speech 'corin' "Now it's already late anyway.">>
+        <<narration "You scratch your head, recalling your plans for today." >> 
+
+        <<if !setup.isSceneSeen('day1.sensei.intro')>>
+            <<speech 'corin' "...and I've got some other business to take care of today." >> 
+        <</if>>
+        <<if setup.isSceneSeen('day1.sensei.intro')>>
+            <<speech 'corin' "...and I need to get back to the tavern while the sun is still up." >> 
+        <</if>>
+
+        <<speech 'penny' "I see." >> 
+        <<speech 'penny' "Then tomorrow... no, wait..." >> 
+        <<speech 'penny' "I'll be busy tomorrow too, with all this new... crap." >> 
+        <<speech 'penny' "In a few days then?" >> 
+        <<narration "She looks at you with open vulnerability, her eyes searching yours like she's afraid you'll say no and vanish forever." >> 
+        <<speech 'penny' "But please, really please, after that, come see me again! Next time I'll make it up to you!" >> 
+        <<speech 'corin' "Okay, yes. " >> 
+        <<speech 'corin' "But now, I'll get going." >> 
+        <<narration "As you turn toward the door, Penny reaches out and grabs your sleeve. Her fingers are trembling slightly." >> 
+        <<media_scene "penny_grab_sleeve_dream" "video" "image" >>
+        
+        <<speech 'penny' "I mean it, I'll really repay you! Just please don't forget about me." >> 
+        <<speech 'corin' "I... sure." >> 
+        <<narration "You manage to share a small, reassuring smile.">> 
+        <<narration "Letting go of your sleeve, she tries to straighten up and puts on a visibly forced grin." >> 
+
+        <<styledlink "Leave the shop" 'City__Marketplace'>>
+            <<run ObjectiveManager.nextStep("know_the_city")>> 
+            <<set $counters.penny_love += 3>>
+            <<set $counters.penny_guilt += 3>>
+        <</styledlink>> 
+    `,
+
+    'loc.City__Westroad_Street.day1': `
+        <<thought "His mansion was somewhere here, if I recall correctly.">>
+    `,
+
+    'loc.City__Westroad_Street.day1.no_business_left': `
+        <<thought "I have no more business on this street today.">>
+    `,
+    
+    'loc.City__Westroad_Street.day1.move_on': `
+        <<thought "Need to move on.">>
+    `,
+
+    'day1.sensei.intro': `
+        <<media_location "Sensei_Mansion__Entrance">>
+
+        <<thought "Ah, here it is.">>
+        <<thought "But what now? Should I find a doorbell or should I start shouting...">>
+        <<narration "Before you decide, the gate creaks open and a woman steps out to greet you.">>
+        <<speech 'default' "Please come inside. Master awaits." 'patricia_unknown'>>
+
+        <<styledlink "Enter and follow her" 'day1.sensei.intro.page2'>> <</styledlink>> 
+    `,
+
+    'day1.sensei.intro.page2': `
+        <<narration "She leads you through the halls toward the master's study. You glance around, checking the surroundings.">>
+        <<media_location 'Sensei_Mansion__Headroom' >>
+
+        <<narration "The place doesn't scream wealth. Instead, it's practical: solid walls, modest furniture and only a few pieces of decoration that suggest status without excess.">>
+        <<speech 'default' "Master, the boy you mentioned is here." 'patricia_unknown'>>
+        <<narration "The oldman turns from the window, a faint smirk playing at his lips." >>
+        <<speech 'sensei' "Ah, hello there, young adventurer." 'oldman'>>
+        <<narration "He shakes your hand, his grip firm but not overbearing." >>
+        
+        <<if setup.isSceneSeen('day1.penny_visit1') >> 
+            <<speech 'sensei' "You came rather late." 'oldman'>>
+            <<speech 'sensei' "If you really want to be trained, you'll need to show extra effort and diligence." 'oldman'>>
+            <<narration "He gives you a stern look, as if trying to rein you in." >>
+            <<set $player.succumb.sensei +=1;>>
+        <</if>>
+
+        <<narration "He releases your hand and turns to the woman." >>
+        <<speech 'sensei' "Thank you, my dear. You can leave now." 'oldman'>>
+        <<narration "When she turns, he casually runs a hand across her backside and gives it a squeeze.">>
+        <<media_scene "sensei_grab_patricia">>
+
+        <<narration "As he stops, she simply moves away and leaves the room.">>
+        <<speech 'sensei' "Now then. Let's talk about what we can offer each other." 'oldman'>>
+        <<speech 'sensei' "Let's start with your story." 'oldman'>>
+
+        <<styledlink "Explain to him" 'day1.sensei.intro.page3'>> <</styledlink>> 
+    `,
+
+    'day1.sensei.intro.page3': `
+        <<narration "You tell everything that happened, your current situation, and...">>
+        <<if $flags.prologue_vote == 1>>
+            <<narration "...that you voted to stay with the party, but weren't completely sure yourself.">>
+        <</if>>
+        <<if $flags.prologue_vote == 2>>
+            <<narration "...that you hesitated over whether you needed to stay.">>
+        <</if>>
+        <<if $flags.prologue_vote == 3>>
+            <<narration "...that you thought about leaving. ">>
+        <</if>>
+        
+        <<narration "...but now you are determined to make the most of the time left and try your best.">>
+        <<narration "The oldman listens, his smirk widening.">>
+        <<speech 'sensei' "Amusing, but not that unique." 'oldman'>>
+        <<speech 'sensei' "Let's test you first and see your potential." 'oldman'>>
+        <<narration "He moves to a sturdy chest in the corner, rummages inside and retrieves a small amulet. <br>
+            The artifact looks plain at first glance, but you feel a faint pulse of energy from it as he hands it over.">>
+        <<speech 'sensei' "Focus on it." 'oldman'>>
+        <<speech 'sensei' "Like you would when concentrating mana... or activating a scroll. Or something close enough." 'oldman'>>
+        <<narration "You nod and take a slow, steady breath, trying to channel your attention into the amulet.">>
+        <<narration "After a moment, the amulet shudders faintly and emits a soft violet glow.">>
+        <<speech 'sensei' "Hmm..." 'oldman'>>
+        <<speech 'sensei' "Now stand by the table. Don't move for a few minutes, I'll check you with a scanning spell." 'oldman'>>
+        <<narration "You take your position, standing still as the oldman begins to chant. <br>
+            A low hum fills the room as the runes shimmer around you, swirling lazily like mist.">>
+        <<narration "The spell takes longer than you expect. Nearly ten minutes drag by in tense silence.">> 
+        <<thought "Never thought standing still could be this hard. Everything's suddenly itching all over.">>
+        <<narration "Finally, the spell fades away. The oldman closes the tome where he had been making notes, lets it fall shut with a heavy thud, and leans back in his chair.">>
+        <<speech 'sensei' "Truly amusing." 'oldman'>>
+        <<speech 'corin' "Is that a good thing? Or... not?">>
+        <<speech 'sensei' "Nothing you need to worry about right now." 'oldman'>>
+        <<speech 'sensei' "Well, here's my verdict..." 'oldman'>>
+
+        <<styledlink "Prepare to hear the results" 'day1.sensei.intro.page4'>> <</styledlink>> 
+    `,
+
+    'day1.sensei.intro.page4': `
+        <<speech 'sensei' "You caught my eye, but there's nothing particularly remarkable about you or your skills." 'oldman'>>
+        <<narration "He taps his fingers on the desk rhythmically, as if weighing his words.">>
+        <<speech 'sensei' "However... there's something odd. Around you or inside you..." 'oldman'>>
+        <<speech 'sensei' "I'm not entirely sure yet." 'oldman'>>
+        <<narration "The weight of his gaze sharpens, and you feel like he's looking through you rather than at you.">>
+        <<speech 'sensei' "Interesting." 'oldman'>>
+        <<speech 'sensei' "Thus, I'll train you and see where it leads." 'oldman'>>
+        <<speech 'corin' "But what's that odd thing you mentioned?">>
+        <<speech 'sensei' "As I said, it's not important right now. Might be nothing, to my future disappointment." 'oldman'>>
+        <<speech 'sensei' "And I don't like to throw guesses around." 'oldman'>>
+        <<speech 'sensei' "I'll observe you during training. When, and <i>if</i>, I can confirm something, you'll get your answers." 'oldman'>>
+        <<narration "He opens a different notebook, this one filled with hasty sketches and fragmented notes, flipping through the pages absently.">>
+        <<speech 'sensei' "Tonight I'll think it over and sketch out some training programs that could suit you." 'oldman'>>
+        <<speech 'sensei' "Come by tomorrow, we'll try out different activities useful for adventurers and see where you show the most potential." 'oldman'>>
+        <<narration "The oldman leans back, folding his arms across his chest.">>
+        <<speech 'sensei' "And also discuss the kind of payment you can provide." 'oldman'>>
+        <<narration "You stiffen slightly at that.">>
+        <<thought "The money is definitely an issue for me now. I hope it won't be too expensive.">>
+        <<speech 'sensei' "My curiosity is strong, but not strong enough to keep me going for free for more than a few training sessions." 'oldman'>>
+        <<speech 'sensei' "So now, you may go."  'oldman'>>
+        <<speech 'sensei' "Move down the left corridor and call for Patricia. She'll escort you to the exit." 'oldman'>>
+        
+        <<if setup.isSceneSeen('day1.penny_visit1') >> 
+            <<speech 'sensei' "And this time, don't be late!" 'oldman'>>
+        <</if>> 
+        <<if !setup.isSceneSeen('day1.penny_visit1')>> 
+            <<speech 'sensei' "Don't be late."  'oldman'>>
+        <</if>> 
+        
+        <<styledlink "Leave the room" 'day1.sensei.intro.page5'>>  <<run ObjectiveManager.nextStep("get_training")>>  <</styledlink>> 
+    `,
+
+    'day1.sensei.intro.page5': `    
+        <<narration "You follow the corridor, your footsteps muffled by the worn carpet. The air inside the mansion feels heavy, as if the walls themselves are watching.">>
+        <<narration "At the end of the hall, Patricia is already waiting, with a polite distant smile on her face.">>
+        <<speech 'default' "This way, please." 'patricia'>>
+        <<narration "She leads you to the large front door and opens it without a word. <br>
+            Cool evening air rushes in, brushing against your skin and clearing some of the tension clinging to you.">>
+        <<narration "You step outside into the dimming light.">>
+        <<thought "Training, payment, odd auras... oh, and this is only the first day.">>
+        <<narration "The heavy door shuts behind you with a deep, echoing thud.">>
+        <<narration "You pause for a second on the mansion steps, glancing up at the darkening sky.">>
+
+        <<styledlink "Catch a thought" 'Sensei_Mansion__Entrance'>>  <<set $time.period +=1;>>  <</styledlink>> 
+    `,
+
+    'loc.Sensei_Mansion__Entrance.day1.exit': `
+        <<if setup.isSceneSeen('day1.penny_visit1')>>
+            <<narration "You remember Penny's disappointed smile earlier today and her desperate, stubborn promises.">>
+            <<thought "At least... I'm not the only one trying to fix things.">>
+            <<thought "Strange, but this thought makes me feel a bit more at ease.">>
+        <</if>>
+        <<if !setup.isSceneSeen('day1.penny_visit1')>>
+            <<narration "A vague sense of unease settles in your chest. <br>
+                These are only your first steps into something bigger, and already you feel like you're being measured against things you can't endure.">>
+            <<thought "Ehh... Whatever will be, will be...">>
+        <</if>>
+    `,
+
+
+    'loc.Tavern__Hall.day1.evening': `
+        <<thought "Don't see anyone here at the moment.">>   
+        <<thought "Well, I guess I was late for the supper today.">>  
+        <<thought "Still, I need to eat something.">>  
+        <<thought "In that case, I'd better eat my leftovers from the bag in my room.">>       
+    `,
+    
+    'loc.Tavern__Hall.day1.evening.line2': `
+        <<thought "The leftover food is in the bag in my room.">>       
+    `,
+
+    'loc.Tavern__Bedroom.day1.eat_alone' : `
+        <<thought "Here is the bag.">>
+        
+        <<styledlink 'Check the bag for food' 'loc.Tavern__Bedroom.day1.eat_alone.page2'>>
+            <<set $time.period +=1;>>  
+        <</styledlink>> 
+    `,
+
+    'loc.Tavern__Bedroom.day1.eat_alone.page2' : `
+        <<narration "You take food out of your bag. ">> 
+        <<narration "All you have is a piece of dried meat, a couple of dry biscuits and water. ">>
+        <<thought "A fresh dinner at the tavern is a feast compared to that.">>
+        <<thought "Still, food is food. And right now my stomach is not in the mood for pride.">>
+        <<narration "You force the dry food down and try to chew it thoroughly.">>
+        <<narration "The biscuits crumble into stubborn dust, and the dried meat fights your teeth like it still has something to prove.">>
+        <<thought "I should really avoid missing supper next time.">>
+        <<thought "Then again, with the way this day went, missing only supper almost feels like a success.">>
+        <<narration "For a short while, the small room is quiet except for your chewing and the muffled noise of the tavern below.">>
+        <<thought "Hope tomorrow wouuld be easier.">>
+        <<narration "As you finish 'the meal,' you hear footsteps in the corridor.">>
+        
+        <<styledlink "Check it" 'Tavern__Corridor'>>  <</styledlink>> 
+    `,
+    
+    'loc.Tavern__Corridor.day1.before_evening_event' : `
+        <<narration "You quietly peek out of the door, trying not to make any noise.">>
+        <<narration "Margaret enters Alaric's room, looking around before closing the door tightly.">>
+        <<narration "Fortunately, it is pretty dark in the corridor and she doesn't notice you peeking from your doorside.">>
+    `,
+    
+    'loc.Tavern__Corridor.day1.evening_event_prompt' : `
+        <<thought "That was a bit weird. Should I probably check?">>
+    `,
+
+    'loc.Tavern__Corridor.day1.evening_event_skip_option' : `
+        <<thought "Or just go to bed and catch some zeds.">>
+    `,
+
+    'event.day1.evening.margaret_alaric': `
+        <<narration "Just a step from the door, you hear something that sounds like a sharp smack rings out from inside.">>
+        <<sfx 'slap1' 'audio/slap-soft.mp3'>>
+
+        <<narration "You edge closer to catch what it was.">>
+        <<narration "The door is tightly shut and the voices inside are little more than whispers, too quiet to grasp.">>
+        <<thought "Whatever that was... I should leave it at that.">>
+        <<thought "Maybe I can figure out what was that about tomorrow.">>
+        <<thought "...if I'm still interested by then.">>
+
+        <<styledlink "Return" 'Tavern__Corridor'>>  <</styledlink>> 
+    `,
+
+    'loc.Tavern__Corridor.day1.after_evening_event' : `
+        <<thought "I'm very tired, need to go to my room and catch a few zeds.">>
+    `,
+
+    
+    // #endregion Day 1
 }
-/* twine-user-script #26: "scripts.js" */
+/* twine-user-script #29: "scripts.js" */
 setup.calcPayment = (source) => {
     const { counters, flags, temp } = State.variables;
     const under_lucky_spell = temp.status_effects.lucky_spell;
@@ -6358,7 +7553,7 @@ setup.getTavernShedNegativeCount = () => {
 
 
 
-/* twine-user-script #27: "shadowing.js" */
+/* twine-user-script #30: "shadowing.js" */
 
 $(document).on(':passagedisplay', function () {
     if (State.variables.settings.shadowing == 1) {
@@ -6479,7 +7674,7 @@ const autoScroll = (function () {
         end
     };
 })();
-/* twine-user-script #28: "shop.js" */
+/* twine-user-script #31: "shop.js" */
 const itemDB = {
     orb:{id:'orb',name:'Orb',desc:'A mysterios gift',gift:false,usable:true,price:0,locked:false},
     old_equip: {id:'old_equip',name:'Old Equipment',desc:'Items I need to sell later',gift:false,usable:false},
@@ -6519,7 +7714,7 @@ window.buyItem = function () {
 window.buyAndUse = function () {
     return window.buyItem();
 };
-/* twine-user-script #29: "sound.js" */
+/* twine-user-script #32: "sound.js" */
 /* Audio is disabled for this release. */
 
 window.setup = window.setup || {};
@@ -6571,7 +7766,7 @@ Macro.add("sfx", {
 Macro.add("audio_context", {
   handler() {}
 });
-/* twine-user-script #30: "styledlink.js" */
+/* twine-user-script #33: "styledlink.js" */
 
 (function () {
   /* ---------- Templates ---------- */
@@ -6671,25 +7866,13 @@ Macro.add("audio_context", {
     }
   });
 })();
-/* twine-user-script #31: "beer_work.js" */
-/* Beer tryout is disabled for this release. */
-
-function initTryoutBeer() {
-  return false;
-}
-/* twine-user-script #32: "paperwork.js" */
-/* Paperwork tryout is disabled for this release. */
-
-function initTryoutPaperwork() {
-  return false;
-}
-/* twine-user-script #33: "tryout_archery.js" */
+/* twine-user-script #34: "tryout_archery.js" */
 /* Archery tryout is disabled for this release. */
 
 function initTryoutArchery() {
   return false;
 }
-/* twine-user-script #34: "tryouts.js" */
+/* twine-user-script #35: "tryouts.js" */
 /* Tryouts are disabled for this release. */
 
 setup.runTryout = function () {
@@ -6723,7 +7906,7 @@ $(document).on(':passagedisplay', function (ev) {
   const root = document.getElementById('tryout-root');
   if (root) root.innerHTML = getTryoutTemplate();
 });
-/* twine-user-script #35: "websystem_optimizations.js" */
+/* twine-user-script #36: "websystem_optimizations.js" */
 
 
 $(document).on(":passagerender", function () {
@@ -6740,7 +7923,7 @@ $(document).on(":passagedisplay", function () {
 });
 
 
-/* twine-user-script #36: "widget_media_scene.js" */
+/* twine-user-script #37: "widget_media_scene.js" */
 // Define the widget
 Macro.add('media_scene', {
     handler() {
@@ -6749,7 +7932,7 @@ Macro.add('media_scene', {
         return this.error('Insufficient arguments provided. Usage: <<media_scene "mediaNameWithoutExtension" ["image|video"] ["width"] ["height"]>>');
       }
   
-      // Get the media name (without extension) and optional media types.
+      // Get the media name (without extension) and optional media type.
       // Usage:
       //   <<media_scene "name">>                  image
       //   <<media_scene "name" "video">>          video
@@ -6793,7 +7976,7 @@ Macro.add('media_scene', {
       };
   
       // Define paths and formats
-      const mediaPath = "1/";  // Folder for AI-generated media
+      const mediaPath = "1/";
       const videoFormats = [".mp4", ".webm", ".avif"]; // Possible formats for videos
       const imageFormats = [".png", ".webp"];          // Possible formats for images
   
@@ -6818,14 +8001,18 @@ Macro.add('media_scene', {
   
       // Based on $settings.media_mode and media type, determine what to display
       let content = '';
-      if (State.getVar('$settings.media_mode') == 0) {
-        content = '';
-      } else if (mediaType === 'video') {
-        content = generateMediaHTML(videoPaths, 'video');
-      } else if (mediaType === 'image') {
-        content = generateMediaHTML(imagePaths, 'image');
-      } else {
-        content = '<p>Invalid media type specified.</p>';
+      switch (State.getVar('$settings.media_mode')) {
+        case 0: // Do not show anything
+          content = '';
+          break;
+        default:
+          if (mediaType === 'video') {
+            content = generateMediaHTML(videoPaths, 'video');
+          } else if (mediaType === 'image') {
+            content = generateMediaHTML(imagePaths, 'image');
+          } else {
+            content = '<p>Invalid media type specified.</p>';
+          }
       }
   
       // Render the content
@@ -6920,8 +8107,7 @@ Macro.add('blocked_link', {
 
         $(this.output).wiki(html);
     }
-});
-</script><tw-tag name="System" color="red"></tw-tag><tw-passagedata pid="1" name="City__Administration" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="2" name="City__Center" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="3" name="City__Entrance" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="4" name="City__Marketplace" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="5" name="City__Marketplace_Shops" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="6" name="City__Parchment_Lane" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="7" name="City__Road" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="8" name="City__Westroad_Street" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="9" name="Dead_End" tags="System nobr special_passage" position="200,500" size="100,100">&lt;&lt;fadein 3s 0s&gt;&gt;
+});</script><tw-tag name="System" color="red"></tw-tag><tw-passagedata pid="1" name="City__Administration" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="2" name="City__Center" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="3" name="City__Entrance" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="4" name="City__Marketplace" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="5" name="City__Marketplace_Shops" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="6" name="City__Parchment_Lane" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="7" name="City__Road" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="8" name="City__Westroad_Street" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="9" name="Dead_End" tags="System nobr special_passage" position="200,500" size="100,100">&lt;&lt;fadein 3s 0s&gt;&gt;
 &lt;p class=&quot;dead_end&quot;&gt; Dead End &lt;/p&gt;
 &lt;&lt;/fadein&gt;&gt;
 
@@ -6954,14 +8140,15 @@ See [[Additional game information|Info_Additional][[$temp.intro_page = &#39;menu
 All characters featured in romantic or sexual content are fictional adults aged 18 or older. &lt;&lt;br 2&gt;&gt;
 
 The content of this game is purely fictional and meant for entertainment purposes. &lt;&lt;br&gt;&gt;
-It does not depict or encourage real-life behavior. Player discretion is advised. &lt;&lt;br 2&gt;&gt;
+It does not depict or encourage real-life behavior. &lt;&lt;br&gt;&gt;
+Player discretion is advised. &lt;&lt;br 2&gt;&gt;
 
 Scene images are illustrated or AI-generated fiction and do not depict real people. &lt;&lt;br&gt;&gt;
 Placeholder builds may include temporary third-party placeholder images planned to be replaced. &lt;&lt;br 2&gt;&gt;
 
 The game is free to play. No payment is required. &lt;&lt;br&gt;&gt;
-Optional supporter accounts on donation platforms may be added in the future. &lt;&lt;br&gt;&gt;
-Supporter builds will not include exclusive story content. They will be released one version ahead of public builds &lt;&lt;br&gt;&gt;
+Optional supporter accounts on donation platforms are and will be added for supporting only in the future. &lt;&lt;br&gt;&gt;
+Such builds will not include exclusive story content. They will be released one version ahead of public builds &lt;&lt;br&gt;&gt;
 and will not include third-party placeholder media. &lt;&lt;br 2&gt;&gt;
 
 If you are uncomfortable with such material, please do not proceed. &lt;&lt;br&gt;&gt;
@@ -6972,7 +8159,7 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
 &lt;div class=&quot;link-system&quot;&gt;
 	[[Confirm and proceed|Menu_Settings][$temp.from_disclaimer = 1]]
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="End_Of_Content" tags="system nobr special_passage" position="650,500" size="100,100">&lt;&lt;fadein 2s&gt;&gt;
-            &lt;p class=&quot;eoc-prologue &quot;&gt;END of Version v0.2&lt;/p&gt;
+  &lt;p class=&quot;eoc-prologue &quot;&gt;END of the Version v0.3&lt;/p&gt;
 &lt;&lt;/fadein&gt;&gt;
 &lt;div class=&quot;eoc-thanks-block &quot;&gt;
       &lt;&lt;fadein 2s 2s&gt;&gt;
@@ -6982,32 +8169,24 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
             &lt;p&gt;I hope you liked the new update.&lt;/p&gt;   
             &lt;p style=&quot;margin-bottom: 15px;&quot;&gt;Yet, this is still an early version, so more is up to come!&lt;/p&gt;
             &lt;p&gt;Stay tuned for updates and more content soon!&lt;/p&gt;  
-      &lt;&lt;/fadein&gt;&gt; &lt;&lt;br&gt;&gt;
-      &lt;&lt;fadein 2s 6s&gt;&gt;
-            &lt;div class=&quot;eoc-release-note&quot;&gt;
-                  &lt;p&gt;Release note:&lt;/p&gt;   
-                  &lt;p&gt;I know this update may feel smaller than expected, especially if you were waiting for new story progression. &lt;br&gt;
-                  Version 0.2 focuses on improving the Prologue: fixing mistakes, updating the flow, text and refreshing media.&lt;/p&gt;
-                  &lt;p&gt;I also had to spend a lot of time preparing the project for future content, even if that part is not very visible in-game.&lt;/p&gt;
-                  &lt;p&gt;The next release and the following ones are planned to include story progression or content expansion in each update.&lt;/p&gt;
-            &lt;/div&gt;
       &lt;&lt;/fadein&gt;&gt;
+      &lt;&lt;br&gt;&gt;
 &lt;/div&gt;
 
-&lt;&lt;fadein 2s 8s&gt;&gt;
+&lt;&lt;fadein 2s 6s&gt;&gt;
 &lt;div class=&quot;eoc-restart&quot;&gt;
     &lt;button class=&quot;eoc-restart__button eoc-back-button&quot; type=&quot;button&quot;&gt;Back&lt;/button&gt;
     &lt;button class=&quot;eoc-restart__button eoc-restart-button&quot; type=&quot;button&quot;&gt;Restart&lt;/button&gt;
 &lt;/div&gt;
-&lt;&lt;/fadein&gt;&gt;
-&lt;&lt;br 2&gt;&gt;</tw-passagedata><tw-passagedata pid="12" name="Info_Additional" tags="system nobr" position="650,500" size="100,100">&lt;&lt;if $temp.intro_page == &#39;menu&#39;&gt;&gt;
+&lt;&lt;/fadein&gt;&gt;</tw-passagedata><tw-passagedata pid="12" name="Info_Additional" tags="system nobr" position="650,500" size="100,100">&lt;&lt;if $temp.intro_page == &#39;menu&#39;&gt;&gt;
     &lt;h2&gt; Dev notes: &lt;/h2&gt; &lt;&lt;br&gt;&gt;
 
     &lt;div class=&quot;link-system&quot;&gt;
     &lt;&lt;link &quot;General plans for the game&quot; &quot;Info_Additional&quot;&gt;&gt; &lt;&lt;set $temp.intro_page = &#39;plans&#39;&gt;&gt; &lt;&lt;/link&gt;&gt; 
     /*&lt;&lt;link &quot;Love Interests&quot; &quot;Info_Additional&quot;&gt;&gt; &lt;&lt;set $temp.intro_page = &#39;li&#39;&gt;&gt; &lt;&lt;/link&gt;&gt; */
     &lt;&lt;link &quot;Genres&quot; &quot;Info_Additional&quot;&gt;&gt; &lt;&lt;set $temp.intro_page = &#39;genres&#39;&gt;&gt; &lt;&lt;/link&gt;&gt; 
-    &lt;&lt;link &quot;Media&quot; &quot;Info_Additional&quot;&gt;&gt; &lt;&lt;set $temp.intro_page = &#39;media&#39;&gt;&gt; &lt;&lt;/link&gt;&gt; 
+    &lt;&lt;link &quot;Media &amp; Patreon&quot; &quot;Info_Additional&quot;&gt;&gt; &lt;&lt;set $temp.intro_page = &#39;media&#39;&gt;&gt; &lt;&lt;/link&gt;&gt;
+    &lt;&lt;link &quot;About Builds&quot; &quot;Info_Additional&quot;&gt;&gt; &lt;&lt;set $temp.intro_page = &#39;builds&#39;&gt;&gt; &lt;&lt;/link&gt;&gt; 
     /* &lt;&lt;link &quot;Mechanics&quot; &quot;Info_Additional&quot;&gt;&gt; &lt;&lt;set $temp.intro_page = &#39;mechanics&#39;&gt;&gt; &lt;&lt;/link&gt;&gt;  */
     &lt;/div&gt;
 
@@ -7078,22 +8257,86 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
 
 
 &lt;&lt;if $temp.intro_page == &#39;media&#39;&gt;&gt; 
-    I tried to make the art myself, but unfortunately I have zero talent for design or art. &lt;&lt;br 2&gt;&gt; 
+    Unfortunately I have zero talent for design and art. &lt;&lt;br&gt;&gt; 
+    I honestly tried, and more than once. &lt;&lt;br 2&gt;&gt;
 
-    Placeholder builds could use temporary third-party placeholder media while I search for better long-term solutions. 
-    Because rights and platform rules can be strict, the public release will avoid third-party placeholder media and use only media I can safely distribute. &lt;&lt;br 2&gt;&gt;
+    And for proper level of AI art, it would take too much time to set up everything and learn.&lt;&lt;br&gt;&gt;
+    I was deeply unsatisfied with the quality of AI images from version 0.1. And even that quality took too much time already to make them. &lt;&lt;br&gt;&gt;
+    I&#39;ve tried a new approach, but the result is still not good enough for me and it took even more time. &lt;&lt;br 2&gt;&gt;
 
-    The Public Build is the main version intended for supported platforms. 
-    Its visuals use AI-assisted fictional/illustrated media and I will disclose AI-assisted media where required. 
-    Adult content will be labeled, age-gated or paywalled where a platform requires it. 
-    It will not use sexualized real-person photos, AI images meant to imitate real people, or media I do not have the right to share. &lt;&lt;br 2&gt;&gt;
+    Also I&#39;ve discovered that non-AI, 3rd party media is pretty risky to have as your main media in the project. &lt;&lt;br 2&gt;&gt;
 
-    A separate Placeholder Build may continue to exist only for places where that kind of temporary media is allowed. 
+    So I&#39;ve decided that I would need to try to hire someone who can do it better, or pay for decent AI tools, or both. &lt;&lt;br&gt;&gt;
+    Thus, I added a Patreon account 😐.  &lt;&lt;br&gt;&gt;
+    I know I&#39;m too early in the releases, but I&#39;ve been working on the game for quite some time, 
+        I just made a lot of reworks until I felt it was ready enough to start releasing. &lt;&lt;br&gt;&gt;
+
+    For now, I&#39;ll count added media as placeholders to be replaced by arts later and generated AI images as the default option. &lt;&lt;br&gt;&gt;
+    In case you don&#39;t want to fund, then just don&#39;t.&lt;&lt;br 2&gt;&gt;
+
+
+    So, to sum it up, I decided three things:&lt;&lt;br&gt;&gt;
+    &lt;ul&gt;
+    &lt;li&gt;First, &lt;strong style=&quot;text-decoration: underline;&quot;&gt;I will treat current media as placeholders&lt;/strong&gt;. &lt;&lt;br&gt;&gt;
+        (I&#39;ll still try to add some for the previous game parts as well, as it looks too empty without any media.) &lt;&lt;br&gt;&gt;&lt;/li&gt;
+    &lt;li&gt;Second, &lt;strong style=&quot;text-decoration: underline;&quot;&gt;I&#39;m starting a Patreon account&lt;/strong&gt;. &lt;br&gt;
+        In case someone would be willing to fund, I will use those resources to improve the game. &lt;/li&gt;
+    &lt;li&gt;Third,&lt;i style=&quot;font-size: 0.8em;&quot;&gt; I&#39;m not sure about this one completely&lt;/i&gt;, but 
+        &lt;strong style=&quot;text-decoration: underline;&quot;&gt;I will try to learn to do good AI arts anyway&lt;/strong&gt;
+        &lt;i style=&quot;font-size: 0.9em;&quot;&gt;(preferably animations variants)&lt;/i&gt;, but I guess it will closer to the later states of the game. &lt;&lt;br&gt;&gt;&lt;/li&gt;
+    &lt;/ul&gt; &lt;&lt;br&gt;&gt;
+    
+    I would be very glad and welcome anyone who could be willing to help me with: &lt;&lt;br&gt;&gt;
+    &lt;ul&gt;
+    &lt;li&gt;detailed workflows for generating good AI images, &lt;/li&gt;
+    &lt;li&gt;AI generation for in-game scenes, &lt;/li&gt;
+    &lt;li&gt;donated artwork, &lt;/li&gt;
+    &lt;li&gt;bug testing, &lt;/li&gt;
+    &lt;li&gt;text proofreading,&lt;/li&gt;
+    &lt;li&gt;or paid/unpaid design and art work funded through Patreon.&lt;/li&gt; 
+    &lt;/ul&gt; 
+    You can contact me via published social links on the index page.
+
+
+    &lt;&lt;br 3&gt;&gt;
+    &lt;div class=&quot;link-system&quot;&gt;
+    [[Back|Info_Additional][$temp.intro_page = &#39;menu&#39;]]
+    &lt;/div&gt;
+&lt;&lt;/if&gt;&gt;
+
+
+
+&lt;&lt;if $temp.intro_page == &#39;builds&#39;&gt;&gt; 
+    &lt;strong style=&quot;text-decoration: underline;&quot;&gt;Placeholder builds&lt;/strong&gt; could use temporary third-party placeholder media while I search for better long-term solutions. &lt;&lt;br&gt;&gt;
+    Because rights and platform rules can be strict, the public release will avoid third-party placeholder media and use only media I can safely distribute.&lt;&lt;br 2&gt;&gt;
+
+    &lt;strong style=&quot;text-decoration: underline;&quot;&gt;The Public Build&lt;/strong&gt; is the main version intended for supported platforms. &lt;&lt;br&gt;&gt;
+    Its visuals use AI-assisted fictional/illustrated media and I will disclose AI-assisted media where required. &lt;&lt;br&gt;&gt;
+    Adult content will be labeled, age-gated or paywalled where a platform requires it. &lt;&lt;br&gt;&gt;
+    It will not use sexualized real-person photos, AI images meant to imitate real people, or media I do not have the right to share.&lt;&lt;br 2&gt;&gt;
+
+    A separate Placeholder Build may continue to exist only for places where that kind of temporary media is allowed. &lt;&lt;br&gt;&gt;
     If there is any rights concern, or if a platform does not allow it, that build will be removed or kept unavailable there. &lt;&lt;br 2&gt;&gt;
 
-    AI media will remain part of the game. 
-    If I manage to create better AI visuals, I will replace older ones; if not, the current ones will stay. 
-    The goal is to keep the public version safe, transparent and platform-compatible. &lt;&lt;br&gt;&gt; 
+    AI media will remain part of the game. If I manage to create better AI visuals, I will replace older ones; if not, the current ones will stay. &lt;&lt;br&gt;&gt;
+    The goal is to keep the public version safe, transparent and platform-compatible. &lt;&lt;br 2&gt;&gt;
+
+    &lt;strong style=&quot;text-decoration: underline;&quot;&gt;Eartly Access&lt;/strong&gt; builds will not include exclusive story content. &lt;&lt;br&gt;&gt;
+    They will be released one version ahead of public builds and will not include third-party placeholder media. &lt;&lt;br 2&gt;&gt;
+
+    Also I&#39;m currently trying to find a sustainable way to release something every month. &lt;&lt;br&gt;&gt;
+    Creating a new Story Day means writing more than just the main route. 
+    I also need to account for player choices and optional content such as 
+    Penny&#39;s dates, Nancy&#39;s route, the Administration job, Sensei&#39;s training, bath scenes, marketplace events and other future story paths. 
+    Preparing media for scenes also takes a lot time. &lt;&lt;br 2&gt;&gt;
+
+    Because of that, a major content update every month probably isn&#39;t realistic right now - but alternating between content and maintenance releases might be. &lt;&lt;br 2&gt;&gt;
+    This &lt;strong style=&quot;text-decoration: underline;&quot;&gt; Maintenance Build &lt;/strong&gt; would be like an update to previous released build. &lt;&lt;br&gt;&gt;
+    It could have things like: 
+    dialogue improvements, text corrections, updates of media from image to animation, new media additing to existing scenes, small UI/UX improvements or fixes, 
+    functionality fixes, migration fixes, files size reduction, media quality enhancments and small gameplay usability improvements. &lt;&lt;br&gt;&gt;
+
+    This is still an experiment, not a firm promise. I need to check my ability to provide and feedback for players before setting it as obligatory release structure.
 
 
     &lt;&lt;br 3&gt;&gt;
@@ -7227,7 +8470,7 @@ renderRegionTravel(&quot;trade_road&quot;, &quot;wagon&quot;);
 &lt;&lt;/if&gt;&gt; 
 
 
-&lt;&lt;br 4&gt;&gt;
+&lt;&lt;br 5&gt;&gt;
 &lt;&lt;set $interface.menu_all = ($interface.menu_inventory || $interface.menu_info == 1 || $interface.menu_settings == 1) ? 1 : 0&gt;&gt;
 
 &lt;&lt;if $interface.menu_all == 1&gt;&gt;
@@ -7646,8 +8889,78 @@ renderRegionTravel(&quot;trade_road&quot;, &quot;wagon&quot;);
 &lt;p&gt;Take control and make choices that will shape the path of their fates and determine how the story unfolds!&lt;/p&gt;
 
 &lt;&lt;br&gt;&gt;
-
 &lt;h3 class=&quot;index-section&quot;&gt;Game Info&lt;/h3&gt;
+&lt;p&gt;Current Version: 0.3&lt;/p&gt;
+&lt;ul class=&quot;index-list&quot;&gt;
+    &lt;li&gt;Main Story: Day 1&lt;/li&gt;
+    &lt;li&gt;Free-roam city and tavern navigation&lt;/li&gt;
+    &lt;li&gt;Time-of-day activity flow&lt;/li&gt;
+    &lt;li&gt;Choice tracking about MC behavior stat feature&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Next Update:&lt;/p&gt;
+&lt;ul class=&quot;index-list index-list--compact&quot;&gt;
+    &lt;li&gt;Main Story: Day 2&lt;/li&gt;
+    &lt;li&gt;UI/UX updates&lt;/li&gt;
+    &lt;li&gt;Tryout system&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 class=&quot;index-section&quot;&gt;Release Notes&lt;/h3&gt;
+
+&lt;details class=&quot;index-release-notes&quot;&gt;
+    &lt;summary&gt;
+        &lt;span class=&quot;index-release-notes__arrow&quot;&gt;&lt;/span&gt;
+        &lt;span class=&quot;index-release-notes__title&quot;&gt;Version 0.3&lt;/span&gt;
+        &lt;span class=&quot;index-release-notes__hint&quot;&gt;Click to expand&lt;/span&gt;
+    &lt;/summary&gt;
+
+    &lt;div class=&quot;index-release-notes__body&quot;&gt;
+        &lt;p&gt;&lt;strong&gt;Moto&lt;/strong&gt;&lt;/p&gt;
+        &lt;p&gt;Explore Still Waters on your first training day: &lt;&lt;br&gt;&gt;
+        meet Penny, visit Administration, begin Sensei&#39;s examinations and deal with party tension. &lt;&lt;br&gt;&gt;
+        New free-roam navigation, time-of-day and choice-tracking systems. &lt;&lt;br&gt;&gt;
+        Inventory, shops, gifting, objectives and mini-games coming in future updates.&lt;/p&gt; &lt;&lt;br&gt;&gt;
+
+        &lt;p&gt;&lt;strong&gt;Story / Content&lt;/strong&gt;&lt;/p&gt;
+        &lt;ul class=&quot;index-list&quot;&gt;
+            &lt;li&gt;Added the full Day 1 story path.&lt;/li&gt;
+            &lt;li&gt;Added the start of the tavern side route with Nancy.&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;&lt;strong&gt;Locations&lt;/strong&gt;&lt;/p&gt;
+        &lt;ul class=&quot;index-list&quot;&gt;
+            &lt;li&gt;Added Tavern locations: Bedroom, Hall, Corridor and Outside.&lt;/li&gt;
+            &lt;li&gt;Added City locations: Entrance, Center, Road, Marketplace, Marketplace Shops, Westroad Street, Parchment Lane and Administration.&lt;/li&gt;
+            &lt;li&gt;Added Penny&#39;s Shop locations: Entrance, Inside and Backrooms.&lt;/li&gt;
+            &lt;li&gt;Added Sensei Mansion locations: Entrance, Yard, Headroom, Archery Grounds, Combat Room and Baths.&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;&lt;strong&gt;UI / UX&lt;/strong&gt;&lt;/p&gt;
+        &lt;ul class=&quot;index-list&quot;&gt;
+            &lt;li&gt;Added blocked links: unavailable choices show MC&#39;s inner reaction instead of dead links.&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;&lt;strong&gt;Technical / Gameplay&lt;/strong&gt;&lt;/p&gt;
+        &lt;ul class=&quot;index-list&quot;&gt;
+            &lt;li&gt;Added free-roam navigation with dynamic links.&lt;/li&gt;
+            &lt;li&gt;Added a time-of-day system where activities consume periods.&lt;/li&gt;
+            &lt;li&gt;Added MC behavior stats: confidence, team spirit, cautiousness and related traits tracked from choices (influence certain dialogues and choices).&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/details&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+/* &lt;h3 class=&quot;index-section&quot;&gt;Game Info&lt;/h3&gt;
 &lt;p&gt;Current Version: 0.2&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Update Summary&lt;/strong&gt;&lt;/p&gt;
 &lt;ul class=&quot;index-list&quot;&gt;
@@ -7704,7 +9017,7 @@ renderRegionTravel(&quot;trade_road&quot;, &quot;wagon&quot;);
             &lt;li&gt;Prepared foundations for future features: inventory, shops, gifting, tryouts, sound system, objectives and more.&lt;/li&gt;
         &lt;/ul&gt;
     &lt;/div&gt;
-&lt;/details&gt;
+&lt;/details&gt; */
 
 &lt;&lt;br&gt;&gt;
 &lt;h3 class=&quot;index-section&quot;&gt;📢 Join the Community&lt;/h3&gt;
