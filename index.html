@@ -98,7 +98,7 @@ var LZString={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<!-- UUID://EDF0AE0C-E0BB-47E3-A0A7-A8A6FDECB4ED// --><tw-storydata name="Hero&#39;s companion" startnode="42" creator="Tweego" creator-version="2.1.1+81d1d71" ifid="EDF0AE0C-E0BB-47E3-A0A7-A8A6FDECB4ED" zoom="1" format="SugarCube" format-version="2.36.1" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* twine-user-stylesheet #1: "character_card.css" */
+	<!-- UUID://EDF0AE0C-E0BB-47E3-A0A7-A8A6FDECB4ED// --><tw-storydata name="Hero&#39;s companion" startnode="34" creator="Tweego" creator-version="2.1.1+81d1d71" ifid="EDF0AE0C-E0BB-47E3-A0A7-A8A6FDECB4ED" zoom="1" format="SugarCube" format-version="2.36.1" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* twine-user-stylesheet #1: "character_card.css" */
 .characters-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -543,6 +543,40 @@ var LZString={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234
     margin-bottom: 40px;
 }
 
+body.end-of-content-page #ui-bar {
+    display: none !important;
+}
+
+body.end-of-content-page #story {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.eoc-restart {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin: 36px 0 20px;
+}
+
+.eoc-restart__button {
+    min-width: 220px;
+    padding: 16px 34px;
+    border: 2px solid #4A90E2;
+    border-radius: 6px;
+    background: #4A90E222;
+    color: #fff;
+    font-family: Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.eoc-restart__button:hover {
+    background: transparent;
+    color: #4A90E2;
+}
+
 .eoc_socials {
     text-align: center;
     font-family: 'Georgia', serif;
@@ -580,43 +614,7 @@ var LZString={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234
     color: #FFF; /* White text on hover */
     text-decoration: none; /* Keep text clean */
 }
-
-body.end-of-content-page #ui-bar {
-    display: none !important;
-}
-
-body.end-of-content-page #story {
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-
-.eoc-restart {
-    display: flex;
-    justify-content: center;
-    gap: 18px;
-    margin: 36px 0 20px;
-}
-
-.eoc-restart__button {
-    min-width: 220px;
-    padding: 16px 34px;
-    border: 2px solid #4A90E2;
-    border-radius: 6px;
-    background: #4A90E222;
-    color: #fff;
-    font-family: Georgia, serif;
-    font-size: 1.25rem;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.eoc-restart__button:hover {
-    background: transparent;
-    color: #4A90E2;
-}
-/* twine-user-stylesheet #6: "fading.css" */
-/* Fade skip controls are disabled for this release. */
-/* twine-user-stylesheet #7: "job_link.css" */
+/* twine-user-stylesheet #6: "job_link.css" */
 .styledlink.styledlink--job-beer,
 .styledlink.styledlink--job-paperwork,
 .styledlink.styledlink--job-archery {
@@ -695,7 +693,7 @@ body.end-of-content-page #story {
 .passage .styledlink.styledlink--job-archery:hover {
     margin-left: 30px;
 }
-/* twine-user-stylesheet #8: "links.css" */
+/* twine-user-stylesheet #7: "links.css" */
 
 /* System links */
 .link-system {
@@ -1075,7 +1073,7 @@ a.blocked-link-wrapper:hover .blocked-tooltip {
 /* .passage-link {
     padding: 4px 12px 2px;
 } */
-/* twine-user-stylesheet #9: "locations.css" */
+/* twine-user-stylesheet #8: "locations.css" */
 .location-img {
     display: block;
     position: relative;
@@ -1127,6 +1125,76 @@ a.blocked-link-wrapper:hover .blocked-tooltip {
   margin-top: -1em;
 }
 
+.location-banner--zoom {
+  position: relative;
+  width: 100%;
+  max-height: 400px;
+  height: 44vh;
+  overflow: hidden;
+  background-color: #111;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.location-banner--zoom::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.0) 60%
+  );
+  pointer-events: none;
+}
+
+
+.location-banner img.location-img--zoom-in {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 0% 75%;      
+  border: none;
+  border-radius: 0;
+  transition: transform 0.4s ease;
+}
+
+.location-banner .location-img--zoom-out {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-view-box: inset(30% 0% 10% 0%);
+  border: none;
+  border-radius: 0;
+  transition: object-view-box .4s ease;
+}
+
+
+.location-banner:hover .location-img--zoom-in {
+    transform: scale(1.05, 1.1);
+}
+
+.location-banner:hover .location-img--zoom-out {
+    object-view-box: inset(20% 0% 5% 0%); 
+}
+
+    
+@media (max-width: 1024px) {
+  
+      .location-banner:hover .location-img--zoom-in {
+          transform: none !important;
+      }
+
+      /* If tablet or desktop zoom-out is not working  */
+      .location-banner .location-img--zoom-out {
+          object-view-box: none !important;
+          object-fit: cover !important;
+          object-position: 0% 75% !important;     
+      }
+
+}
 
 @media (max-width: 720px) {
     .location-banner {
@@ -1166,7 +1234,7 @@ a.blocked-link-wrapper:hover .blocked-tooltip {
         /* aspect raio is 18:14 */
     }
 }
-/* twine-user-stylesheet #10: "menu_icons.css" */
+/* twine-user-stylesheet #9: "menu_icons.css" */
 #menu-core {
 
 }
@@ -1198,11 +1266,11 @@ a.blocked-link-wrapper:hover .blocked-tooltip {
     font-size: 1.05em;
     font-variant: normal;
     line-height: 1;
+    speak: never;
     text-rendering: auto;
     text-transform: none;
     -webkit-font-smoothing: antialiased;
 }
-
 
 
 li[data-menu="info"] > a:before {
@@ -1211,10 +1279,6 @@ li[data-menu="info"] > a:before {
 
 li[data-menu="settings"] > a:before {
     content: "\e82d";
-}
-
-li[data-menu="debug"] > a:before {
-    content: "\e838";
 }
 
 #menu-item-saves.save-menu-blocked > a {
@@ -1259,7 +1323,8 @@ li[data-menu="debug"] > a:before {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
 }
-/* twine-user-stylesheet #11: "modal.css" */
+
+/* twine-user-stylesheet #10: "modal.css" */
 .modal {
     position: fixed;
     top: 0; left: 0;
@@ -1349,7 +1414,7 @@ li[data-menu="debug"] > a:before {
 .modal-body p {
     margin: 0.5rem 0;
 }
-/* twine-user-stylesheet #12: "notification.css" */
+/* twine-user-stylesheet #11: "notification.css" */
 .notification-container {
     width: 400px;
     max-width: calc(100vw - 5em);
@@ -1417,6 +1482,24 @@ li[data-menu="debug"] > a:before {
 
 }
 
+/* twine-user-stylesheet #12: "notify.css" */
+/* #notify {
+    position : fixed;
+    display : block;
+    width : 16em;
+    right : -20em; top : 2em;
+    padding : 0.5em;
+    background-color : #fff;
+    color : #000;
+    -webkit-transition : right 0.3s;
+    -moz-transition : right 0.3s;
+    -o-transition : right 0.3s;
+    transition : right 0.3s;
+}
+
+#notify.open { 
+    right : 0; 
+} */
 /* twine-user-stylesheet #13: "root.css" */
 
 h1, h2, h3, h4, h5, h6 {
@@ -1470,7 +1553,6 @@ h5, h6 {
 .index-section {
     margin-top: 1.25em;
     margin-bottom: 0.4em;
-    font-size: 1.25em;
 }
 
 .index-premise-gap {
@@ -1612,6 +1694,73 @@ p {
   --control_bg:      #222;
   --control_color:   #ccc;
   --transition_time: 0.3s;
+}
+
+#saves-list :is(.load, .save), #saves-clear-no {
+  color: var(--text_load_save);
+  background: linear-gradient(45deg, var(--accent_start), var(--accent_end) 80%);
+}
+
+#saves-list .delete, #saves-clear-yes {
+  color: var(--text_delete);
+  background: linear-gradient(145deg, var(--accent_start), var(--accent_end) 80%);
+}
+
+#saves-list :is(.load, .save, .delete), #saves-clear-yes, #saves-clear-no {
+  border: 1px solid var(--border_color);
+  border-radius: 4px;
+  padding: .4em .8em;
+  transition: border-color var(--transition_time) ease;
+  font-weight: bold;
+}
+
+
+#saves-list :is(.load, .save, .delete):hover {
+  border-color: var(--border_hover);
+  background: linear-gradient(190deg, var(--accent_start), var(--accent_end) 80%);
+}
+
+#saves-list .empty {
+  display: flex;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+:is(#saves-import, #saves-export, #saves-clear, #saves-clear-custom ) {
+  background-color: var(--control_bg);
+  border: 1px solid var(--border_hover);
+  color: var(--control_color);
+  padding: 0.5em 1em;
+  transition: color var(--transition_time) ease, border-color var(--transition_time) ease;
+}
+
+:is(#saves-import, #saves-export, #saves-clear, #saves-clear-custom):hover {
+  color: #fff;
+  border-color: #fff;
+}
+
+#saves-import {
+    margin: 0;
+}
+
+
+@media (max-width: 560px) {   
+    #saves-list :is(.load, .save, .delete) {
+        padding: inherit;
+    }
+} 
+
+
+.saves-clear-buttons {
+    display: flex;
+    gap: 5px;
+    justify-self: flex-end;
+}
+
+.saves-clear-buttons button {
+  min-width: 60px;
 }
 /* twine-user-stylesheet #15: "scene_event.css" */
 
@@ -2212,35 +2361,7 @@ label.toggle-button span {
     -ms-user-select: none;
     user-select: none;
 }
-/* twine-user-stylesheet #25: "tryout_tba.css" */
-/* Tryout Placeholder — paste into Story Stylesheet */
-.tryout-placeholder {
-  --bg: linear-gradient(135deg, rgba(120,120,255,0.10), rgba(120,255,220,0.10));
-  --card: rgba(255,255,255,0.7);
-  --text: #1d2230;
-  --muted: #5a6473;
-  --border: rgba(32, 53, 94, 0.25);
-  --accent: #5865f2;
-  --accent-2: #00d4b3;
-
-  position: relative;
-  display: grid;
-  place-items: center;
-  gap: 0.75rem;
-  margin: 1.5rem auto;
-  width: calc(100% - 3.5rem);
-  min-width: 220px;
-  min-height: 220px;
-  padding: 2rem;
-  background: var(--bg);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  overflow: hidden;
-  text-align: center;
-  isolation: isolate;
-}
-/* twine-user-stylesheet #26: "ui-dialog.css" */
+/* twine-user-stylesheet #25: "ui-dialog.css" */
 #ui-dialog-titlebar {
     display: flex;
     justify-content: center;
@@ -2265,7 +2386,7 @@ label.toggle-button span {
 #ui-dialog-title {
     padding: 0;
 }
-/* twine-user-stylesheet #27: "widget_media_scene.css" */
+/* twine-user-stylesheet #26: "widget_media_scene.css" */
 
 
 
@@ -2427,7 +2548,8 @@ label.toggle-button span {
             transform: scale(1.3);
         }
     }
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "_macro.js" */
+}
+</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "_macro.js" */
 
 // SHOULD GO FIRST!!! Otherwise breaks other setup scripts for unknown reason!!!!
 
@@ -2516,13 +2638,7 @@ Macro.add('dialogclose', {
         Dialog.close();
     } 
 });
-/* twine-user-script #2: "beer_work.js" */
-/* Beer tryout is disabled for this release. */
-
-function initTryoutBeer() {
-  return false;
-}
-/* twine-user-script #3: "behavior_stats.js" */
+/* twine-user-script #2: "behavior_stats.js" */
 setup.calcCorinConfidence = () => {
     const { flags } = State.variables;
 
@@ -2619,7 +2735,7 @@ setup.getDominantBehaviorStats = () => {
 setup.isDominantBehaviorStat = (stat) => {
     return setup.getDominantBehaviorStats().includes(stat);
 }
-/* twine-user-script #4: "character_card.js" */
+/* twine-user-script #3: "character_card.js" */
 Macro.add('character_card', {
     handler() {
         const character = this.args[0];
@@ -2859,7 +2975,7 @@ function createCharacterBars(characterId) {
     //     barContainer.append(bar);
     // });
 }
-/* twine-user-script #5: "compatability.js" */
+/* twine-user-script #4: "compatability.js" */
 // Save migration handlers.
 // Fires on every save load. Patches State.variables in-place for any fields
 // missing because they were added after the save's version was current.
@@ -2873,8 +2989,8 @@ function createCharacterBars(characterId) {
 // v0.1 SCHEMA SNAPSHOT (first public release — reference for all future patches)
 // ─────────────────────────────────────────────────────────────────────────────
 // $settings:
-//   media_mode:1, shadowing:1, style_location_img:1, 
-//   auto_scroll:0, bi_allowed:1
+//   media_mode:1, shadowing:1, style_location_img:1, dialog_link_styles:2,
+//   auto_scroll:1, bi_allowed:1
 //
 // $player:
 //   id_name:'corin', name:'Corin', surname:'Brick', portrait_type:1, money:30
@@ -2924,6 +3040,11 @@ Save.onLoad.add(function (save) {
         const vars = moment.variables;
         if (!vars) return;
 
+        // Public builds support only no-media (0) and AI-media (1) modes.
+        if (vars.settings?.media_mode === 2) {
+            vars.settings.media_mode = 1;
+        }
+
         // ── v0.1 → v0.2 ──────────────────────────────────────────────────────
         // if (v < 0.2) {
         //     // New counter example:
@@ -2961,7 +3082,34 @@ Save.onLoad.add(function (save) {
         // if (v < 0.3) { ... }
     });
 });
-/* twine-user-script #6: "daily_activity.js" */
+
+// Keep reserved inventory state usable while the Inventory UI is absent.
+// This preserves the same save shape for later releases without loading the
+// removed inventory module.
+(function () {
+    "use strict";
+
+    const reservedItems = Object.freeze({
+        orb: Object.freeze({
+            id: "orb",
+            name: "Orb",
+            desc: "A mysterious gift",
+            gift: false,
+            usable: true,
+            price: 0,
+            locked: false
+        })
+    });
+
+    setup.addInventoryItem = function (itemId) {
+        const inventory = State.variables.player.inventory;
+        const item = reservedItems[itemId];
+        if (!item || inventory.some(entry => entry && entry.id === itemId)) return false;
+        inventory.push(Object.assign({}, item));
+        return true;
+    };
+})();
+/* twine-user-script #5: "daily_activity.js" */
 
 
 function getActivityOptions() {
@@ -3071,7 +3219,7 @@ setup.passActivityConditions = (activity, activity_session = 1, session_stamp = 
 
     return pass_condition;
 };
-/* twine-user-script #7: "day_change.js" */
+/* twine-user-script #6: "day_change.js" */
 
 setup.dayChange = (type = "add", amount = 1, new_period = 0) => {
   // --- Validate `type` ---
@@ -3115,28 +3263,16 @@ function dayChangeTriggerUpdates() {
     setup.calcCorinTeasing()
     setup.calcCorinCourage()
     setup.calcPartyAlignment()
-    
-    // Objectives update
-    if (ObjectiveManager.getStep('get_training') == 1) {
-      ObjectiveManager.nextStep("get_training")
-    }
-
-    if (ObjectiveManager.getStep('get_training') == 3) {
-      ObjectiveManager.nextStep("get_training")
-    }
-
-    if (setup.isSceneSeen('loc.Tavern__Hall.dayAny_job_tavern')) {
-      ObjectiveManager.nextStep('work_tavern');
-    }
 }
 
 function clearStatusEffects() {
     const status_effects = State.variables.temp.status_effects;
     for (let status_effect in status_effects) status_effect = 0;
 }
-/* twine-user-script #8: "dyn_link.js" */
+/* twine-user-script #7: "dyn_link.js" */
 // How to use:
 // <<show_dyn_links>> - on any passage/custom location
+
 
 Macro.add('show_dyn_links', {
   handler() {
@@ -3152,9 +3288,17 @@ Macro.add('show_dyn_links', {
       const branch = getNextBranch(current_passage, destination_passage);
       if (!branch.found) continue;
 
+      // Future-route rules may stay reserved in source while their content is
+      // outside this maintenance build. Never render a link to an absent target.
+      const targetExists = branch.passage_type === 'scene'
+        ? setup.hasScene(branch.next_passage)
+        : Story.has(branch.next_passage);
+      if (!targetExists) continue;
+
+      // --- BLOCKED case stays as is
       if (branch.is_blocked) {
-        const text = branch.link_label.replace(/"/g, '\\"');
-        const thought = (branch.blocked_text || '').replace(/"/g, '\\"');
+        const text = branch.link_label.replace(/"/g,'\\"');
+        const thought = (branch.blocked_text||'').replace(/"/g,'\\"');
         new Wikifier(
           this.output,
           `<<nobr>><<blocked_link "${text}" "${thought}">><</nobr>>`
@@ -3162,8 +3306,9 @@ Macro.add('show_dyn_links', {
         continue;
       }
 
+      // --- NORMAL link case, swap in <<styledlink>>
       const parts = [];
-      const styleArg = branch.link_style ? ` "${String(branch.link_style).replace(/"/g, '\\"')}"` : '';
+      const styleArg = branch.link_style ? ` "${String(branch.link_style).replace(/"/g,'\\"')}"` : '';
 
       if (branch.passage_type === 'scene') {
         parts.push(`<<styledlink "${branch.link_label}" "${branch.next_passage}"${styleArg}>>`);
@@ -3176,7 +3321,7 @@ Macro.add('show_dyn_links', {
         parts.push(`<<styledlink "${branch.link_label}" "${branch.next_passage}"${styleArg}>>`);
       }
 
-      (branch.commands || []).forEach(cmd => parts.push(cmd));
+      (branch.commands||[]).forEach(cmd => parts.push(cmd));
       parts.push('<</styledlink>>');
 
       new Wikifier(this.output, nobr(parts.join('\n')));
@@ -3184,17 +3329,32 @@ Macro.add('show_dyn_links', {
   }
 });
 
+
+// Functions
 function getBranchHandlers(current_passage) {
     return passage_links[current_passage] || null;
 }
 
+// 1. Tweak getNextBranch to carry through is_blocked & blocked_text
 function getNextBranch(current_passage, destination_passage) {
     const handler_set = getBranchHandlers(current_passage);
     if (!handler_set) return { found: false };
-
+  
     const branch_data = handler_set[destination_passage];
     if (!branch_data) return { found: false };
-
+  
+    const defaults = {
+      link_label: branch_data.link_label
+        || branch_data.defaults?.link_label
+        || destination_passage,
+      passage_type: branch_data.passage_type
+        || branch_data.defaults?.passage_type
+        || 'passage',
+      next_passage: branch_data.next_passage
+        || branch_data.defaults?.next_passage
+        || destination_passage
+    };
+  
     for (const rule of branch_data.rules || []) {
       try {
         if (typeof rule.condition === 'function' && rule.condition()) {
@@ -3222,6 +3382,7 @@ function getNextBranch(current_passage, destination_passage) {
 
             is_blocked: rule.is_blocked === true,
             blocked_text: rule.blocked_text ?? branch_data.blocked_text
+
           };
         }
       } catch (error) {
@@ -3231,14 +3392,12 @@ function getNextBranch(current_passage, destination_passage) {
         );
       }
     }
-
+  
     return { found: false };
 }
+  
 
-const always = () => true;
-const isDayOne = () => State.variables.counters.training_day === 1;
-const timeIs = period => State.variables.time.period === period;
-
+// Passage links: from в†’ to
 const passage_links = {
     'Tavern__Bedroom': {
         'Sleep': {
@@ -3250,11 +3409,15 @@ const passage_links = {
             rules: [
                 {
                     condition: function () {
-                        return isDayOne() && State.variables.time.period >= 8;
+                        const { counters, time } = State.variables;
+                        return (
+                            (counters.training_day === 1) &&
+                            (time.period >= 8)
+                        );
                     }
-                }
+                },
             ]
-        },
+        },        
         'Tavern__Corridor': {
             defaults: {
                 link_label: 'Exit the room',
@@ -3262,7 +3425,11 @@ const passage_links = {
                 next_passage: 'Tavern__Corridor'
             },
             rules: [
-                { condition: always }
+                {
+                    condition: function () {
+                        return true
+                    }
+                }
             ]
         }
     },
@@ -3275,7 +3442,14 @@ const passage_links = {
                 next_passage: 'Tavern__Bedroom'
             },
             rules: [
-                { condition: always }
+                {
+                    condition: function () {
+                        const { counters } = State.variables;
+                        return (
+                            (counters.training_day === 1)
+                        );
+                    }
+                }
             ]
         },
         'Tavern__Hall': {
@@ -3287,7 +3461,11 @@ const passage_links = {
             rules: [
                 {
                     condition: function () {
-                        return isDayOne() && (timeIs(0) || timeIs(7));
+                        const { counters, time } = State.variables;
+                        return (
+                            (counters.training_day == 1) &&
+                            ((time.period == 0) || time.period == 7)
+                        );
                     }
                 }
             ]
@@ -3304,11 +3482,15 @@ const passage_links = {
             rules: [
                 {
                     condition: function () {
-                        return isDayOne() && timeIs(0);
+                        const { counters, time } = State.variables;
+                        return (
+                            (counters.training_day === 1) &&
+                            (time.period === 0)
+                        );
                     },
                     next_passage: 'day1.breakfast',
                     commands: [
-                        '<<set $time.period += 1>>'
+                        `<<set $time.period += 1>>`
                     ]
                 }
             ]
@@ -3322,12 +3504,19 @@ const passage_links = {
             rules: [
                 {
                     condition: function () {
-                        return isDayOne() && timeIs(1);
-                    },
+                        const { time, counters } = State.variables;
+                        return (
+                            (counters.training_day == 1) && (time.period == 1)
+                        );
+                    },           
                     is_blocked: true,
-                    blocked_text: 'I need to go to the city.'
+                    blocked_text: "I need to go to the city."
                 },
-                { condition: always }
+                {
+                    condition: function () {
+                        return (true);
+                    }
+                }
             ]
         },
         'Tavern__Outside': {
@@ -3339,14 +3528,17 @@ const passage_links = {
             rules: [
                 {
                     condition: function () {
-                        return State.variables.time.period >= 1;
+                        const { time } = State.variables;
+                        return (
+                            (time.period >= 1)
+                        );
                     },
                     commands: [
-                        '<<set $temp.move_from = "tavern">>'
+                        `<<set $temp.move_from = 'tavern'>>`
                     ]
                 }
             ]
-        }
+        },
     },
 
     'Tavern__Outside': {
@@ -3357,7 +3549,49 @@ const passage_links = {
                 next_passage: 'Tavern__Hall'
             },
             rules: [
-                { condition: always }
+                {
+                    condition: function () {
+                        return (true);
+                    }
+                }
+            ]
+        },
+        'RoadTravel__Margaret': {
+            defaults: {
+                link_label: 'Go with Margaret',
+                passage_type: 'passage',
+                next_passage: 'City__Road'
+            },
+            rules: [
+                {
+                    condition: function () {
+                        return (
+                            (setup.canRoadTravel('margaret'))
+                        );
+                    },
+                    commands: [
+                        `<<run setup.addToParty('margaret')>>`
+                    ]
+                }
+            ],
+        },
+        'RoadTravel__Sena': {
+            defaults: {
+                link_label: 'Go with Sena',
+                passage_type: 'passage',
+                next_passage: 'City__Road'
+            },
+            rules: [
+                {
+                    condition: function () {
+                        return (
+                            (setup.canRoadTravel('sena'))
+                        );
+                    },
+                    commands: [
+                        `<<run setup.addToParty('sena')>>`
+                    ]
+                }
             ]
         },
         'City__Road': {
@@ -3369,14 +3603,31 @@ const passage_links = {
             rules: [
                 {
                     condition: function () {
-                        return State.variables.time.period > 5;
+                        const { time } = State.variables;
+                        return (
+                            time.period > 5                            
+                        );
                     },
                     is_blocked: true,
-                    blocked_text: "It's too late to go to the city today."
+                    blocked_text: "It's to late to go to the city today."
                 },
                 {
                     condition: function () {
-                        return State.variables.time.period < 5;
+                        return (
+                            (setup.canRoadTravel('margaret')) ||
+                            (setup.canRoadTravel('sena'))
+                        );
+                    },
+                    link_label: 'Go alone',
+                },
+                {
+                    condition: function () {
+                        const { time } = State.variables;
+                        return (
+                            !(setup.canRoadTravel('margaret')) &&
+                            !(setup.canRoadTravel('sena')) && 
+                            time.period < 5                            
+                        );
                     }
                 }
             ]
@@ -3391,7 +3642,10 @@ const passage_links = {
             rules: [
                 {
                     condition: function () {
-                        return State.variables.time.period < 5;
+                        const { time } = State.variables;
+                        return (                            
+                            time.period < 5                        
+                        );
                     },
                     commands: [
                         '<<set $time.period += 1>>'
@@ -3406,12 +3660,17 @@ const passage_links = {
             rules: [
                 {
                     condition: function () {
-                        return State.variables.temp.move_from === 'city';
-                    }
+                        const { counters, time } = State.variables;
+                        return (
+                            State.variables.temp.move_from === 'city' &&
+                            !((setup.canRoadTravel('margaret')) || (setup.canRoadTravel('sena')) || (setup.canRoadTravel('jina')))
+                        );
+                    },
                 }
             ]
         }
     },
+
 
     'City__Entrance': {
         'City__Center': {
@@ -3423,8 +3682,12 @@ const passage_links = {
             rules: [
                 {
                     condition: function () {
-                        const { time } = State.variables;
-                        return isDayOne() && time.period >= 2 && time.period <= 6;
+                        const { counters, time } = State.variables;
+                        return (
+                            (counters.training_day === 1) && 
+                            (time.period >= 2) && 
+                            (time.period <= 6)
+                        );
                     }
                 }
             ]
@@ -3436,14 +3699,18 @@ const passage_links = {
             rules: [
                 {
                     condition: function () {
-                        const { time } = State.variables;
-                        return isDayOne() && time.period >= 5 && setup.isSceneSeen('day1.sensei.intro');
+                        const counters = State.variables.counters;
+                        const time = State.variables.time;
+                        return (
+                            (counters.training_day === 1 &&
+                            time.period >= 5 &&
+                            setup.isSceneSeen('day1.sensei.intro'))
+                        );
                     },
                     commands: [
                         '<<set $time.period += 1>>',
-                        '<<set $temp.move_from = "city">>'
                     ]
-                }
+                },
             ]
         }
     },
@@ -3454,7 +3721,11 @@ const passage_links = {
             passage_type: 'passage',
             next_passage: 'City__Marketplace',
             rules: [
-                { condition: always }
+                {
+                    condition: function () {
+                        return true;
+                    }
+                }
             ]
         },
         'City__Westroad_Street': {
@@ -3462,7 +3733,11 @@ const passage_links = {
             passage_type: 'passage',
             next_passage: 'City__Westroad_Street',
             rules: [
-                { condition: always }
+                {
+                    condition: function () {
+                        return true;
+                    }
+                }
             ]
         },
         'City__Entrance': {
@@ -3470,7 +3745,11 @@ const passage_links = {
             passage_type: 'passage',
             next_passage: 'City__Entrance',
             rules: [
-                { condition: always }
+                {
+                    condition: function () {
+                        return true;
+                    }
+                }
             ],
             commands: [
                 '<<set $temp.move_from = "city">>'
@@ -3484,7 +3763,18 @@ const passage_links = {
             passage_type: 'passage',
             next_passage: 'Penny_Shop__Entrance',
             rules: [
-                { condition: always }
+                {
+                    condition: function () {
+                        const flags = State.variables.flags;
+                        return flags.penny_block_route != 1; 
+                    }
+                }
+            ]
+        },
+        'City_Marketplace_Skip_Time': {
+            link_label: 'Wait for future events',
+            passage_type: 'scene',
+            rules: [
             ]
         },
         'City__Center': {
@@ -3492,46 +3782,11 @@ const passage_links = {
             passage_type: 'passage',
             next_passage: 'City__Center',
             rules: [
-                { condition: always }
-            ]
-        }
-    },
-
-    'Penny_Shop__Entrance': {
-        'Penny_Shop__Inside': {
-            link_label: 'Enter the store',
-            passage_type: 'passage',
-            next_passage: 'Penny_Shop__Inside',
-            rules: [
                 {
                     condition: function () {
-                        return isDayOne() && !setup.isSceneSeen('day1.penny_visit1');
-                    },
-                    passage_type: 'scene',
-                    next_passage: 'day1.penny_visit1',
-                    commands: [
-                        '<<run setup.updateDailyValue("penny_visits")>>'
-                    ]
+                        return true;
+                    }
                 }
-            ]
-        },
-        'City__Marketplace': {
-            link_label: 'Return to Marketplace',
-            passage_type: 'passage',
-            next_passage: 'City__Marketplace',
-            rules: [
-                { condition: always }
-            ]
-        }
-    },
-
-    'Penny_Shop__Inside': {
-        'Penny_Shop__Entrance': {
-            link_label: 'Go outside',
-            passage_type: 'passage',
-            next_passage: 'Penny_Shop__Entrance',
-            rules: [
-                { condition: always }
             ]
         }
     },
@@ -3541,14 +3796,18 @@ const passage_links = {
             link_label: "Visit Sensei's Mansion",
             passage_type: 'passage',
             next_passage: 'Sensei_Mansion__Entrance',
-            rules: [
+            rules: [                
                 {
                     condition: function () {
-                        return isDayOne() && !setup.isSceneSeen('day1.sensei.intro');
-                    },
+                        const counters = State.variables.counters;
+                        return (
+                            counters.training_day === 1 &&
+                            !setup.isSceneSeen('day1.sensei.intro')
+                        );
+                    },                    
                     link_label: "Check Oldman's place",
                     passage_type: 'scene',
-                    next_passage: 'day1.sensei.intro'
+                    next_passage: 'day1.sensei.intro',
                 }
             ]
         },
@@ -3557,7 +3816,11 @@ const passage_links = {
             passage_type: 'passage',
             next_passage: 'City__Center',
             rules: [
-                { condition: always }
+                {
+                    condition: function () {
+                        return true;
+                    }
+                }
             ]
         }
     },
@@ -3568,12 +3831,268 @@ const passage_links = {
             passage_type: 'passage',
             next_passage: 'City__Westroad_Street',
             rules: [
-                { condition: always }
+                {
+                    condition: function () {
+                        return true;
+                    }
+                }
+            ]
+        }
+    },
+
+    'Sensei_Mansion__Yard': {        
+        'Sensei_Mansion__Headroom': {
+            link_label: 'Visit the headroom',
+            passage_type: 'passage',
+            next_passage: 'Sensei_Mansion__Headroom',
+            rules: [
+            ]
+        },           
+        'Sensei_Mansion__Archery_Grounds': {
+            link_label: 'To the Archery Grounds',
+            passage_type: 'passage',
+            next_passage: 'Sensei_Mansion__Archery_Grounds',
+            rules: [
+            ]
+        },
+        'Sensei_Mansion__Combat_Room': {
+            link_label: 'Enter the combat room',
+            passage_type: 'passage',
+            next_passage: 'Sensei_Mansion__Combat_Room',
+            rules: [
+            ]
+        },        
+        'Sensei_Mansion__Baths': {
+            link_label: 'Go to baths',
+            passage_type: 'passage',
+            next_passage: 'Sensei_Mansion__Baths',
+            rules: [
+            ]
+        }, 
+        'Sensei_Mansion__Entrance': {
+            link_label: "To the entrance",
+            passage_type: 'passage',
+            next_passage: 'Sensei_Mansion__Entrance',
+            rules: [           
+            ]
+        },
+    },
+
+    'Sensei_Mansion__Headroom': {        
+        'Sensei_Mansion__Yard': {
+            link_label: 'Leave the room',
+            passage_type: 'passage',
+            next_passage: 'Sensei_Mansion__Yard',
+            rules: [
+            ]
+        }
+    },
+
+    'Sensei_Mansion__Archery_Grounds': {
+        'Sensei_Mansion__Yard': {
+            link_label: 'Go to the yard',
+            passage_type: 'passage',
+            next_passage: 'Sensei_Mansion__Yard',
+            rules: [
+            ]
+        }
+    },
+
+    'Sensei_Mansion__Combat_Room': {           
+        'Sensei_Mansion__Yard': {
+            link_label: 'Go to the yard',
+            passage_type: 'passage',
+            next_passage: 'Sensei_Mansion__Yard',
+            rules: [
+            ]
+        }
+    },
+
+    'Sensei_Mansion__Baths': {     
+        'Bath': {
+            link_label: 'Take a bath',
+            passage_type: 'scene',
+            rules: [
+                {
+                    condition: function () {
+                        const counters = State.variables.counters;
+                        const has_bathed = (State.variables.temp.daily.sensei_bath);
+                        const bath_days = [5,7,9]; // if take bath on one these days - custom scene is played. If not one of these days - default scene will play
+                        return (
+                            bath_days.includes(counters.training_day) 
+                            && !has_bathed
+                        );
+                    },          
+                    next_passage: function () {
+                        return 'day' + State.variables.counters.training_day + '.sensei_baths';
+                    }
+                },
+                {
+                    condition: function () {
+                        const has_bathed = (State.variables.temp.daily.sensei_bath);
+                        return (
+                            has_bathed
+                        );
+                    },                    
+                    is_blocked: true,
+                    blocked_text: "I've already visited it today."
+                },
+                {
+                    condition: function () {
+                        const has_bathed = (State.variables.temp.daily.sensei_bath);
+                        return (
+                            !has_bathed
+                        );
+                    } 
+                }
+            ]
+        },                   
+        'Sensei_Mansion__Yard': {
+            link_label: 'Go to the yard',
+            passage_type: 'passage',
+            next_passage: 'Sensei_Mansion__Yard',
+            rules: [
+            ]
+        }
+    },
+
+    'Penny_Shop__Entrance': {
+        'Penny_Shop__Inside': {
+            link_label: 'Enter the store',
+            passage_type: 'passage',
+            next_passage: 'Penny_Shop__Inside',
+            rules: [                
+                {
+                    condition: function () {
+                        const counters = State.variables.counters;
+                        return (
+                            counters.training_day === 1 &&
+                            !setup.isSceneSeen('day1.penny_visit1')
+                        );
+                    },
+                    passage_type: 'scene',
+                    next_passage: 'day1.penny_visit1',                                   
+                    commands: [
+                        `<<run setup.updateDailyValue('penny_visits')>>`
+                    ]
+                },            
+            ]
+        },
+        'City__Marketplace': {
+            link_label: 'Return to Marketplace',
+            passage_type: 'passage',
+            next_passage: 'City__Marketplace',
+            rules: [
+                {
+                    condition: function () {
+                        return true;
+                    }
+                }
+            ]
+        }
+    },
+
+    'Penny_Shop__Inside': {     
+        'Action': {
+            link_label: 'Talk to Penny',
+            passage_type: 'passage',
+            next_passage: 'Penny_Shop__Entrance',
+            rules: [    
+            ]
+        },
+        'Penny_Shop__Entrance': {
+            link_label: 'Go outside',
+            passage_type: 'passage',
+            next_passage: 'Penny_Shop__Entrance',
+            rules: [
+                {
+                    condition: function () {
+                        return true;
+                    }
+                }
+            ]
+        },
+        'Penny_Shop__Backrooms': {
+            link_label: 'Check the backrooms',
+            passage_type: 'passage',
+            next_passage: 'Penny_Shop__Backrooms',
+            rules: [
+            ]
+        }
+    },
+
+    
+    'Penny_Shop__Backrooms': {
+        'Penny_Shop__Inside': {
+            link_label: 'Return to the shop',
+            passage_type: 'passage',
+            next_passage: 'Penny_Shop__Inside',
+            rules: [
+                {
+                    condition: function () {
+                        return true;
+                    }
+                }
+            ]
+        }
+    },
+
+    'City__Parchment_Lane': {
+        'City__Bank': {
+            link_label: 'Visit the Bank',
+            passage_type: 'scene',
+            rules: [
+            ]
+        },
+        'City__Administration': {
+            link_label: 'Visit City Administration',
+            passage_type: 'passage',
+            next_passage: 'City__Administration',
+            rules: [
+                {
+                    condition: function () {
+                        return true;
+                    }
+                }
+            ]
+        },
+        'City__Center': {
+            link_label: 'Go to the City Center',
+            passage_type: 'passage',
+            next_passage: 'City__Center',
+            rules: [
+                {
+                    condition: function () {
+                        return true;
+                    }
+                }
+            ]
+        }
+    },
+
+    'City__Administration': {
+        'City__Parchment_Lane': {
+            link_label: 'To the Parchment Lane',
+            passage_type: 'passage',
+            next_passage: 'City__Parchment_Lane',
+            rules: [
+                {
+                    condition: function () {
+                        return true;
+                    }
+                }
             ]
         }
     }
+
+
+
+
 };
-/* twine-user-script #9: "fading.js" */
+
+
+
+/* twine-user-script #8: "fading.js" */
 window.FadeController = {
     active: 0,
     usedInPassage: false,
@@ -3679,7 +4198,7 @@ Macro.add('fadeout', {
             .fadeOut(time, () => FadeController.finishOne());
     }
 });
-/* twine-user-script #10: "general.js" */
+/* twine-user-script #9: "general.js" */
 Config.history.maxStates = 20;
 Config.history.controls = true;
 Config.ui.stowBarInitially = false;
@@ -3731,15 +4250,6 @@ $(document).on('click', '.eoc-restart-button', function(event) {
 
 
 
-setup.levelUpPerk = (perk) => {
-    const per_list = {
-        'paperwork': 'paperwork'
-    }
-    // Some bar filling popup animation appear wit text: 
-    // You've reached 'Level 2' at per_list[perk]!*
-
-}
-
 window.pronoun = function (char, form) {
     const males = ['alaric'];
     const females = ['margaret', 'sena', 'jina', 'penny', 'nancy'];
@@ -3784,180 +4294,16 @@ window.pronoun = function (char, form) {
 
     return sets[pronouns][form] || form;
 };
-/* twine-user-script #11: "gifting.js" */
-window.giveGift = function () {
-    Dialog.setup('Unavailable');
-    Dialog.wiki('Gifting is not available in this version.');
-    Dialog.open();
-};
-
-function getGiftReactionTier(relation_points) {
-    if (relation_points === 0) return 'neutral';
-    if (relation_points >= 1 && relation_points <= 4) return 'positive';
-    if (relation_points >= 5) return 'great_positive';
-    if (relation_points <= -1 && relation_points >= -3) return 'negative';
-    if (relation_points <= -4) return 'great_negative';
-};
-
-const giftReactionText = {
-    neutral(char) {
-        return `The gift earns nothing more than a polite acknowledgment from ${pronoun(char,'them')}.`;
-    },
-    positive(char) {
-        return `${capitalizePronoun(char, 'their')} reaction is warm enough to show the gift was a good choice.`;
-    },
-    great_positive(char) {
-        return `${capitalizePronoun(char)} ${verbForm(char,'show')} genuine excitement over the gift.`;
-    },
-    negative(char) {
-        return `${capitalizePronoun(char)} ${verbForm(char,'look')} unsure what to make of the gift, and not in a good way.`;
-    },
-    great_negative(char) {
-        return `${capitalizePronoun(char)} ${verbForm(char,'look')} genuinely annoyed by the gift.`;
-    }
-};
-
-const giftImpactDB = {
-    old_charm: {
-        margaret: { sign: '+', relation_points: 3, text: "Oh, thanks! I can use it as material for re-enchantments." },
-        sena: { sign: '+', relation_points: 3, text: "Thank you, $player.name. I can use it for my little experiments." },
-        alaric: { sign: '-', relation_points: 1, text: "I don't think I need your old equipment." }
-    },
-    pen_nice: {
-        margaret: { sign: '+', relation_points: 5, text: "Thanks, that will come in handy for sure." },
-        sena: { sign: '+', relation_points: 3, text: "Thank you, I will test it later." }
-    },
-    vine: {
-        margaret: { sign: '+', relation_points: 5, text: "Thanks, I like the good stuff." },
-        sena: { sign: '+', relation_points: 3, text: "Thank you, I will test it later." },
-        alaric: { sign: '-', relation_points: 1, text: "Hey, that’s not really nice, you know?" }
-    },
-    flowers: {
-        margaret: { sign: '+', relation_points: 3, text: "Oh, how sweet of you!" },
-        sena: { sign: '+', relation_points: 1, text: "Thanks, I appreciate the gesture." },
-        alaric: { sign: '-', relation_points: 1, text: "Why are you giving me these?" }
-    }
-};
-
-function giftError(message, context) {
-    console.error('[GIFT ERROR]', message, context);
-    alert(`Gifting error:\n${message}\nCheck console for details.`);
-}
-
-setup.showGiftResultDialogue = function () {
-    return nobr(`
-        <<narration "Gifting is not available in this version.">>
-        [[Return|$temp.previous]]
-    `);
-
-    const v = State.variables;
-    const gift_data = v.temp.giftData;
-    const gift_event_info = v.lists.gift_log.at(-1);
-    const data = giftImpactDB[gift_event_info?.item]?.[gift_event_info?.char];
-
-    if (!gift_event_info) {
-        giftError('Missing gift log entry', gift_event_info);
-        return;
-    }
-
-    if (!gift_data) {
-        giftError('Missing temp.giftData', gift_data);
-        return;
-    }
-
-    if (!data) {
-        giftError('No impact data for gift', gift_event_info);
-        return;
-    }
-
-    if (!gift_data.leave_location) {
-        giftError('Missing leave_location', gift_data);
-        return;
-    }
-
-    setup.ntfy(gift_event_info.char, data.sign, data.relation_points);
-    removeInventoryItem(gift_event_info.item);
-
-    const tier = getGiftReactionTier(data.relation_points);
-    const reaction_line = giftReactionText[tier](gift_event_info.char);
-
-    const gifting_scene = `
-        <<thought "I wonder how ${pronoun(gift_event_info.char,'they')} will react.">>
-        <<narration "You hand it over, watching ${pronoun(gift_event_info.char,'their')} reaction.">>
-        <<speech "${gift_event_info.char}" "${data.text}">>
-        <<narration "${reaction_line}">>
-
-        ${gift_data.next_scene
-            ? `<<styledlink "Talk to ${v.characters[gift_event_info.char].name}" "${gift_data.next_scene}">><</styledlink>>`
-            : ''
-        }
-        <<styledlink "Leave" "${gift_data.leave_location}">><</styledlink>>
-    `;
-
-    delete State.variables.temp.giftData;
-    return nobr(gifting_scene);
-};
-
-setup.showGiftInitScreen = function () {
-    return nobr(`
-        <<narration "Gifting is not available in this version.">>
-        [[Return|$temp.previous]]
-    `);
-
-    const gift_data = State.variables.temp.giftData;
-
-    const default_speechlines = {
-        margaret: "Yay, I love presents.",
-        sena: "Want to show me something?",
-        alaric: "You want to give me something?",
-        jina: "...",
-        penny: "Really? For me?"
-    };
-
-    const speech_line = gift_data.speech_line || default_speechlines[gift_data.char];
-
-    const gifting_scene = `
-        <<speech '${gift_data.char}' '${speech_line}'>>
-        <<showInventory 'gift' '${gift_data.char}' '${gift_data.next_scene}'>>
-    `;
-
-    return nobr(gifting_scene);
-};
-
-setup.isAnyGiftAvailable = function (char_id) {
-    return false;
-
-    const inv = State.variables.player.inventory;
-    if (!inv || !inv.length) return false;
-
-    return inv.some(item =>
-        item.gift === true &&
-        giftImpactDB[item.id]?.[char_id]
-    );
-};
-
-const isPronounPlural = function (char) {
-    return pronoun(char,'they') === 'they';
-};
-
-const verbForm = function (char, base) {
-    return isPronounPlural(char) ? base : base + 's';
-};
-
-const capitalizePronoun = function (char, form='they') {
-    const p = pronoun(char,form);
-    return p.charAt(0).toUpperCase() + p.slice(1);
-};
-
-/* twine-user-script #12: "init.js" */
+/* twine-user-script #10: "init.js" */
 
 setup.storyInit = () => {
 
     State.variables.settings = {
-        media_mode: 1,         // 0 - off, 1 - AI media
+        media_mode: 1,         // 0 - off, 
         shadowing: 1,          // 0 - off, 1 - on
         style_location_img: 1, // 0 - off, 1 - default styles, 2 - fill width with zoom in, 3 - will width with zoom out
-        auto_scroll: 0,        // 0 - off, 1 - on
+        dialog_link_styles: 2, // 0 - default, 1 - sligthly modified, 2 - modified
+        auto_scroll: 1,        // 0 - off, 1 - on
         bi_allowed: 1          // 0 - off, 1 - on 
     }
 
@@ -4060,6 +4406,8 @@ setup.storyInit = () => {
         event_links_appeared: []    
     }
 
+    // Reserved even while the Objectives UI is absent.  Future builds can
+    // restore the system without migrating saves made by this release.
     State.variables.objectives = {
         version: "1.0",
         group_by: "status",
@@ -4278,208 +4626,7 @@ setup.storyInit = () => {
         }
     }
 }
-/* twine-user-script #13: "inventory.js" */
-Macro.add('showInventory', {
-    handler() {
-        const v = State.variables;
-        const mode = this.args[0] || 'use';
-        const char_id = this.args[1] || null;
-        const inventory = v.player.inventory || [];
-
-        if (mode === 'gift') {
-            $(this.output).wiki(nobr(`
-                <<narration "Gifting is not available in this version.">>
-                [[Return|$temp.previous]]
-            `));
-            return;
-        }
-
-        const row_amount = (mode === 'use') ? 4 : 3;
-        const items_per_row = 5;
-        const totalSlots = Math.max(row_amount*items_per_row, Math.ceil(inventory.length / items_per_row) * items_per_row); // at least 2 rows 
-        let html = `<div class="inventory-container ${mode}-mode"><div class="inventory-grid">`;
-
-        for (let i = 0; i < totalSlots; i++) {
-            const item = inventory[i];
-            if (item) {
-                const canUse = (mode === 'use') && (item.usable);
-                const canGift = (mode === 'gift') && (item.gift);
-                const btnVisible = canUse || canGift;
-                const isDisabled = mode === 'gift' && !item.gift;
-                const btnText = mode === 'use' ? 'Use' : 'Gift';
-                const btnAction =
-                    mode === 'use'
-                        ? `useItem('${item.id}')`
-                        : `giveGift('${item.id}','${char_id}')`;
-
-                html += `
-                <div class="inv-slot ${isDisabled ? 'disabled' : ''}" data-id="${item.id}">
-                    <div class="inv-img-wrapper">
-                        <img class="inv-img" src="media/items/${item.id}.png" alt="${item.name}">
-                        ${btnVisible ? `<div class="inv-overlay">
-                            <button class="inv-action-btn" onclick="${btnAction}">${btnText}</button>
-                        </div>` : ''}
-                        <div class="inv-info-icon" data-desc="${item.desc}">i</div>
-                        <div class="inv-tooltip">
-                            <div class="inv-tooltip-inner">${item.desc}</div>
-                        </div>
-                        <div class="inv-name">${item.name}</div>
-                    </div>
-                </div>`;
-
-            } else {
-                html += `<div class="inv-slot empty"><div class="inv-empty-box"></div></div>`;
-            }
-        }
-
-        html += `</div></div>`;
-        $(this.output).wiki(nobr(html));
-    }
-});
-
-$(document)
-    .off('mouseenter mouseleave', '.inv-info-icon')
-    .on('mouseenter', '.inv-info-icon', function () {
-        const tooltip = $(this).siblings('.inv-tooltip');
-        tooltip.addClass('visible');
-    })
-    .on('mouseleave', '.inv-info-icon', function () {
-        const tooltip = $(this).siblings('.inv-tooltip');
-        tooltip.removeClass('visible');
-    });
-
-
-if ('ontouchstart' in window) {
-    $(document).on('touchstart', '.inv-slot', function (e) {
-        const $slot = $(this);
-
-        // If already active, trigger the button if visible
-        if ($slot.hasClass('active')) {
-            const $btn = $slot.find('.inv-action-btn:visible');
-            if ($btn.length) {
-                e.preventDefault();
-                // $btn.trigger('click');
-                // $slot.removeClass('active');
-                return;
-            }
-        }
-
-        // Remove active from others and activate this one
-        $('.inv-slot.active').removeClass('active');
-        $slot.addClass('active');
-    });
-
-    // Close overlay if tapping outside
-    $(document).on('touchstart', function (e) {
-        if (!$(e.target).closest('.inv-slot').length) {
-            $('.inv-slot.active').removeClass('active');
-        }
-    });
-}
-
-window.useItem = function (item_id) {
-    
-    console.log(item_id)
-    const v = State.variables;
-
-    // Define item effects and messages
-    const effects = {        
-        orb: {
-            passage: 'Menu_Info',
-            consume: false,
-            text: "Let's check..."
-        },
-        gears_see_stats: {
-            action: () => showModal('hidden_stats'),
-            text: "I can see some numbers, they shold mean something... I guess..."
-        },
-        gears_choices_effect: {
-            action: () => v.flags.show_choices_impact = 1,
-            text: "I suppose now I can feel what the choices impact might be."
-        },
-        gears_values_sensei: {
-            action: () => v.player.succumb.sensei = 75,
-            text: "Hmph... I feel something changed with my relationships with sensei."
-        },
-        gears_values_administration: {
-            action: () => v.admin.override = true,
-            text: "Hmph... I feel something changed with my relationships with administrator."
-        },
-        gears_values_penny: {
-            action: () => v.counters.penny_guilt = 90,
-            text: "Penny's perception should change now... somehow."
-        },
-        potion_purple: {
-            action: () => v.temp.status_effects.lucky_spell = 1,
-            text: "I'll be more lucky at jobs today!"
-        }
-    };
-
-    const data = effects[item_id];
-    if (!data) {
-        console.error(`Something went wrong with item use! Please contact developer. Item ID: ${item_id} `)
-        alert(`Something went wrong with item use! Please contact developer. Item ID: ${item_id} `)
-        return;
-    }
-
-    if (data.action) {
-        data.action();
-    }
-
-    if (data.consume !== false) {
-        removeInventoryItem(item_id);
-    }
-
-    if (data.text) {
-        $(document).one(':passagedisplay', () => {
-            const $box = $('#commentary');
-            $box.stop(true,true).hide().empty().wiki(`<<thought "${data.text}" >>`);
-            $box.delay(500).fadeIn(1200).delay(5000).fadeOut(1200);
-        });
-    }
-
-    Engine.play(data.passage || passage());
-};
-
-setup.addInventoryItem = function(item_id){
-    const {player} = State.variables;
-    const item = itemDB[item_id];
-
-    if(!item) console.error(`Item not found: ${item_id}`);
-    if(!item) return false;
-    if(player.inventory.some(it=>it.id===item.id)) return false;
-
-    player.inventory.push(item);
-    return true;
-};
-
-function removeInventoryItem(item_id) {
-    const v = State.variables;
-    if (!v.player.inventory) return;
-    v.player.inventory = v.player.inventory.filter(i => i.id !== item_id);
-}
-
-setup.removeInventoryItem = function(item_id){
-    removeInventoryItem(item_id);
-}
-/* twine-user-script #14: "leveling.js" */
-// Leveling is disabled for this release.
-// Public function names are kept so story calls and existing saves remain safe.
-
-setup.skip_multilevel_animation = false;
-setup.leveling_rounds = false;
-setup.animation_cancelled = false;
-
-setup.drawLevelingDisplaying = function () {};
-
-setup.drawStatDisplaying = function () {};
-
-setup.recalculateLevels = function () {};
-
-setup.addXp = function () {
-    return false;
-};
-/* twine-user-script #15: "lists.js" */
+/* twine-user-script #11: "lists.js" */
 
 const time_naming = {
     0: 'Early morning', // Breakfast
@@ -4622,7 +4769,7 @@ $(document).on(':passageinit', function () {
         }
     }
 });
-/* twine-user-script #16: "modal.js" */
+/* twine-user-script #12: "modal.js" */
 window.showModal = function(type) {
     if (!type || typeof type !== 'string') {
         console.error('showModal: invalid type', type);
@@ -4646,18 +4793,6 @@ window.showModal = function(type) {
                         <p>Affinity: ${State.variables.affinity || 0}</p>
                         <p>Corruption: ${State.variables.corruption || 0}</p>
                         <p>Route hint: ${State.variables.path_hint || 0}</p>
-                    </div>
-                </div>
-            ` },
-            mystery_item: { closeOnOutside: false, html: `
-                <div class="modal-box">
-                    <div class="modal-header">
-                        <h3>Mystery item</h3>
-                        <button class="modal-close">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>This item reveals hidden values for routes.</p>
-                        <p>Price: ${State.variables.shop?.mystery_item_price || 'N/A'}</p>
                     </div>
                 </div>
             ` }
@@ -4694,7 +4829,7 @@ window.showModal = function(type) {
 
     postdisplay['modal-open'] = openLater;
 };
-/* twine-user-script #17: "notifications.js" */
+/* twine-user-script #13: "notifications.js" */
 
 let notificationIndex = 0;
 let new_page = false;
@@ -4871,58 +5006,7 @@ setup.ntfy = function (character_idn, sign, amount = 0, type='aff') {
 
     return '';
 }
-/* twine-user-script #18: "objectives.js" */
-setup.createDefaultObjectivesState = function () {
-  return {
-    version: "1.0",
-    group_by: "status",
-    list: []
-  };
-};
-
-setup.ensureObjectivesState = function () {
-  State.variables.objectives ||= setup.createDefaultObjectivesState();
-  State.variables.objectives.version ||= "1.0";
-  State.variables.objectives.group_by ||= "status";
-  if (!Array.isArray(State.variables.objectives.list)) {
-    State.variables.objectives.list = [];
-  }
-};
-
-window.ObjectiveManager = (() => {
-  const MAX_TRACKED = 1;
-
-  return {
-    MAX_TRACKED,
-    init() {
-      setup.ensureObjectivesState();
-    },
-    getStatus() { return []; },
-    getTracked() { return []; },
-    toggleTracked() {},
-    getStep() {},
-    nextStep() {},
-    markSubStep() {},
-    setStatus() {},
-    unhideObjective() {},
-    hideObjective() {}
-  };
-})();
-
-$(document).on(':passagestart', () => ObjectiveManager.init());
-
-Macro.add('showObjectives', {
-  handler() {
-    $(this.output).wiki(nobr('<<narration "Objectives are not available in this version.">>'));
-  }
-});
-
-Macro.add('showTracked', {
-  handler() {
-    $('<div id="tracked-widget"></div>').appendTo(this.output);
-  }
-});
-/* twine-user-script #19: "on_hold.js" */
+/* twine-user-script #14: "on_hold.js" */
 
 // Set check also for correct passage to not triger it eveytime
 
@@ -4979,13 +5063,7 @@ function onHoldFinish() {
 */
 
 // ---
-/* twine-user-script #20: "paperwork.js" */
-/* Paperwork tryout is disabled for this release. */
-
-function initTryoutPaperwork() {
-  return false;
-}
-/* twine-user-script #21: "party_alignment.js" */
+/* twine-user-script #15: "party_alignment.js" */
 setup.calcPartyAlignment = () => {
     const { counters } = State.variables;
 
@@ -4999,7 +5077,7 @@ setup.calcPartyAlignment = () => {
 
     counters.party_alignment = alignment;
 };
-/* twine-user-script #22: "party_road.js" */
+/* twine-user-script #16: "party_road.js" */
 setup.canRoadTravel = (charter_idn) => {
     const travel_schedule = {};
 
@@ -5030,7 +5108,7 @@ setup.isInParty = (charter_idn) => {
     return State.variables.party.composition.includes(charter_idn);
 };
 
-/* twine-user-script #23: "portrait_picker.js" */
+/* twine-user-script #17: "portrait_picker.js" */
 (function () {
   const OPTIONS_AMOUNT = 6;
 
@@ -5069,14 +5147,7 @@ setup.isInParty = (charter_idn) => {
     updatePortraitPicker(root, this.dataset.portraitPick);
   });
 })();
-/* twine-user-script #24: "prologue_skip.js" */
-setup.applySkipPrologueState = function () {
-    Dialog.setup('Unavailable');
-    Dialog.wiki('Prologue skip is not available in this version.');
-    Dialog.open();
-    return false;
-};
-/* twine-user-script #25: "protection.js" */
+/* twine-user-script #18: "protection.js" */
 // --- Helper Functions ---
 
 // Protects an object's property by replacing it with a getter/setter pair.
@@ -5249,28 +5320,7 @@ function protectProperty(obj, prop_name, initial_value) {
     window._protected_properties = setupProtectedProperties();
   });
   
-/* twine-user-script #26: "region_travel.js" */
-/* Region travel is disabled for this release. */
-
-function TravelFight() {}
-
-function TravelStop() {}
-
-function TravelExtraStop() {}
-
-window.renderRegionTravel = function () {
-  $(document).ready(function () {
-    const mount = document.getElementById("travelArea");
-    if (!mount) return;
-
-    mount.innerHTML = `
-      <div class="region-travel region-travel--disabled">
-        Region travel is not available in this version.
-      </div>
-    `;
-  });
-};
-/* twine-user-script #27: "saves.js" */
+/* twine-user-script #19: "saves.js" */
 // Config.saves.autoload = "prompt"; // to ask to whether load autosave or not at he beginning of the game initialization
 
 Config.saves.version = 0.1;
@@ -5304,9 +5354,8 @@ setup.autosave = function () {
 setup.isSaveBlockedHere = function () {
     const blocked_passages = ['index', 'Disclaimer', 'Info_Additional'];
     const current_passage = passage();
-
     return current_passage.startsWith('Menu_') || blocked_passages.includes(current_passage);
-}
+};
 
 setup.updateSaveMenuState = function () {
     const blocked = setup.isSaveBlockedHere();
@@ -5316,15 +5365,12 @@ setup.updateSaveMenuState = function () {
     $saveLink
         .attr('title', blocked ? 'You cannot save here.' : '')
         .attr('data-save-tip', blocked ? 'You cannot save here.' : '');
-}
+};
 
 document.addEventListener('click', function (event) {
     const target = event.target;
     const saveLink = target && target.closest ? target.closest('#menu-item-saves a') : null;
-
-    if (!saveLink || !setup.isSaveBlockedHere()) {
-        return;
-    }
+    if (!saveLink || !setup.isSaveBlockedHere()) return;
 
     event.preventDefault();
     event.stopPropagation();
@@ -5350,53 +5396,53 @@ Save.onSave.add(function (save) {
 
 
 
-// $(document).ready(function () {
-//     $('#menu-item-saves a').on('click', function () {
-//         // wait a moment for the Saves dialog to render
-//         setTimeout(function () {
-//             const $orig = $('#saves-clear'); // original Delete All button
-//             if ($orig.length) {
-//                 const $parent = $orig.parent();
-//                 const $copy = $orig.clone();       // clone the element
-//                 $orig.remove();                    // remove original
-//                 $copy.attr('id', 'saves-clear-custom'); // change id
-//                 $copy.off('click').on('click', function (e) {
-//                     e.preventDefault();
-//                     e.stopImmediatePropagation();
+$(document).ready(function () {
+    $('#menu-item-saves a').on('click', function () {
+        // wait a moment for the Saves dialog to render
+        setTimeout(function () {
+            const $orig = $('#saves-clear'); // original Delete All button
+            if ($orig.length) {
+                const $parent = $orig.parent();
+                const $copy = $orig.clone();       // clone the element
+                $orig.remove();                    // remove original
+                $copy.attr('id', 'saves-clear-custom'); // change id
+                $copy.off('click').on('click', function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
 
-//                     const popup_message = `                    
-//                         <p>Are you sure you want to remove all the saves? </p> <br>
+                    const popup_message = `                    
+                        <p>Are you sure you want to remove all the saves? </p> <br>
 
-//                         <div class="saves-clear-buttons">
-//                             <button id="saves-clear-yes">Yes</button>
-//                             <button id="saves-clear-no">No</button>
-//                         </div>
-//                     `
+                        <div class="saves-clear-buttons">
+                            <button id="saves-clear-yes">Yes</button>
+                            <button id="saves-clear-no">No</button>
+                        </div>
+                    `
 
-//                     Dialog.setup("Warning");
-//                     Dialog.wiki(nobr(popup_message));
-//                     Dialog.open();
-//                 });
-//                 $copy.appendTo($parent);           // insert back
-//             }
-//         }, 50);
-//     });
+                    Dialog.setup("Warning");
+                    Dialog.wiki(nobr(popup_message));
+                    Dialog.open();
+                });
+                $copy.appendTo($parent);           // insert back
+            }
+        }, 50);
+    });
 
     
-//     // handle 'No' click - close dialog
-//     $(document).on('click', '#saves-clear-no', function () {
-//         Dialog.close();
-//     });
+    // handle 'No' click - close dialog
+    $(document).on('click', '#saves-clear-no', function () {
+        Dialog.close();
+    });
 
-//     // handle 'Yes' click - clear all saves
-//     $(document).on('click', '#saves-clear-yes', function () {
-//         // Use SugarCube's Save.clear to actually remove saves
-//         if (Save && typeof Save.clear === "function") {
-//             Save.clear();
-//         }
-//         Dialog.close();
-//     });
-// });
+    // handle 'Yes' click - clear all saves
+    $(document).on('click', '#saves-clear-yes', function () {
+        // Use SugarCube's Save.clear to actually remove saves
+        if (Save && typeof Save.clear === "function") {
+            Save.clear();
+        }
+        Dialog.close();
+    });
+});
 
 
 /* Story JavaScript */
@@ -5428,53 +5474,59 @@ Save.onSave.add(function (save) {
 //         }
 //     }
 // });
-/* twine-user-script #28: "scene_list.js" */
+/* twine-user-script #20: "scene_list.js" */
 setup.getScene = function(scene_idn) {
     const cur_scene = scene_list[scene_idn];
-    State.variables.lists.scenes_seen.push(scene_idn); // saves what scenes were watched
+    State.variables.lists.scenes_seen.push(scene_idn); // save what scenes were watched
     return nobr(cur_scene);
+}
+
+setup.hasScene = function(scene_idn) {
+    return Object.prototype.hasOwnProperty.call(scene_list, scene_idn);
 }
 
 const scene_list = {
 
-    // #region Defaults
+    // Maintenance Build 0.3.1: Prologue through Day 1 only.
     'system.default.breakfast': `
         <<narration "The hall is quiet at this hour, most seats still empty.">>
         <<narration "You settle in and eat without much company.">>
         <<styledlink "Head out" 'Tavern__Hall'>><</styledlink>>
     `,
 
+
+
     'system.default.supper': `
         <<narration "The hall fills slowly as evening comes in.">>
         <<narration "You have supper without much conversation tonight.">>
         <<styledlink "Head out" 'Tavern__Hall'>><</styledlink>>
     `,
-    // #endregion Defaults
 
-    // #region Prologue
     'prologue.page1': `
-        <<narration "You wake up in some room, disoriented.">>
+        <<narration "You wake up in some room, feeling disoriented.">>
         <<narration "You turn to look around, trying to get a sense of where you are.">>
-        <<narration "The room looks old but clean.">>
+        <<narration "The room is quite old but clean.">>
         <<media_location "Tavern__Bedroom" 'night-early'>>
 
-        <<thought "I'm probably in a tavern.">>
-        <<narration "You try to sit up, but a sudden sharp pain pierces through your head.">>
+        <<thought "Hm, I'm probably in a tavern.">>
+        <<narration "You attempt to sit, but a sudden sharp pain pierces through your head.">>
         <<speech "corin" "Ah... my head." 'hidden'>>
-        <<narration "The throbbing intensifies, and you fall back onto the bed, groaning softly.">>
+        <<narration "The pain starts to throb even more and you fall back onto the bed, groaning softly.">>
         <<thought "Alright... lying down for a while might be best.">>
-        <<narration "You stare up at the ceiling, letting the fog in your mind settle as you search for clarity.">> 
+        <<narration "You stare at the ceiling, waiting for the headache to ease as you try to remember how you got here.">> 
         <<thought "Wait, why am I even here?">>
         <<narration "Bits and pieces of vivid images begin to float into your consciousness.">> 
         <<thought "We were in a cave... searching for... for... something.">>
         <<thought "Then we were ambushed... by... by whom?">> 
-        <<thought "And 'we'? Who are those 'we'?">>
-        <<narration "The harder you try to remember, the sharper the pain gets, blocking your focus.">>
-        <<thought "Oh, yes, our squad.">>         
-        <<narration "A small sense of relief comes as the memory begins to return, though most of it still feels distant and unclear.">>
+        <<thought "And <i>'we'</i>? Who are those <i>'we'</i>?">>
+        <<narration "The harder you try to remember, the stronger the headache becomes.">>
+        <<thought "Oh, yes... our squad.">>         
+        <<narration "There is a faint feeling of relief as the memory starts to return, though most of it is still faint and fuzzy.">>
         
         <<styledlink "The squad" "prologue.page2">><</styledlink>>
     `,
+
+
     'prologue.page2': `
         <<thought 'The squad consists of:'>> 
 
@@ -5485,7 +5537,7 @@ const scene_list = {
             <p><strong>Appearance:</strong> Short blond hair, bright blue eyes, tall and muscular build.</p>
             <p><strong>Weapons:</strong> Sword and shield – both royal artifacts gifted by the king.</p>
             <p><strong>Skills:</strong> Strengthen, Quick-Step, High Self-Regeneration, Stone Wall and Protection.</p>
-            <p><strong>Personality:</strong> Docile and cautious in official matters. Cheerful and easy-going in day-to-day life. </p>
+            <p><strong>Personality:</strong> Docile and cautious in official matters. Cheerful and friendly in day-to-day life. </p>
             <p class="traits"><strong>Cons:</strong> Lacks experience or talent in politics, economics, trading, geography, espionage and household management. 
                 He's a poor secret-keeper. Highly flirtatious and infamous for his antics, earning him the nickname "The Tempting Hero". 
                 However, his flirting rarely progresses beyond words and ends with flirting only.</p>
@@ -5493,31 +5545,31 @@ const scene_list = {
 
         <div class="character-profile">
             <<portrait 'sena' 'The High Priestess of the Kingdom' >>
-            <p>Hero's official priestess and appointed lifetime companion, as all priestesses are chosen for heroes.</p>
+            <p>The Hero's official priestess and appointed lifelong companion, as all priestesses are chosen for heroes.</p>
             <p><strong>Appearance:</strong> Astonishingly beautiful young woman, long blond hair, blue eyes, curvaceous figure and big breasts. And yet she has an undeniable air of innocence around.</p>
-            <p><strong>Skills:</strong> Buffing and defense magic is her speciality, but she also uses light and water spells that are irreplaceable against certain types of enemies.</p>
-            <p><strong>Personality:</strong> Often shows herself as kind and innocent around, but reveals a cunning side when danger or profits arise and inner lazy or cold sides of hers when alone with teammates.</p>
+            <p><strong>Skills:</strong> Buffing and defense magic are her specialties, but she also uses light and water spells that are irreplaceable against certain types of enemies.</p>
+            <p><strong>Personality:</strong> Often shows herself as kind and innocent around, but can reveal a harsh side when danger or profits arise and inner lazy or cold sides of hers when alone with teammates.</p>
             <p class="traits"><strong>Cons:</strong> Sometimes it feels like she is just playing her role and her real thoughts are hidden deep inside her, thus her behaviour potentially could be unpredictable at critical time. <br>
-                Does not do anything supportive outside battles or official event. Like, she never helps with money gathering, household, camp maintaining deals and other stuff. <br>  
-                Also for the one who needs to be the purest one, she's she can be a bit voyeuristic, glutton and drinker. </p>
+                Does not do anything supportive outside battles or official events. Like, she never helps with money gathering, household, camp maintaining deals and other stuff. <br>  
+                Also for the one who needs to be the purest one, she can be a bit voyeuristic, glutton and drinker. </p>
         </div>
 
         <div class="character-profile">
             <<portrait 'jina' "My Childhood Friend and Hero's Girlfriend" >>
-            <p>A strong warrior and currently Hero's girlfriend. Known for her piercing gaze and no-nonsense demeanor, she is one of the few in the Kingdom who can rival the Hero in combat.</p>
+            <p>A strong warrior and currently the Hero's girlfriend. Known for her piercing gaze and no-nonsense demeanor, she is one of the few in the Kingdom who can rival the Hero in combat.</p>
             <p><strong>Appearance:</strong> Attractive features, short dark brown hair, light-brown eyes, tanned skin, muscular build and a warrior's aura.</p>
             <p><strong>Weapons:</strong> Dual hatchets, large axe and her fists.</p>
             <p><strong>Skills:</strong> Berserk and Iron Skin.</p>
             <p><strong>Personality:</strong> Kind-hearted and justice-driven but sometimes overly stubborn and simple-minded, leading to various troubles. 
                 Loves to be right, to the point that can result in short bouts of depression or aggression if proven wrong in important for her matters.</p>
             <p class="traits"><strong>Cons:</strong> Her intimidating demeanor creates social barriers and fails in negotiations. <br> 
-            She also put up a barrier between us for unknown reasons recently.</p>
+            She has also put up a barrier between us for unknown reasons recently.</p>
         </div>
 
         <div class="character-profile">
             <<portrait 'margaret' 'A Very Powerful Mage and My Sister' >>
             <p>Margaret and I teamed-up with the rest of the group almost two years ago. 
-                During their mission to eliminate wild werewolves near our village, we helped Hero and Priestess with knowledge of the area, in preparations and a bit in the battle itself. 
+                During their mission to eliminate wild werewolves near our village, we helped the Hero and Priestess with knowledge of the area, in preparations and a bit in the battle itself. 
                 All of it revealed her extraordinary skills that impressed the Hero and then she joined the party on the condition of me joining also. </p>
             <p><strong>Appearance:</strong> Youthful and pretty, long pink-rose hair, crimson eyes, average height and build. </p>
             <p><strong>Skills:</strong> Great mastery in fire magic, intermediate earth magic and basic lightning spells.</p>
@@ -5531,12 +5583,12 @@ const scene_list = {
                 <span class="portrait__character-title" style="margin-left: 6px;"> – Well, it's me</span>
             </p> <<br>>
             <<player_portrait_picker>> <<br>>
-            <p>I'm a young guy with limited physical strength compared to other non-magical members of the team. Somehow it's really hard for me to get big muscles. <br>
+            <p>I'm a young guy with limited physical strength compared to other non-magical members of the team. Somehow, it's really hard for me to get big muscles. <br>
                 While I struggle to keep up in battles, I contribute through mapping, camping and household stuff. <br>
-                I believe I have useful enough civil skills and could find a good enough position in any town or, I assume, even in capital.   </p>
+                I believe I have useful enough civil skills and could find a good enough position in any town or, I assume, even in the capital.   </p>
             <p><strong>Appearance:</strong> Medium-length dark-brown hair, grey eyes, average height, slender build without prominent musculature.</p>
             <p><strong>Weapons:</strong> A light crossbow, potions (offensive and supportive) and a short sword for emergency cases.</p>
-            <p><strong>Skills:</strong> Handling logistics and non-combat responsibilities. If it can be counted as real skills.</p>
+            <p><strong>Skills:</strong> Handling logistics and non-combat responsibilities. If those can be counted as real skills.</p>
             <p class="traits"><strong>Cons:</strong> I'm not that strong and was put on the team because of my sister. I cannot forget that because I obviously remain the weakest in combat, 
                 especially lately when everyone is breaking through to higher levels.</p>
         </div> 
@@ -5545,9 +5597,11 @@ const scene_list = {
 
         <<styledlink "Try to remember" "prologue.page3">><</styledlink>>
     `,
+
+
     'prologue.page3': `
         <<thought "Oh yeah... our last fight.">> 
-        <<thought "It ended with Margaret being targeted with enemy's last hidden attack.">> 
+        <<thought "It ended with Margaret being targeted with the enemy's last hidden attack.">> 
         <<thought "And then...">> 
         <<thought "What was then?">> 
         <<thought "The last thing I remember is that attack heading for Meg... and then... nothing.">> 
@@ -5561,21 +5615,23 @@ const scene_list = {
         <<thought "Ahh, hell, what was her room again?">> 
         <<thought "Also, it seems to be night or almost night right now. So it's better not to be too loud.">> 
         <<narration "You move cautiously down the corridor, the dim lighting casting long shadows on the walls.">>
-        <<narration "As you near the end of the hallway, faint noises catch your attention.">>
+        <<narration "As you get closer to the end of the corridor, some faint noises catch your attention.">>
         <<thought "Looks like they're coming from behind one of the doors.">>
         
         <<styledlink "Check it out" "prologue.page4">><</styledlink>>
     `,
+
+
     'prologue.page4': `
         <<narration "As you approach, the muffled sounds become clearer and you start to recognize what they might mean.">>
         <<narration "The door is slightly ajar, leaving a narrow gap that tempts your curiosity.">>
         <<narration "Curiosity gets the best of you and you lean closer to peek inside.">>
         <<media_scene "prologue_alaric_jina_1" "video" "image">>
 
-        <<narration "Your eyes widen as you take in the scene: Jina is fucking with Alaric.">>
+        <<narration "Your eyes widen as you take in the scene: Jina is fucking Alaric right at the moment.">>
         <<narration "Seeing Jina naked and in such erotic poses makes you hard in an instant.">>
         <<thought "Wow, I've never seen her face look like that before. ">>
-        <<narration "A strange, unsettling feeling washes over you. One that is difficult to place, but with hints of unpleasantness.">>
+        <<narration "You feel strange unsettling feeling that can hardly be described, but has an unpleasant taste.">>
         <<thought "I'd better leave and not disturb the couple.">>
         <<narration "You cast one last glance toward the room...">>
         <<media_scene "prologue_alaric_jina_2" "video" "image">>
@@ -5585,21 +5641,23 @@ const scene_list = {
         <<thought "Especially one like Jina.">>
         <<narration "Taking a few steps back from the door, you suddenly hear the floorboard beneath your foot let out a loud creak.">>
         <<thought "Damn it!">>
-        <<narration "The noises inside the room stop abruptly. You hear movements and someone jumping out of bed.">>
+        <<narration "The sounds of the room suddenly stop and you can hear some noises of people moving and jumping off bed.">>
         <<thought "Well, shit! What should I do?">>
 
         <<styledlink "Think something out" "prologue.page5">> <</styledlink>>
         <<styledlink "Die from cringe" "Dead_End">> <<set $interface.menu_all = 0; >> <</styledlink>>
     `,
+
+
     'prologue.page5': `
         <<thought "I guess I'll pretend I was following the voices and had a terrible headache to distinguish them.">>
         <<thought "It's not entirely a lie.">>
         <<narration "You wait for a few seconds, then take a step toward the door.">>
-        <<narration "This time, you don't try to step quietly and press a hand to your forehead, feigning pain.">>
+        <<narration "This time, you don't try to step quietly and you press a hand to your forehead, feigning pain.">>
         <<narration "The door opens and you see Jina wrapped in a towel, sweat glistening on her skin.">>
         <<media_scene "prologue_jina_towel" "video">>
 
-        <<narration "She makes a few steps towards you, her face shows a mix of concern and unease.">>
+        <<narration "She makes a few steps towards you, her face showing a mix of concern and unease.">>
         <<speech "jina" "Hi, $player.name! You're finally awake!">>
         <<speech "jina" "You've been unconscious for almost two days. I was so worried.">>
         <<narration "She takes a couple of steps toward you before stopping abruptly, glancing down at herself.">>
@@ -5626,6 +5684,8 @@ const scene_list = {
 
         <<styledlink "Wake up" "prologue.page6">><</styledlink>>
     `,
+
+
     'prologue.page6': `
         <<narration "You wake up in your room, the morning light filtering through the curtains.">>    
         <<media_location "Tavern__Bedroom" 'morning'>>
@@ -5660,6 +5720,8 @@ const scene_list = {
         
         <<styledlink "Sit down at the table" "prologue.page7">><</styledlink>>
     `,
+
+
     'prologue.page7': `
         <<narration "As you take your seat, the front doors of the tavern swing open and Alaric and Sena walk in.">>
         <<speech "alaric" "Well, look who's finally up and about.">>
@@ -5700,13 +5762,18 @@ const scene_list = {
 
         <<styledlink "Dive into your breakfast" "prologue.page8">><</styledlink>>
     `,  
+
+
     'prologue.page8': `
         <<relation_notification 'alaric' '+' '1'>>
         <<relation_notification 'sena' '+' '1'>>
         <<relation_notification 'margaret' '+' '1'>>
 
         <<narration "The meal is mostly quiet, filled with the occasional small talk.">>
-        <<narration "Jina joins late, silently sliding into a chair near the end of breakfast. ">>
+        <<narration "Jina joins late, looking exhausted even thought it's early morning. <br>
+            She silently sliding into a chair near the end of breakfast. ">>
+        <<media_scene "prologue_jina_tired_breakfast" "video" "none">>
+
         <<narration "After finishing her meal quickly, she suddenly stands and speaks with a sharp tone and an uneasy look.">>
         <<speech "jina" "I want to call for a parley!">>
         <<narration "Her announcement catches everyone off guard.">>
@@ -5742,6 +5809,8 @@ const scene_list = {
 
         <<styledlink "Think about all of this" "prologue.page9">><</styledlink>>
     `,
+
+
     'prologue.page9': `
         <<narration "You lean back in your chair, your mind swirling with conflicting thoughts.">>
         <<thought "They're not wrong. I am really behind everyone else.">>
@@ -5776,6 +5845,8 @@ const scene_list = {
         <<styledlink "Pass the vote" "prologue.page10">> <<set $flags.prologue_vote = 2>> <</styledlink>>
         <<styledlink "Vote against myself" "prologue.page10">> <<set $flags.prologue_vote = 3>> <</styledlink>>
     `,
+
+
     'prologue.page10': `
         <<if $flags.prologue_vote == 1>>
                 
@@ -5847,6 +5918,8 @@ const scene_list = {
 
         <<styledlink "Listen what he has to say next" "prologue.page11">><</styledlink>>
     `,
+
+
     'prologue.page11': `
         <<speech "alaric" "Let's call it an <i>'improvement plan'</i>.">>
         <<speech "alaric" "For now, our base will be this tavern.">>
@@ -5874,6 +5947,8 @@ const scene_list = {
 
         <<styledlink "Go for a walk" "prologue.page12">><</styledlink>>
     `,
+
+
     'prologue.page12': `
         <<narration "The tavern you stayed in, the <i>'Waystone Inn'</i>, is placed on the far outskirts of the city of <i>Still Waters</i>. <br>
             So it's located some distance from the city itself.">>
@@ -5914,6 +5989,8 @@ const scene_list = {
         <<styledlink "Place a hand on your sword" "prologue.page13">> <<set $flags.prologue_seraphis_reaction = 1>> <</styledlink>>
         <<styledlink "Ask what she did" "prologue.page13">> <<set $flags.prologue_seraphis_reaction = 2>> <</styledlink>>
     `,    
+
+
     'prologue.page13': `
         <<if $flags.prologue_seraphis_reaction == 1>>
             <<speech "seraphis" "Don't worry that much, boy." "hood_woman">>
@@ -5958,6 +6035,8 @@ const scene_list = {
 
         <<styledlink "Continue the way to the center" "prologue.page14">><</styledlink>>
     `,
+
+
     'prologue.page14': `
         <<narration "As you walk toward the city center, still lost in thoughts about your earlier encounter, an odd sound suddenly cuts through the quiet air.">>
         <<thought "What was that?">>
@@ -5983,6 +6062,8 @@ const scene_list = {
         
         <<styledlink "Take a look at the view in front of you" "prologue.page15">><</styledlink>>
     `,
+
+
     'prologue.page15': `        
         <<media_location "City__Center">> <<br>>
 
@@ -6021,6 +6102,8 @@ const scene_list = {
 
         <<styledlink "Carry those boxes" "prologue.page16">><</styledlink>>
     `,
+
+
     'prologue.page16': `
         <<narration "She picks up a small box, leaving the rest to you.">>        
         <<speech 'penny' "We just need to take these to my shop." 'girl'>>         
@@ -6058,6 +6141,8 @@ const scene_list = {
 
         <<styledlink "Move on" "prologue.page17">><</styledlink>>
     `,    
+
+
     'prologue.page17': `        
         <<narration "Along the way, she asks about the life of an adventurer.">>    
         <<narration "You give her a brief rundown without going into too much detail and she listens with fascination. <br>
@@ -6078,6 +6163,8 @@ const scene_list = {
         
         <<styledlink "Continue" "prologue.page18">><</styledlink>>
     `,  
+
+
     'prologue.page18': `    
         <<narration "The two of you continue down the street in a comfortable, slightly bashful silence, each lost in thought. Until finally you reach your destination.">>   
         
@@ -6100,6 +6187,8 @@ const scene_list = {
     
         <<styledlink "Walk around some more" "prologue.page19">> <<set $counters.penny_love = 2>> <</styledlink>>
     `,    
+
+
     'prologue.page19': `
         <<narration "You walk along the street, taking in the sights, but nothing really grabs your attention.">>   
         <<narration "That is, until you spot a familiar face – one you'd rather forget.">>     
@@ -6139,6 +6228,8 @@ const scene_list = {
 
         <<styledlink "Greet him" "prologue.page20">> <</styledlink>>
     `,
+
+
     'prologue.page20': `
         <<speech 'corin' "Good day, sir. What was all that commotion about?">>
         <<narration "The oldman looks you up and down, his eyes sharp and assessing.">>   
@@ -6164,7 +6255,7 @@ const scene_list = {
         <<speech 'sensei' "You've got potential..." 'oldman'>>
         <<speech 'sensei' "And you're kind of a cute one." 'oldman'>>
         <<thought "Huh? What was that last part?">>
-        <<speech 'sensei' "Come back tomorrow. I'll have a plan ready for you." 'oldman'>>
+        <<speech 'sensei' "Come back tomorrow. Early in the day. I'll have a plan ready for you." 'oldman'>>
         <<narration "Without waiting for your response, he turns and begins walking away.">>   
         <<speech 'sensei' "Oh, and don't forget to think about payment. I'm not a charity worker." 'oldman'>>
         <<speech 'corin' "Understood, thank you in advance.">>
@@ -6177,6 +6268,8 @@ const scene_list = {
     
         <<styledlink "Return to the tavern" "prologue.page21">> <</styledlink>>
     `,
+
+
     'prologue.page21': `
         <<narration "The road back to your room in the 'Waystone Inn' wasn't fast, yet uneventful.">>  
         <<narration "When you finally get back to your room, the exhaustion of the day catches up with you. <br>  
@@ -6224,6 +6317,8 @@ const scene_list = {
 
         <<styledlink "Hide the orb" "prologue.page22">> <</styledlink>>
     `,
+
+
     'prologue.page22': `    
         <<narration "As Margaret leaves the room, you decide to hide the orb from possible prying eyes and think about what to do with it later.">>  
         <<thought "Probably putting it into one of my bags should be enough for now.">> 
@@ -6237,6 +6332,8 @@ const scene_list = {
 
         <<styledlink "Focus on the orb" "prologue.page23">> <</styledlink>>
     `,
+
+
     'prologue.page23': `
         <<narration "As you focus on the orb, an array of glowing images and information fills your mind.">>  
         <<thought "Here's our squad...">> 
@@ -6254,6 +6351,8 @@ const scene_list = {
         <<run setup.addInventoryItem('orb')>>
         <<styledlink "Head downstairs for a meal" "prologue.page24">> <<set  $interface.menu_info = 1>> <</styledlink>>
     `,
+
+
     'prologue.page24': `
 
         <<if !setup.isSceneSeen('event.prologue')>>
@@ -6269,6 +6368,8 @@ const scene_list = {
         
         <<styledlink "Just move along" "prologue.page25">> <</styledlink>>
     `,
+
+
     'event.prologue': `
         <<narration "Curious, you inch closer, trying to figure out what the arguing is about.">>  
         <<narration "You hear Jina's sharp and agitated voice, echoing from within Alaric's room.">>  
@@ -6306,6 +6407,8 @@ const scene_list = {
 
         <<styledlink "Quietly move away" 'prologue.page25'>> <</styledlink>>
     `,
+
+
     'prologue.page25': `
         <<if setup.isSceneSeen('event.prologue')>>
             <<narration "You turn away and move back to the stairway, leaving that heated conversation behind.">>  
@@ -6327,6 +6430,8 @@ const scene_list = {
         <<styledlink "Talk to Margaret" "prologue.page26.margaret">> <</styledlink>>
         <<styledlink "Talk to Sena" "prologue.page27.sena">> <</styledlink>>
     `,
+
+
     'prologue.page26.margaret' : `
         <<narration "You approach Margaret, her back still turned to you as she stares out the window.">>  
         <<narration "The light from the setting sun casts a warm glow over her, her sour expression doesn't seem to soften. ">>  
@@ -6386,6 +6491,8 @@ const scene_list = {
         <</if>>     
         <<styledlink "Sit at the large table" "prologue.page28">> <</styledlink>>
     `,   
+
+
     'prologue.page27.sena' : `
         <<relation_notification 'sena' '+' '1'>>
 
@@ -6445,6 +6552,8 @@ const scene_list = {
         <</if>>     
         <<styledlink "Sit at the large table" "prologue.page28">> <</styledlink>>
     `,
+
+
     'prologue.page28': `
         <<relation_notification 'margaret' '+' '1'>>
         <<relation_notification 'alaric' '+' '1'>>
@@ -6488,6 +6597,8 @@ const scene_list = {
 
         <<styledlink "Relax at your room" "prologue.page29">> <<set $interface.money = 1>> <</styledlink>>
     `,        
+
+
     'prologue.page29': `
         <<thought "Well, what a day...">>  
         <<thought "Anyway, Alaric is right. As I'm still part of the team, I need to pay the share.">>
@@ -6520,11 +6631,13 @@ const scene_list = {
         <<thought "Let's worry about all of it tomorrow.">>
         
         <<styledlink "Sleep" "prologue.page30">> 
-            <<set $interface.training_day = 1; $interface.timing = 1;>> 
+            <<set $interface.training_day = 1; $interface.timing = 1;>>
             <<run setup.dayChange();>>
             <<run setup.autosave()>> 
         <</styledlink>>
     `,
+
+
     'prologue.page30':`
         <<narration "You wake up to sunlight streaming through the window, its warmth gently coaxing you out of sleep.">>
         <<media_location "Tavern__Bedroom" 'morning'>>
@@ -6535,7 +6648,7 @@ const scene_list = {
         <<narration "You sit up, rubbing your face and glance out the window.">>
         <<thought "I hope this one won't be as overwhelming as the previous one. ">>
         <<thought "Ahh, can't waste time lying around.">>
-        <<narration "Swinging your legs off the bed, you stand and stretch, your muscles still carrying a faint tension. <br>
+        <<narration "Swinging your legs off the bed, you stand and stretch, still feeling some stiffness from your injury. <br>
             You take a moment to pull yourself together, adjusting your gear and rechecking it to make sure you haven't forgotten anything important.">>
         <<narration "The orb is tucked safely in your bag, its strange glow faintly visible through the fabric when you check. 
             You decide to leave it untouched for now, it's not something you want to deal with first thing in the morning.">>
@@ -6544,9 +6657,7 @@ const scene_list = {
         <<styledlink "Start the free roam" "Tavern__Bedroom">> <</styledlink>>
     `,
 
-    // #endregion Prologue
 
-    // #region Locations
 
 
     'location_dialogs__Tavern__Bedroom': `
@@ -6558,8 +6669,11 @@ const scene_list = {
             <<if $time.period == 7>>
                 <<show_dialog 'loc.Tavern__Bedroom.day1.eat_alone'>>
             <</if>>
-        <</if>>   
+        <</if>>
+
     `,
+
+
 
     'location_dialogs__Tavern__Corridor':  `
         <<if $counters.training_day == 1>>
@@ -6588,6 +6702,8 @@ const scene_list = {
         <</if>>
 
     `,
+
+
     
     'location_dialogs__Tavern__Hall': `    
         <<if $time.period <= 3 >>
@@ -6596,9 +6712,6 @@ const scene_list = {
             <</if>>
             <<if setup.passActivityConditions('job_tavern_talk', 2, 'before')>>   
                 <<show_dialog 'loc.Tavern__Hall.job.tavern.step2'>> 
-            <</if>>
-            <<if setup.passActivityConditions('job_tavern_talk', 3, 'before')>>   
-                <<show_dialog 'loc.Tavern__Hall.job.tavern.step3'>> 
             <</if>>
         <</if>>
 
@@ -6614,11 +6727,17 @@ const scene_list = {
                 <<show_dialog 'loc.Tavern__Hall.day1.evening' true>>
             <</if>>
         <</if>>
+
     `,
+
+
 
 
     'location_dialogs__Tavern__Outside': `
+
     `,
+
+
 
     
     'location_dialogs__City__Road' : `
@@ -6629,7 +6748,10 @@ const scene_list = {
                 <<show_dialog 'loc.City__Road.day1.tired_walk' 'true'>>
             <</if>>
         <</if>>
+
     `,
+
+
 
     'location_dialogs__City__Entrance': `        
         <<if $time.period > 5>>
@@ -6645,7 +6767,10 @@ const scene_list = {
             <</if>>
             <<show_dialog 'loc.City__Entrance.day1' 'true'>>
         <</if>>
+
     `,
+
+
 
 
     'location_dialogs__City__Center': `
@@ -6660,7 +6785,10 @@ const scene_list = {
                 <<show_dialog 'loc.City__Center.day1.page3'>>
             <</if>>
         <</if>>
+
     `,
+
+
 
     'location_dialogs__City__Marketplace': `
         <<if $counters.training_day == 1>>
@@ -6679,13 +6807,7 @@ const scene_list = {
         <</if>>
     `,
 
-    'location_dialogs__City__Marketplace_Shops': `
-    
-    `,
 
-    'location_dialogs__Shops': `
-      
-    `,
 
     'location_dialogs__Penny_Shop__Entrance': `
         <<if $counters.training_day == 1>>
@@ -6697,11 +6819,16 @@ const scene_list = {
                 <<show_dialog 'loc.Penny_Shop__Entrance.day1.done_here_today'>>
             <</if>>
         <</if>>
+
     `,
+
+
 
     'location_dialogs__Penny_Shop__Inside': `
 
     `,
+
+
 
     'location_dialogs__City__Westroad_Street': `
         <<if $counters.training_day == 1>>        
@@ -6716,51 +6843,65 @@ const scene_list = {
         
     `,
 
+
+
     'location_dialogs__Sensei_Mansion__Entrance': `
         <<if $counters.training_day == 1>>  
             <<if setup.isSceneSeen('day1.sensei.intro') >>
                 <<show_dialog 'loc.Sensei_Mansion__Entrance.day1.exit' 'true'>>
             <</if>>             
         <</if>>
+
     `,
+
+
 
     'location_dialogs__Sensei_Mansion__Yard': `
     `,
 
+
+
     'location_dialogs__Sensei_Mansion__Headroom': `        
     `,
+
+
 
     'location_dialogs__Sensei_Mansion__Archery_Grounds': `
     `,
 
+
+
     'location_dialogs__Sensei_Mansion__Combat_Room': `
     `,
+
+
     
     'location_dialogs__Sensei_Mansion__Baths': `
     `,
 
+
+
     'location_dialogs__City__Parchment_Lane': `
     `,
 
+
+
     'location_dialogs__City__Administration': `
+
     `,
     
-    // #endregion Locations
 
-
-    // #region Tavern_Job
 
 
     'loc.Tavern__Hall.job.tavern.step1': `
         <<narration "You see the tavern owner's daughter.">>
         <<thought "I can ask her about a job.">>
-        <<run ObjectiveManager.unhideObjective("work_tavern")>> 
-     
         <<styledlink 'Ask about a job' 'job.tavern.step1' 'job-beer'>> 
-            <<run ObjectiveManager.nextStep("work_tavern")>> 
             <<run setup.updateDailyValue('job_tavern_talk')>>
         <</styledlink>> 
     `,
+
+
 
     'job.tavern.step1': `
         <<narration "You approach the girl you know as the tavern owner's daughter. <br>
@@ -6783,11 +6924,56 @@ const scene_list = {
         <<narration "She waves you off with a small grin and returns to her chores, leaving you with the first step of a possible job arranged.">>
 
         <<styledlink "Leave her" "Tavern__Hall">><</styledlink>>
+    `,
+
+
+
+    'loc.Tavern__Hall.job.tavern.step2': `
+        <<narration "You see Nancy, the tavern owner's daughter.">>
+        <<thought "I can ask if there is any news about work.">>
+
+        <<styledlink 'Ask about work' 'job.tavern.step2' 'job-beer'>> 
+            <<run setup.updateDailyValue('job_tavern_talk')>>
+        <</styledlink>> 
+    `,
+
+
+
+    'job.tavern.step2': `
+        <<narration "You approach the brunette girl at the counter. She glances up from her notes and smiles.">>
+        <<speech 'corin' "Hi, Nancy.">>
+        <<speech 'nancy' "Hello there, I see now you remember my name.">>
+        <<narration "She says it a bit playfully.">>
+        <<speech 'corin' "I said I would remember it, so...">>
+        <<speech 'nancy' "Don't be too serious, I'm joking... a bit. It's just – you're so fun to tease.">>
+        <<thought "I've heard that from Meg and Jina before. Hm, why, though?">>
+        <<narration "She watches your face for a moment, amused, then taps the notes against the counter to straighten them.">>
+        <<speech 'nancy' "Anyway, I assume you did not come to ask about my workday.">>
+        <<speech 'corin' "Umm...">>
+        <<narration "She continues with a bright cheerful smile on her face.">>
+        <<speech 'nancy' "Gee-e, it's okay, and I have good news for you.">>
+        <<speech 'nancy' "We have something you can help us with. And there are even two options available!">>
+        <<speech 'nancy' "The pay is not huge, of course, but I doubt you expected to gain golden rivers here. <br>
+            Also, you can work whenever you want and I think that is quite suitable for you.">>            
+        <<speech 'corin' "Thanks, I really appreciate it.">>
+        <<speech 'corin' "But... how much does it pay exactly?">>
+        <<speech 'nancy' "Option A: help us fix the shed out back, 3 coins each time you help. I guess 5 rounds should be enough to finish. <br>
+            You will work with Father on that.">>
+        <<speech 'nancy' "Option B: help me with various tasks inside. Mostly it's assisting at the counter and running small errands. 2 coins per shift. <br>
+            If you do well, I could check whether I can ask for a raise for you... or other pleasant rewards.">>
+
+        <<narration "Before you can comment, she raises one finger.">>
+        <<speech 'nancy' "You can start tomorrow. Just come to me, I'll show you the ropes and explain details.">>
+        <<speech 'corin' "Okay, I'll think it through.">>
+        <<speech 'nancy' "Sure, hon.">>
+        <<speech 'nancy' "And, yeah, remember, whether you work or not, you already owe me one favor.">>
+        <<narration "She gives you a bright, cheeky grin and turns back to her notes, 
+            leaving you with work arranged and the uneasy feeling that Nancy enjoyed the exchange far too much.">>
+
+        <<styledlink "Leave" "Tavern__Hall">><</styledlink>>
     `,    
     
-    // #endregion Tavern_Job
 
-    // #region Repeatable
     'system.default.sleep_calm': `
         <<system_note "Please save here.">>
 
@@ -6824,10 +7010,14 @@ const scene_list = {
         <</fadein>>
     `,
 
+
+
     
     'loc.City__Entrance.late': `
         <<thought "It's getting late, I need to return to the tavern.">>
     `,
+
+
 
     'loc.City__Entrance.evening.repeatable': `
         <<thought "Should I go back to the tavern already?">>  
@@ -6836,28 +7026,35 @@ const scene_list = {
     `,
 
     
-    // #endregion Repeatable
 
-
-    // #region Day 1
 
     'loc.Tavern__Bedroom.day1.new_day': `
         <<thought "Bright new day, huh?">>
         <<thought "But anyway...">>
     `,
+
+
     'loc.Tavern__Bedroom.day1.new_day.page2': `
         <<thought "Lots of things to do today, need to get moving.">>
     `,
 
+
+
     'loc.Tavern__Corridor.day1': `
         <<narration "As you leave the room and head toward the stairs to the second floor, you hear voices from one of the doors.">>
     `,
+
+
     'loc.Tavern__Corridor.day1.before_morning_event': `
         <<thought "Should I take a look, I wonder?">>
     `,
+
+
     'loc.Tavern__Corridor.day1.morning_event_skip_option': `
         <<thought "Or should I just move along...">>
     `,
+
+
 
     'event.day1.morning.margaret_alaric': `
         <<narration "You lean against the doorframe, straining to catch the heated words from inside.">>
@@ -6871,6 +7068,8 @@ const scene_list = {
 
         <<styledlink 'Move to Hall' 'Tavern__Hall'>><</styledlink>> 
     `,
+
+
 
     'day1.breakfast': `
         <<narration "The breakfast is unusually quiet.">>
@@ -6914,6 +7113,8 @@ const scene_list = {
         <<styledlink "Finish breakfast" 'Tavern__Hall'>> <</styledlink>>
     `,
 
+
+
     'day1.after_breakfast.jina' : `
         <<narration "You approach Jina to have a few words with her.">>
         <<thought "Things are getting too weird lately. <br>
@@ -6940,9 +7141,13 @@ const scene_list = {
         <<styledlink "Get yourself back together" 'Tavern__Hall'>> <</styledlink>>
     `,
 
+
+
     'loc.Tavern__Hall.day1.morning' : `
         <<thought "It's time to leave the inn and move to the city.">>     
     `,
+
+
 
     'loc.City__Road.day1':  `
     <<thought "I need to start working on my improvement plan.">>
@@ -6955,64 +7160,94 @@ const scene_list = {
         She should be somewhere around her store at the Marketplace.">>        
     `,
 
+
+
     'loc.City__Road.day1.tired_walk':  `
         <<thought "Phew... I wouldn't mind if someone could carry me straight to my room.">>
         <<thought "And I have to walk back and forth like this every day.">>
     `,
+
+
 
     'loc.City__Entrance.day1': `
         <<thought "Did we really had to get settled so far from the city?">>
         <<thought "I know all that security, secrecy and stuff, but it's so long to walk here.">>
     `,
 
+
+
     'loc.City__Entrance.day1.need_oldman_visit': `
         <<thought "I still need to visit the oldman in the city.">>
     `,
+
+
 
     'loc.City__Entrance.day1.need_penny_visit': `
         <<thought "Penny should wait for me in her shop.">>
     `,
 
+
+
     'loc.City__Center.day1': `
         <<thought "A lot of people here, as always, I guess.">>
     `,
+
+
 
     'loc.City__Center.day1.page2': `
         <<thought "I still need to visit the oldman at his mansion on Westroad Street.">>
     `,
 
+
+
     'loc.City__Center.day1.page3': `
         <<thought "Too late, too tired to do anything else in the city today.">>
     `,
+
+
 
     'loc.City__Marketplace.day1': `
         <<thought "Okay, here is the Marketplace. Where was her shop again?">>
     `,
 
+
+
     'loc.City__Marketplace.day1.find_penny_shop': `
         <<thought "Need to visit Penny at her shop.">>
     `,
+
+
 
     'loc.City__Marketplace.day1.after_penny_visit': `
         <<thought "Those last moments were odd...">>
         <<thought "But I guess everyone has their worries and a past they deal with.">>
     `,
 
+
+
     'loc.City__Marketplace.day1.no_business_left': `
         <<thought "I don't have anything else to do here today.">>
     `,
+
+
 
     'loc.Penny_Shop__Entrance.day1': `
         <<thought "Ah, here is her shop.">>
     `,
 
+
+
     'loc.Penny_Shop__Entrance.day1.penny_not_outside': `
         <<thought "I don't see Penny anywhere, probably should go inside.">>
     `,
 
+
+
     'loc.Penny_Shop__Entrance.day1.done_here_today': `
         <<thought "I think I need to be elsewhere right now.">>
     `,
+
+
 
     'day1.penny_visit1': `
         <<narration "As you open the shop door, you hear the bell above it ring.">>
@@ -7048,6 +7283,8 @@ const scene_list = {
         <<styledlink "Check the address" 'day1.penny_visit1.page2'>> <<set $time.period +=1>>   <</styledlink>>
     `,
 
+
+
     'day1.penny_visit1.page2': `
         <<narration "You follow Penny's directions down Randor Street. ">>
         <<narration "When you arrive, you see rows of plain brick buildings line the road, but the one you're looking for stands empty, with no bright sign or hint of life inside.">>
@@ -7074,6 +7311,8 @@ const scene_list = {
         <<styledlink "Enter the Administration" 'day1.penny_visit1.page3'>> <<set $time.period +=1>>   <</styledlink>>
     `,
 
+
+
     'day1.penny_visit1.page3': `
         <<narration "Inside the building, you try asking the passing staff about the building on Randor Street and its owner.">>
         <<thought "No one seems to know a thing. <br> 
@@ -7097,6 +7336,8 @@ const scene_list = {
 
         <<styledlink "Enter his office" 'day1.penny_visit1.page4'>> <</styledlink>>
     `,
+
+
 
     'day1.penny_visit1.page4': `
         <<narration "As you enter the room, the administration chief gives you a long, evaluating gaze.">>
@@ -7130,6 +7371,8 @@ const scene_list = {
             <<blocked_link "Third option: Intimate favor" "Why would I do such a thing?">>   
         <</if>>
     `,
+
+
     
     'day1.penny_visit1.page5': `
         <<speech 'corin' "I think I'll stick with the second option." >>
@@ -7153,6 +7396,8 @@ const scene_list = {
             <<set $counters.admin_control +=1 >>
         <</styledlink>>
     `,
+
+
 
     'day1.penny_visit1.page6': `
         <<if $flags.day1_read_admin_contract == 2>>
@@ -7183,6 +7428,8 @@ const scene_list = {
 
         <<styledlink "Remind him" 'day1.penny_visit1.page7'>> <</styledlink>> 
     `,
+
+
 
     'day1.penny_visit1.page7': `
         <<speech 'corin' "There was an advertising agency renting it, <i>'Scroll & Seal Advertising'</i>. But the place is completely empty now..." >>
@@ -7219,9 +7466,10 @@ const scene_list = {
 
         <<styledlink "Return to Penny" 'day1.penny_visit1.page8'>> 
             <<set $time.period +=1;>>  
-            <<run ObjectiveManager.unhideObjective("wanted_gang")>> 
         <</styledlink>> 
     `,
+
+
 
     'day1.penny_visit1.page8': `
         <<narration "You return to Penny's shop and explain everything you uncovered: the fake agency, the missing owner, the bounty on the scammers.">>
@@ -7234,7 +7482,7 @@ const scene_list = {
         <<speech 'penny' "...and dip into the rest of my savings to cover the costs." >> 
         <<speech 'penny' "...and..." >> 
         <<narration "She trails off, her shoulders slumping. You see a flicker of panic in her eyes as she runs a hand through her hair.">>
-        <<narration "Her gaze returns to you, apologetic.">>
+        <<narration "When she looks at you again, she cannot quite meet your eyes.">>
         <<speech 'penny' "I'm so sorry for dragging you into this... mess. I'm sure you didn't come here to get tangled up in all of this." >> 
         <<speech 'penny' "I'm going to close the store for today.">> 
         <<speech 'penny' "And... we can walk around the city or something. I need to do the thing I promised, and for the new help..." >> 
@@ -7246,6 +7494,8 @@ const scene_list = {
 
         <<styledlink "Try to calm and reassure her" 'day1.penny_visit1.page9'>> <</styledlink>> 
     `,
+
+
 
     'day1.penny_visit1.page9': `
         <<speech 'corin' "It's fine, it's fine. I'll just take you up on the promise another time." >> 
@@ -7269,7 +7519,7 @@ const scene_list = {
         <<speech 'corin' "Okay, yes. " >> 
         <<speech 'corin' "But now, I'll get going." >> 
         <<narration "As you turn toward the door, Penny reaches out and grabs your sleeve. Her fingers are trembling slightly." >> 
-        <<media_scene "penny_grab_sleeve_dream" "video" "image" >>
+        <<media_scene "penny_grab_sleeve" "video" "image" >>
         
         <<speech 'penny' "I mean it, I'll really repay you! Just please don't forget about me." >> 
         <<speech 'corin' "I... sure." >> 
@@ -7277,23 +7527,30 @@ const scene_list = {
         <<narration "Letting go of your sleeve, she tries to straighten up and puts on a visibly forced grin." >> 
 
         <<styledlink "Leave the shop" 'City__Marketplace'>>
-            <<run ObjectiveManager.nextStep("know_the_city")>> 
             <<set $counters.penny_love += 3>>
             <<set $counters.penny_guilt += 3>>
         <</styledlink>> 
     `,
 
+
+
     'loc.City__Westroad_Street.day1': `
         <<thought "His mansion was somewhere here, if I recall correctly.">>
     `,
 
+
+
     'loc.City__Westroad_Street.day1.no_business_left': `
         <<thought "I have no more business on this street today.">>
     `,
+
+
     
     'loc.City__Westroad_Street.day1.move_on': `
         <<thought "Need to move on.">>
     `,
+
+
 
     'day1.sensei.intro': `
         <<media_location "Sensei_Mansion__Entrance">>
@@ -7305,6 +7562,8 @@ const scene_list = {
 
         <<styledlink "Enter and follow her" 'day1.sensei.intro.page2'>> <</styledlink>> 
     `,
+
+
 
     'day1.sensei.intro.page2': `
         <<narration "She leads you through the halls toward the master's study. You glance around, checking the surroundings.">>
@@ -7335,6 +7594,8 @@ const scene_list = {
         <<styledlink "Explain to him" 'day1.sensei.intro.page3'>> <</styledlink>> 
     `,
 
+
+
     'day1.sensei.intro.page3': `
         <<narration "You tell everything that happened, your current situation, and...">>
         <<if $flags.prologue_vote == 1>>
@@ -7359,9 +7620,9 @@ const scene_list = {
         <<narration "After a moment, the amulet shudders faintly and emits a soft violet glow.">>
         <<speech 'sensei' "Hmm..." 'oldman'>>
         <<speech 'sensei' "Now stand by the table. Don't move for a few minutes, I'll check you with a scanning spell." 'oldman'>>
-        <<narration "You take your position, standing still as the oldman begins to chant. <br>
-            A low hum fills the room as the runes shimmer around you, swirling lazily like mist.">>
-        <<narration "The spell takes longer than you expect. Nearly ten minutes drag by in tense silence.">> 
+        <<narration "You take your position and stand still as the old man begins to chant. <br>
+            A low hum fills the room as the runes glow around you.">>
+        <<narration "The spell continues for nearly ten minutes while you stand without moving.">>
         <<thought "Never thought standing still could be this hard. Everything's suddenly itching all over.">>
         <<narration "Finally, the spell fades away. The oldman closes the tome where he had been making notes, lets it fall shut with a heavy thud, and leans back in his chair.">>
         <<speech 'sensei' "Truly amusing." 'oldman'>>
@@ -7371,6 +7632,8 @@ const scene_list = {
 
         <<styledlink "Prepare to hear the results" 'day1.sensei.intro.page4'>> <</styledlink>> 
     `,
+
+
 
     'day1.sensei.intro.page4': `
         <<speech 'sensei' "You caught my eye, but there's nothing particularly remarkable about you or your skills." 'oldman'>>
@@ -7402,8 +7665,10 @@ const scene_list = {
             <<speech 'sensei' "Don't be late."  'oldman'>>
         <</if>> 
         
-        <<styledlink "Leave the room" 'day1.sensei.intro.page5'>>  <<run ObjectiveManager.nextStep("get_training")>>  <</styledlink>> 
+        <<styledlink "Leave the room" 'day1.sensei.intro.page5'>><</styledlink>> 
     `,
+
+
 
     'day1.sensei.intro.page5': `    
         <<narration "You follow the corridor, your footsteps muffled by the worn carpet. The air inside the mansion feels heavy, as if the walls themselves are watching.">>
@@ -7419,6 +7684,8 @@ const scene_list = {
         <<styledlink "Catch a thought" 'Sensei_Mansion__Entrance'>>  <<set $time.period +=1;>>  <</styledlink>> 
     `,
 
+
+
     'loc.Sensei_Mansion__Entrance.day1.exit': `
         <<if setup.isSceneSeen('day1.penny_visit1')>>
             <<narration "You remember Penny's disappointed smile earlier today and her desperate, stubborn promises.">>
@@ -7433,16 +7700,22 @@ const scene_list = {
     `,
 
 
+
+
     'loc.Tavern__Hall.day1.evening': `
         <<thought "Don't see anyone here at the moment.">>   
         <<thought "Well, I guess I was late for the supper today.">>  
         <<thought "Still, I need to eat something.">>  
         <<thought "In that case, I'd better eat my leftovers from the bag in my room.">>       
     `,
+
+
     
     'loc.Tavern__Hall.day1.evening.line2': `
         <<thought "The leftover food is in the bag in my room.">>       
     `,
+
+
 
     'loc.Tavern__Bedroom.day1.eat_alone' : `
         <<thought "Here is the bag.">>
@@ -7451,6 +7724,8 @@ const scene_list = {
             <<set $time.period +=1;>>  
         <</styledlink>> 
     `,
+
+
 
     'loc.Tavern__Bedroom.day1.eat_alone.page2' : `
         <<narration "You take food out of your bag. ">> 
@@ -7467,42 +7742,54 @@ const scene_list = {
         
         <<styledlink "Check it" 'Tavern__Corridor'>>  <</styledlink>> 
     `,
+
+
     
     'loc.Tavern__Corridor.day1.before_evening_event' : `
         <<narration "You quietly peek out of the door, trying not to make any noise.">>
         <<narration "Margaret enters Alaric's room, looking around before closing the door tightly.">>
         <<narration "Fortunately, it is pretty dark in the corridor and she doesn't notice you peeking from your doorside.">>
     `,
+
+
     
     'loc.Tavern__Corridor.day1.evening_event_prompt' : `
         <<thought "That was a bit weird. Should I probably check?">>
     `,
 
+
+
     'loc.Tavern__Corridor.day1.evening_event_skip_option' : `
         <<thought "Or just go to bed and catch some zeds.">>
     `,
 
-    'event.day1.evening.margaret_alaric': `
-        <<narration "Just a step from the door, you hear something that sounds like a sharp smack rings out from inside.">>
-        <<sfx 'slap1' 'audio/slap-soft.mp3'>>
 
+
+    'event.day1.evening.margaret_alaric': `
+        <<narration "Just a step from the door, a sharp smack rings out from inside.">>
+        <<narration "You pause, trying to place the sound.">>
+        <<thought "Huh? Pillow slapping? Spanking something?">>
         <<narration "You edge closer to catch what it was.">>
         <<narration "The door is tightly shut and the voices inside are little more than whispers, too quiet to grasp.">>
         <<thought "Whatever that was... I should leave it at that.">>
         <<thought "Maybe I can figure out what was that about tomorrow.">>
         <<thought "...if I'm still interested by then.">>
 
-        <<styledlink "Return" 'Tavern__Corridor'>>  <</styledlink>> 
+        <<styledlink "Return" 'Tavern__Corridor'>><</styledlink>> 
     `,
+
+
 
     'loc.Tavern__Corridor.day1.after_evening_event' : `
         <<thought "I'm very tired, need to go to my room and catch a few zeds.">>
     `,
 
     
-    // #endregion Day 1
+
+
+    
 }
-/* twine-user-script #29: "scripts.js" */
+/* twine-user-script #21: "scripts.js" */
 setup.calcPayment = (source) => {
     const { counters, flags, temp } = State.variables;
     const under_lucky_spell = temp.status_effects.lucky_spell;
@@ -7543,6 +7830,24 @@ setup.calcPayment = (source) => {
     changeProtectedValue('money', money_value, 'add');
 }
 
+setup.getDominantBehaviorStats = () => {
+    const { flags } = State.variables;
+    const stats = {
+        confidence: flags.mc_confidence || 0,
+        team_spirit: flags.mc_team_spirit || 0,
+        cautiousness: flags.mc_cautiousness || 0,
+        follow_flow: flags.mc_follow_flow || 0,
+        submission: flags.mc_submission || 0,
+        teasing: flags.mc_teasing || 0,
+        courage: flags.mc_courage || 0
+    };
+    const max = Math.max(...Object.values(stats));
+    return Object.keys(stats).filter((key) => stats[key] === max);
+}
+
+setup.isDominantBehaviorStat = (stat) => {
+    return setup.getDominantBehaviorStats().includes(stat);
+}
 
 setup.getTavernShedNegativeCount = () => {
     const { flags } = State.variables;
@@ -7553,7 +7858,7 @@ setup.getTavernShedNegativeCount = () => {
 
 
 
-/* twine-user-script #30: "shadowing.js" */
+/* twine-user-script #22: "shadowing.js" */
 
 $(document).on(':passagedisplay', function () {
     if (State.variables.settings.shadowing == 1) {
@@ -7674,99 +7979,7 @@ const autoScroll = (function () {
         end
     };
 })();
-/* twine-user-script #31: "shop.js" */
-const itemDB = {
-    orb:{id:'orb',name:'Orb',desc:'A mysterios gift',gift:false,usable:true,price:0,locked:false},
-    old_equip: {id:'old_equip',name:'Old Equipment',desc:'Items I need to sell later',gift:false,usable:false},
-    old_charm: {id:'old_charm',name:'Old Charm',desc:'Maybe I can give it to someone',gift:true,usable:false},
-    pen_nice: {id:'pen_nice',name:'A Really Nice Pen',desc:'Maybe I can give it to someone',gift:true,usable:false},
-
-    brooch_wooden_bird:{id:'brooch_wooden_bird',name:'Wooden Brooch',desc:'A small brooch shaped like a bird',gift:true,usable:false,price:40,locked:false},
-    vine:{id:'vine',name:'Good Vine',desc:'A bottle of fine vine',gift:true,usable:false,price:60,locked:false},
-    book_hero:{id:'book_hero',name:'Book of the First Hero',desc:'A legendary tale',gift:true,usable:false,price:90,locked:false},
-    flowers:{id:'flowers',name:'Flowers',desc:'A lovely bouquet',gift:true,usable:false,price:25,locked:false},
-    cupcake:{id:'cupcake',name:'Cupcake',desc:'A small sweet treat',gift:true,usable:false,price:30,locked:false},
-    ring_silver:{id:'ring_silver',name:'Silver Ring',desc:'A meaningful gift',gift:true,usable:false,price:150,locked:true},
-
-    potion_purple:{id:'potion_purple',name:'Luck Potion',desc:'Boosts luck in mini-games',gift:false,usable:true,price:80,locked:false},
-    potion_orange:{id:'potion_orange',name:'Energy Potion',desc:'Restores stamina',gift:false,usable:true,price:30,locked:true},
-    potion_pink_red:{id:'potion_pink_red',name:'Focus Tonic',desc:'Improves focus',gift:false,usable:true,price:100,locked:true},
-    potion_blue:{id:'potion_blue',name:'Shield Tonic',desc:'Protects from failure',gift:false,usable:true,price:120,locked:true},
-
-    gears_see_stats:{id:'gears_see_stats',name:'Hidden Stats',desc:'See what is hidden behind your choices',gift:false,usable:true,price:1000,locked:false},
-    gears_choices_effect:{id:'gears_choices_effect',name:'Choices Results',desc:'You now can foresee impact of your choices',gift:false,usable:true,price:2000,locked:false},
-    gears_values_sensei:{id:'gears_values_sensei',name:'Sensei Value',desc:'Adjust the Sensei succumb stat',gift:false,usable:true,price:1000,locked:true},
-    gears_values_administration:{id:'gears_values_administration',name:'Administrator Value',desc:'Modify Administrator behavior',gift:false,usable:true,price:1500,locked:true},
-    gears_values_penny:{id:'gears_values_penny',name:'Penny Path',desc:'Switch Penny to guilt route',gift:false,usable:true,price:2000,locked:true}
-};
-
-setup.drawShop = function () {
-    return nobr(`<div class='shop-error'>Shops are not available in this version.</div>`);
-};
-
-window.buyItem = function () {
-    Dialog.setup('Unavailable');
-    Dialog.wiki('Shops are not available in this version.');
-    Dialog.open();
-    return false;
-};
-
-window.buyAndUse = function () {
-    return window.buyItem();
-};
-/* twine-user-script #32: "sound.js" */
-/* Audio is disabled for this release. */
-
-window.setup = window.setup || {};
-
-setup.audioCatalog = setup.audioCatalog || {
-  enabled: false,
-  bgm: {},
-  ambience: {},
-  sfx: {},
-  locations: {},
-  scenes: {},
-  scenePrefixes: {},
-  sfxPoolSize: 0
-};
-
-setup.audio = {
-  options: {
-    uiId: "sc-audio-player",
-    mountSelector: "#ui-bar-body"
-  },
-
-  init() {},
-  registerCatalog() {},
-  registerSfx() {},
-  unlock() {},
-  setVisualLocation() {},
-  setContext() {},
-  applyContext() {},
-  resolveCurrentContext() { return null; },
-  resolveSceneContext() { return null; },
-  resolveContext(context) { return context || null; },
-  resolveLocationContext(locationId) { return locationId ? { location: locationId } : null; },
-  setBgm() {},
-  setAmbience() {},
-  playSfx() {},
-  silence() {},
-  stopBgm() {},
-  stopAmbience() {},
-  applyVolumes() {},
-  renderPlayer() { return ""; },
-  mountSidebar() {},
-  refreshUI() {}
-};
-
-Macro.add("sfx", {
-  handler() {}
-});
-
-Macro.add("audio_context", {
-  handler() {}
-});
-/* twine-user-script #33: "styledlink.js" */
+/* twine-user-script #23: "styledlink.js" */
 
 (function () {
   /* ---------- Templates ---------- */
@@ -7866,47 +8079,7 @@ Macro.add("audio_context", {
     }
   });
 })();
-/* twine-user-script #34: "tryout_archery.js" */
-/* Archery tryout is disabled for this release. */
-
-function initTryoutArchery() {
-  return false;
-}
-/* twine-user-script #35: "tryouts.js" */
-/* Tryouts are disabled for this release. */
-
-setup.runTryout = function () {
-  return false;
-};
-
-setup.cleanupTryout = function () {
-  if (setup._paperworkTimerID) {
-    clearInterval(setup._paperworkTimerID);
-    setup._paperworkTimerID = null;
-  }
-};
-
-function getTryoutTemplate() {
-  return `
-    <div class="tryout-placeholder" role="region" aria-label="Tryout unavailable">
-      <div class="tryout-placeholder__badge">Unavailable</div>
-      <div class="tryout-placeholder__card">
-        <h2>Tryouts are not available in this version.</h2>
-        <p>This activity will return in a later release.</p>
-      </div>
-    </div>
-  `;
-}
-
-$(document).on(':passagedisplay', function (ev) {
-  if (ev.passage.title !== 'Tryout') return;
-
-  setup.cleanupTryout();
-
-  const root = document.getElementById('tryout-root');
-  if (root) root.innerHTML = getTryoutTemplate();
-});
-/* twine-user-script #36: "websystem_optimizations.js" */
+/* twine-user-script #24: "websystem_optimizations.js" */
 
 
 $(document).on(":passagerender", function () {
@@ -7923,31 +8096,42 @@ $(document).on(":passagedisplay", function () {
 });
 
 
-/* twine-user-script #37: "widget_media_scene.js" */
+/* twine-user-script #25: "widget_media_scene.js" */
 // Define the widget
 Macro.add('media_scene', {
     handler() {
       // Ensure the arguments are valid
       if (this.args.length < 1) {
-        return this.error('Insufficient arguments provided. Usage: <<media_scene "mediaNameWithoutExtension" ["image|video"] ["width"] ["height"]>>');
+        return this.error('Insufficient arguments provided. Usage: <<media_scene "mediaNameWithoutExtension|none" ["image|video|none"] ["image|video|none"] ["width"] ["height"]>>');
       }
   
-      // Get the media name (without extension) and optional media type.
+      // Get the media name (without extension) and optional media types.
       // Usage:
-      //   <<media_scene "name">>                  image
-      //   <<media_scene "name" "video">>          video
-      //   <<media_scene "name" "420px" "240px">>  image, custom size
-      //   <<media_scene "name" "video" "420px" "240px">>
+      //   <<media_scene "name">>                  image for both modes
+      //   <<media_scene "name" "video">>          video for both modes
+      //   <<media_scene "name" "video" "image">>  AI video, real-world image
+      //   <<media_scene "name" "video" "none">>   AI video, nothing in real-world mode
+      //   <<media_scene "none">>                    nothing in either mode
+      //   <<media_scene "name" "420px" "240px">>  image for both modes, custom size
+      //   <<media_scene "name" "video" "image" "420px" "240px">>
       const mediaName = this.args[0];
-      const validMediaTypes = ['image', 'video'];
+
+      if (mediaName === 'none') {
+        return;
+      }
+
+      const validMediaTypes = ['image', 'video', 'none'];
       let nextArgIndex = 1;
-      let mediaType = 'image';
+      let aiMediaType = 'image';
+      let realMediaType = 'image';
 
       if (validMediaTypes.includes(this.args[nextArgIndex])) {
-        mediaType = this.args[nextArgIndex];
+        aiMediaType = this.args[nextArgIndex];
+        realMediaType = aiMediaType;
         nextArgIndex += 1;
 
         if (validMediaTypes.includes(this.args[nextArgIndex])) {
+          realMediaType = this.args[nextArgIndex];
           nextArgIndex += 1;
         }
       }
@@ -7955,8 +8139,8 @@ Macro.add('media_scene', {
       const mediaWidth = this.args[nextArgIndex] || '';
       const mediaHeight = this.args[nextArgIndex + 1] || '';
 
-      if (!validMediaTypes.includes(mediaType)) {
-        return this.error('Invalid media type. Use "image" or "video". Usage: <<media_scene "mediaNameWithoutExtension" ["image|video"] ["width"] ["height"]>>');
+      if (!validMediaTypes.includes(aiMediaType) || !validMediaTypes.includes(realMediaType)) {
+        return this.error('Invalid media type. Use "image", "video" or "none". Usage: <<media_scene "mediaNameWithoutExtension|none" ["aiType"] ["realType"] ["width"] ["height"]>>');
       }
 
       const generateSizeStyle = () => {
@@ -7976,15 +8160,18 @@ Macro.add('media_scene', {
       };
   
       // Define paths and formats
-      const mediaPath = "1/";
+      const aiMediaPath = "1/";  // Folder for AI-generated media
+      const realMediaPath = "2/"; // Folder for real-world media
       const videoFormats = [".mp4", ".webm", ".avif"]; // Possible formats for videos
       const imageFormats = [".png", ".webp"];          // Possible formats for images
   
       // Determine the actual file paths based on formats
       const fullMediaPaths = (path, formats) =>
         formats.map(format => `media/scenes/${path}${mediaName}${format}`);
-      const imagePaths = fullMediaPaths(mediaPath, imageFormats);
-      const videoPaths = fullMediaPaths(mediaPath, videoFormats);
+      const realImagePaths = fullMediaPaths(realMediaPath, imageFormats);
+      const realVideoPaths = fullMediaPaths(realMediaPath, videoFormats);
+      const aiImagePaths = fullMediaPaths(aiMediaPath, imageFormats);
+      const aiVideoPaths = fullMediaPaths(aiMediaPath, videoFormats);
   
       // Helper function to generate HTML for media
       const generateMediaHTML = (paths, tag) => {
@@ -8005,14 +8192,30 @@ Macro.add('media_scene', {
         case 0: // Do not show anything
           content = '';
           break;
-        default:
-          if (mediaType === 'video') {
-            content = generateMediaHTML(videoPaths, 'video');
-          } else if (mediaType === 'image') {
-            content = generateMediaHTML(imagePaths, 'image');
+        case 1: // Show AI-generated media
+          if (aiMediaType === 'none') {
+            content = '';
+          } else if (aiMediaType === 'video') {
+            content = generateMediaHTML(aiVideoPaths, 'video');
+          } else if (aiMediaType === 'image') {
+            content = generateMediaHTML(aiImagePaths, 'image');
           } else {
             content = '<p>Invalid media type specified.</p>';
           }
+          break;
+        case 2: // Show 3rd-party media
+          if (realMediaType === 'none') {
+            content = '';
+          } else if (realMediaType === 'video') {
+            content = generateMediaHTML(realVideoPaths, 'video');
+          } else if (realMediaType === 'image') {
+            content = generateMediaHTML(realImagePaths, 'image');
+          } else {
+            content = '<p>Invalid media type specified.</p>';
+          }
+          break;
+        default:
+          content = '<p>Invalid media mode. Check $settings.media_mode.</p>';
       }
   
       // Render the content
@@ -8035,10 +8238,6 @@ Macro.add('media_location', {
 
     const media_name = this.args[0];
     const media_path = `media/locations/${media_name}.jfif`;
-
-    if (setup.audio && typeof setup.audio.setVisualLocation === 'function') {
-      setup.audio.setVisualLocation(media_name);
-    }
 
     // Optional argument: location time
     let location_time = null;
@@ -8107,7 +8306,8 @@ Macro.add('blocked_link', {
 
         $(this.output).wiki(html);
     }
-});</script><tw-tag name="System" color="red"></tw-tag><tw-passagedata pid="1" name="City__Administration" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="2" name="City__Center" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="3" name="City__Entrance" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="4" name="City__Marketplace" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="5" name="City__Marketplace_Shops" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="6" name="City__Parchment_Lane" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="7" name="City__Road" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="8" name="City__Westroad_Street" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="9" name="Dead_End" tags="System nobr special_passage" position="200,500" size="100,100">&lt;&lt;fadein 3s 0s&gt;&gt;
+});
+</script><tw-tag name="System" color="red"></tw-tag><tw-passagedata pid="1" name="City__Administration" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="2" name="City__Center" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="3" name="City__Entrance" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="4" name="City__Marketplace" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="5" name="City__Parchment_Lane" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="6" name="City__Road" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="7" name="City__Westroad_Street" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="8" name="Dead_End" tags="System nobr special_passage" position="200,500" size="100,100">&lt;&lt;fadein 3s 0s&gt;&gt;
 &lt;p class=&quot;dead_end&quot;&gt; Dead End &lt;/p&gt;
 &lt;&lt;/fadein&gt;&gt;
 
@@ -8129,7 +8329,7 @@ So let&#39;s try again, shall we? &lt;&lt;br&gt;&gt;
 &lt;div class=&quot;link-system&quot;&gt;
 [[Return back|previous()][$interface.menu_all = 1]]
 &lt;/div&gt;
-&lt;&lt;/fadein&gt;&gt;</tw-passagedata><tw-passagedata pid="10" name="Disclaimer" tags="System nobr" position="650,350" size="100,100">&lt;h2&gt;Disclaimer&lt;/h2&gt; 
+&lt;&lt;/fadein&gt;&gt;</tw-passagedata><tw-passagedata pid="9" name="Disclaimer" tags="System nobr" position="650,350" size="100,100">&lt;h2&gt;Disclaimer&lt;/h2&gt; 
 
 &lt;&lt;br&gt;&gt;
 This game contains adult content intended for mature audiences only. &lt;&lt;br&gt;&gt;
@@ -8140,15 +8340,14 @@ See [[Additional game information|Info_Additional][[$temp.intro_page = &#39;menu
 All characters featured in romantic or sexual content are fictional adults aged 18 or older. &lt;&lt;br 2&gt;&gt;
 
 The content of this game is purely fictional and meant for entertainment purposes. &lt;&lt;br&gt;&gt;
-It does not depict or encourage real-life behavior. &lt;&lt;br&gt;&gt;
-Player discretion is advised. &lt;&lt;br 2&gt;&gt;
+It does not depict or encourage real-life behavior. Player discretion is advised. &lt;&lt;br 2&gt;&gt;
 
 Scene images are illustrated or AI-generated fiction and do not depict real people. &lt;&lt;br&gt;&gt;
-Placeholder builds may include temporary third-party placeholder images planned to be replaced. &lt;&lt;br 2&gt;&gt;
+Some public builds may include temporary third-party placeholder images planned to be replaced. &lt;&lt;br 2&gt;&gt;
 
 The game is free to play. No payment is required. &lt;&lt;br&gt;&gt;
-Optional supporter accounts on donation platforms are and will be added for supporting only in the future. &lt;&lt;br&gt;&gt;
-Such builds will not include exclusive story content. They will be released one version ahead of public builds &lt;&lt;br&gt;&gt;
+Optional supporter accounts on donation platforms may be added in the future. &lt;&lt;br&gt;&gt;
+Supporter builds will not include exclusive story content. They will be released one version ahead of public builds &lt;&lt;br&gt;&gt;
 and will not include third-party placeholder media. &lt;&lt;br 2&gt;&gt;
 
 If you are uncomfortable with such material, please do not proceed. &lt;&lt;br&gt;&gt;
@@ -8158,19 +8357,20 @@ If you have questions or believe your rights have been violated, contact the aut
 If you agree to the terms above and wish to proceed, click the button below: &lt;&lt;br 2&gt;&gt;
 &lt;div class=&quot;link-system&quot;&gt;
 	[[Confirm and proceed|Menu_Settings][$temp.from_disclaimer = 1]]
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="End_Of_Content" tags="system nobr special_passage" position="650,500" size="100,100">&lt;&lt;fadein 2s&gt;&gt;
-  &lt;p class=&quot;eoc-prologue &quot;&gt;END of the Version v0.3&lt;/p&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="End_Of_Content" tags="system nobr special_passage" position="650,500" size="100,100">&lt;&lt;fadein 2s&gt;&gt;
+  &lt;p class=&quot;eoc-prologue&quot;&gt;END of the Version v0.3.1 Maintenance Build&lt;/p&gt;
 &lt;&lt;/fadein&gt;&gt;
-&lt;div class=&quot;eoc-thanks-block &quot;&gt;
-      &lt;&lt;fadein 2s 2s&gt;&gt;
-            &lt;p style=&quot;margin-bottom: 15px; margin-top: -10px;&quot;&gt;Thank you for playing!&lt;/p&gt;
-      &lt;&lt;/fadein&gt;&gt;
-      &lt;&lt;fadein 2s 4s&gt;&gt;
-            &lt;p&gt;I hope you liked the new update.&lt;/p&gt;   
-            &lt;p style=&quot;margin-bottom: 15px;&quot;&gt;Yet, this is still an early version, so more is up to come!&lt;/p&gt;
-            &lt;p&gt;Stay tuned for updates and more content soon!&lt;/p&gt;  
-      &lt;&lt;/fadein&gt;&gt;
-      &lt;&lt;br&gt;&gt;
+
+&lt;div class=&quot;eoc-thanks-block&quot;&gt;
+    &lt;&lt;fadein 2s 2s&gt;&gt;
+        &lt;p style=&quot;margin-bottom: 15px; margin-top: -10px;&quot;&gt;Thank you for playing!&lt;/p&gt;
+    &lt;&lt;/fadein&gt;&gt;
+    &lt;&lt;fadein 2s 4s&gt;&gt;
+        &lt;p&gt;You have reached the end of Day 1 and the end of this build.&lt;/p&gt;
+        &lt;p style=&quot;margin-bottom: 15px;&quot;&gt;This is still an early-development placeholder build, so some media and gameplay systems are still in development.&lt;/p&gt;
+        &lt;p&gt;Stay tuned for future updates and more content.&lt;/p&gt;
+    &lt;&lt;/fadein&gt;&gt;
+    &lt;&lt;br&gt;&gt;
 &lt;/div&gt;
 
 &lt;&lt;fadein 2s 6s&gt;&gt;
@@ -8178,7 +8378,7 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
     &lt;button class=&quot;eoc-restart__button eoc-back-button&quot; type=&quot;button&quot;&gt;Back&lt;/button&gt;
     &lt;button class=&quot;eoc-restart__button eoc-restart-button&quot; type=&quot;button&quot;&gt;Restart&lt;/button&gt;
 &lt;/div&gt;
-&lt;&lt;/fadein&gt;&gt;</tw-passagedata><tw-passagedata pid="12" name="Info_Additional" tags="system nobr" position="650,500" size="100,100">&lt;&lt;if $temp.intro_page == &#39;menu&#39;&gt;&gt;
+&lt;&lt;/fadein&gt;&gt;</tw-passagedata><tw-passagedata pid="11" name="Info_Additional" tags="system nobr" position="650,500" size="100,100">&lt;&lt;if $temp.intro_page == &#39;menu&#39;&gt;&gt;
     &lt;h2&gt; Dev notes: &lt;/h2&gt; &lt;&lt;br&gt;&gt;
 
     &lt;div class=&quot;link-system&quot;&gt;
@@ -8353,7 +8553,7 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
     &lt;div class=&quot;link-system&quot;&gt;
     [[Back|Info_Additional][$temp.intro_page = &#39;menu&#39;]]
     &lt;/div&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="13" name="Menu_Info" tags="System nobr nohistory" position="350,100" size="100,100">&lt;h2&gt;&lt;i&gt;Info &lt;/i&gt;&lt;/h2&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="12" name="Menu_Info" tags="System nobr nohistory" position="350,100" size="100,100">&lt;h2&gt;&lt;i&gt;Info &lt;/i&gt;&lt;/h2&gt;
 &lt;&lt;br&gt;&gt;
 
 &lt;&lt;characters_cards&gt;&gt;
@@ -8361,23 +8561,7 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
 &lt;&lt;br 2&gt;&gt;
 &lt;div class=&quot;link-system&quot;&gt;
 [[Return back|$temp.previous]]
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="Menu_Inventory" tags="System nobr nohistory" position="350,100" size="100,100">&lt;h2&gt;&lt;i&gt;Inventory &lt;/i&gt;&lt;/h2&gt;
-
-&lt;&lt;br&gt;&gt;
-&lt;&lt;showInventory&gt;&gt;
-
-&lt;&lt;br 3&gt;&gt;
-&lt;div class=&quot;link-system&quot;&gt;
-[[Return back|$temp.previous]]
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="Menu_Objectives" tags="System nobr nohistory" position="350,100" size="100,100">&lt;h2&gt;&lt;i&gt;Objectives &lt;/i&gt;&lt;/h2&gt;
-
-&lt;&lt;br&gt;&gt;
-&lt;&lt;showObjectives&gt;&gt;
-
-&lt;&lt;br 3&gt;&gt;
-&lt;div class=&quot;link-system&quot;&gt;
-[[Return back|$temp.previous]]
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="16" name="Menu_Settings" tags="System nobr nohistory" position="200,100" size="100,100">&lt;h2&gt;&lt;i&gt;Settings Menu &lt;/i&gt;&lt;/h2&gt;
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="Menu_Settings" tags="System nobr nohistory" position="200,100" size="100,100">&lt;h2&gt;&lt;i&gt;Settings Menu &lt;/i&gt;&lt;/h2&gt;
 
 
 &lt;&lt;br&gt;&gt;
@@ -8391,25 +8575,40 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
 	&lt;&lt;option &quot;Yes&quot; 1&gt;&gt;
 &lt;&lt;/listbox&gt;&gt; &lt;&lt;br 2&gt;&gt;
 
-&lt;&lt;if $interface.debug_mode == 1&gt;&gt;
-	&lt;&lt;br 2&gt;&gt;
-	&lt;&lt;link &#39;Debug&#39; &#39;Test_Room&#39;&gt;&gt;&lt;&lt;/link&gt;&gt;
-&lt;&lt;/if&gt;&gt;
+
+/* &lt;p&gt; Please select style for location images displaying: &lt;/p&gt; 
+&lt;&lt;listbox &quot;$settings.style_location_img&quot; autoselect&gt;&gt;
+	&lt;&lt;option &quot;Off&quot; 0&gt;&gt;
+	&lt;&lt;option &quot;Default&quot; 1&gt;&gt;
+	&lt;&lt;option &quot;Inline Zoom-In&quot; 2&gt;&gt;
+	&lt;&lt;option &quot;Inline Zoom-Out&quot; 3&gt;&gt;
+&lt;&lt;/listbox&gt;&gt; &lt;&lt;br 2&gt;&gt; */
 
 
+/* &lt;p&gt;Enable auto-scroll during fade in scenes &lt;/p&gt; 
+&lt;&lt;listbox &quot;$settings.auto_scroll&quot; autoselect&gt;&gt;
+	&lt;&lt;option &quot;No&quot; 0&gt;&gt;
+	&lt;&lt;option &quot;Yes&quot; 1&gt;&gt;
+&lt;&lt;/listbox&gt;&gt; &lt;&lt;br 2&gt;&gt; */
 
-&lt;&lt;br 6&gt;&gt;
+/* &lt;p&gt;Enable bi-sexual content &lt;/p&gt; 
+&lt;&lt;listbox &quot;$settings.bi_allowed&quot; autoselect&gt;&gt;
+	&lt;&lt;option &quot;No&quot; 0&gt;&gt;
+	&lt;&lt;option &quot;Yes&quot; 1&gt;&gt;
+&lt;&lt;/listbox&gt;&gt; &lt;&lt;br 2&gt;&gt; */
+
+&lt;&lt;br 4&gt;&gt;
 &lt;&lt;if $temp.from_disclaimer&gt;&gt;
 &lt;div class=&quot;link-system&quot;&gt;
-	[[Apply and start|ScenePassage][$temp.from_disclaimer = 0; $temp.cur_scene = &#39;prologue.page1&#39;; $interface.menu_settings = 1;]]
+	[[Apply and start Prologue|ScenePassage][$temp.from_disclaimer = 0; $temp.cur_scene = &#39;prologue.page1&#39;; $interface.menu_settings = 1;]]
 &lt;/div&gt;
 &lt;&lt;else&gt;&gt;
 &lt;div class=&quot;link-system&quot;&gt;
 [[Return back|$temp.previous]]
 &lt;/div&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="17" name="PassageFooter" tags="System nobr" position="1200,200" size="100,100">&lt;div class=&quot;links-wrapper&quot;&gt;&lt;&lt;show_dyn_links&gt;&gt;&lt;/div&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="14" name="PassageFooter" tags="System nobr" position="1200,200" size="100,100">&lt;div class=&quot;links-wrapper&quot;&gt;&lt;&lt;show_dyn_links&gt;&gt;&lt;/div&gt;
 &lt;div id=&quot;shade&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;notification-container&quot;&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="18" name="PassageHeader" tags="System nobr" position="1200,200" size="100,100">&lt;div class=&quot;commentary-wrapper&quot;&gt;
+&lt;div class=&quot;notification-container&quot;&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="PassageHeader" tags="System nobr" position="1200,200" size="100,100">&lt;div class=&quot;commentary-wrapper&quot;&gt;
     &lt;div id=&quot;commentary&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
@@ -8422,17 +8621,13 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
     &lt;&lt;/if&gt;&gt;
     
     &lt;&lt;= setup.getScene(&#39;location_dialogs__&#39;+passage())&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="19" name="Penny_Shop__Backrooms" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="20" name="Penny_Shop__Entrance" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="21" name="Penny_Shop__Inside" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="22" name="Region_Travel" tags="nobr" position="650,500" size="100,100">&lt;div id=&quot;travelArea&quot;&gt;&lt;/div&gt;
-
-&lt;&lt;script&gt;&gt;
-renderRegionTravel(&quot;trade_road&quot;, &quot;wagon&quot;);
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="23" name="ScenePassage" tags="System nobr shadowing" position="650,500" size="100,100">&lt;&lt;= setup.getScene($temp.cur_scene)&gt;&gt;</tw-passagedata><tw-passagedata pid="24" name="Sensei_Mansion__Archery_Grounds" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="25" name="Sensei_Mansion__Baths" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="26" name="Sensei_Mansion__Combat_Room" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="27" name="Sensei_Mansion__Entrance" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="28" name="Sensei_Mansion__Headroom" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="29" name="Sensei_Mansion__Yard" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="30" name="Shops" tags="nobr location special_passage" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="31" name="StoryBanner" tags="System" position="900,100" size="100,100">&lt;img class=&quot;game-logo sidebar-width--enlarge-1&quot; src=&quot;media/icons/logo.png&quot; alt=&quot;Hero&#39;s companion&quot; title=&quot;Hero&#39;s companion logo&quot;/&gt;</tw-passagedata><tw-passagedata pid="32" name="StoryCaption" tags="System nobr" position="775,100" size="100,100">&lt;&lt;if $interface.debug_mode == 1&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="16" name="Penny_Shop__Backrooms" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="17" name="Penny_Shop__Entrance" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="18" name="Penny_Shop__Inside" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="19" name="ScenePassage" tags="System nobr shadowing" position="650,500" size="100,100">&lt;&lt;= setup.getScene($temp.cur_scene)&gt;&gt;</tw-passagedata><tw-passagedata pid="20" name="Sensei_Mansion__Archery_Grounds" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="21" name="Sensei_Mansion__Baths" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="22" name="Sensei_Mansion__Combat_Room" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="23" name="Sensei_Mansion__Entrance" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="24" name="Sensei_Mansion__Headroom" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="25" name="Sensei_Mansion__Yard" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="26" name="StoryBanner" tags="System" position="900,100" size="100,100">&lt;img class=&quot;game-logo sidebar-width--enlarge-1&quot; src=&quot;media/icons/logo.svg&quot; alt=&quot;Hero&#39;s companion&quot; title=&quot;Hero&#39;s companion logo&quot;/&gt;</tw-passagedata><tw-passagedata pid="27" name="StoryCaption" tags="System nobr" position="775,100" size="100,100">&lt;&lt;if $interface.debug_mode == 1&gt;&gt;
     &lt;p style=&quot;word-break: break-word; margin-bottom: 8px;&quot;&gt;
-        Cur. page: 
-        &lt;&lt;if passage() !== &quot;ScenePassage&quot;&gt;&gt; 
-            &quot;&lt;&lt;= passage()&gt;&gt;&quot; 
+        Cur. page:
+        &lt;&lt;if passage() !== &quot;ScenePassage&quot;&gt;&gt;
+            &quot;&lt;&lt;= passage()&gt;&gt;&quot;
         &lt;&lt;else&gt;&gt;
-            &quot;$temp.cur_scene&quot; 
+            &quot;$temp.cur_scene&quot;
         &lt;&lt;/if&gt;&gt;
     &lt;/p&gt;
 &lt;&lt;/if&gt;&gt;
@@ -8443,106 +8638,41 @@ renderRegionTravel(&quot;trade_road&quot;, &quot;wagon&quot;);
 
 &lt;&lt;if $interface.timing == 1&gt;&gt;
     &lt;p class=&quot;sidebar-row&quot;&gt;&lt;&lt;= $lists.time_naming[$time.period]&gt;&gt;
-        &lt;&lt;if $interface.debug_mode == 1&gt;&gt;
-            [&lt;&lt;= ($time.period)&gt;&gt;] 
-        &lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $interface.debug_mode == 1&gt;&gt;[&lt;&lt;= $time.period&gt;&gt;]&lt;&lt;/if&gt;&gt;
     &lt;/p&gt;
-&lt;&lt;/if&gt;&gt; 
+&lt;&lt;/if&gt;&gt;
 
 &lt;&lt;if $interface.money == 1&gt;&gt;
     &lt;p class=&quot;sidebar-row&quot;&gt;
-        &lt;img src=&quot;media/icons/money.png&quot; class=&quot;sidebar_money&quot; alt=&quot;money&quot; title=&quot;Money&quot;/&gt; : 
+        &lt;img src=&quot;media/icons/money.png&quot; class=&quot;sidebar_money&quot; alt=&quot;money&quot; title=&quot;Money&quot;/&gt; :
         &lt;&lt;= $player.money &gt;&gt;
     &lt;/p&gt;
-&lt;&lt;/if&gt;&gt; 
-
+&lt;&lt;/if&gt;&gt;
 
 &lt;&lt;if $interface.training_day !== 1&gt;&gt;&lt;&lt;br&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;if $interface.timing !== 1&gt;&gt;&lt;&lt;br&gt;&gt;&lt;&lt;/if&gt;&gt;
-&lt;&lt;if $interface.money !== 1&gt;&gt;&lt;&lt;br 2&gt;&gt;&lt;&lt;/if&gt;&gt; 
+&lt;&lt;if $interface.money !== 1&gt;&gt;&lt;&lt;br 2&gt;&gt;&lt;&lt;/if&gt;&gt;
 
 &lt;&lt;br&gt;&gt;
+&lt;&lt;br 4&gt;&gt;
 
-/* Leveling block */
-&lt;&lt;if $interface.debug_mode == 1&gt;&gt;
-    &lt;&lt;run setup.drawLevelingDisplaying()&gt;&gt;
-    &lt;&lt;run setup.drawStatDisplaying()&gt;&gt;
-&lt;&lt;/if&gt;&gt; 
-
-
-&lt;&lt;br 5&gt;&gt;
-&lt;&lt;set $interface.menu_all = ($interface.menu_inventory || $interface.menu_info == 1 || $interface.menu_settings == 1) ? 1 : 0&gt;&gt;
-
-&lt;&lt;if $interface.menu_all == 1&gt;&gt;
+&lt;&lt;if $interface.menu_info == 1 || $interface.menu_settings == 1&gt;&gt;
     &lt;&lt;if $interface.menu_info !== 1&gt;&gt;&lt;&lt;br 2&gt;&gt;&lt;&lt;/if&gt;&gt;
-    &lt;&lt;if $interface.menu_settings !== 1&gt;&gt;&lt;&lt;br 1&gt;&gt;&lt;&lt;/if&gt;&gt;
+    &lt;&lt;if $interface.menu_settings !== 1&gt;&gt;&lt;&lt;br&gt;&gt;&lt;&lt;/if&gt;&gt;
 
     &lt;nav id=&quot;menu&quot; role=&quot;navigation&quot;&gt;
         &lt;ul id=&quot;menu-core&quot; class=&quot;menu-core-custom&quot;&gt;
             &lt;&lt;if $interface.menu_info == 1&gt;&gt;
-                &lt;li data-menu=&quot;info&quot;&gt; &lt;&lt;link &quot;Info&quot; &quot;Menu_Info&quot;&gt;&gt; &lt;&lt;/link&gt;&gt; &lt;/li&gt;
+                &lt;li data-menu=&quot;info&quot;&gt;&lt;&lt;link &quot;Info&quot; &quot;Menu_Info&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/li&gt;
             &lt;&lt;/if&gt;&gt;
             &lt;&lt;if $interface.menu_settings == 1&gt;&gt;
-                &lt;li data-menu=&quot;settings&quot;&gt; &lt;&lt;link &quot;Settings&quot; &quot;Menu_Settings&quot;&gt;&gt; &lt;&lt;/link&gt;&gt; &lt;/li&gt;
-            &lt;&lt;/if&gt;&gt;
-            &lt;&lt;if $interface.menu_debug == 1&gt;&gt;
-                &lt;li data-menu=&quot;debug&quot;&gt; &lt;&lt;link &quot;Debug&quot; &quot;Test_Room&quot;&gt;&gt; &lt;&lt;/link&gt;&gt; &lt;/li&gt;
+                &lt;li data-menu=&quot;settings&quot;&gt;&lt;&lt;link &quot;Settings&quot; &quot;Menu_Settings&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/li&gt;
             &lt;&lt;/if&gt;&gt;
         &lt;/ul&gt;
     &lt;/nav&gt;
 &lt;&lt;else&gt;&gt;
-&lt;&lt;br 4&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="33" name="StoryInit" tags="System" position="1025,100" size="100,100">&lt;&lt;run setup.storyInit()&gt;&gt;</tw-passagedata><tw-passagedata pid="34" name="Tavern__Bedroom" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="35" name="Tavern__Corridor" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="36" name="Tavern__Hall" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="37" name="Tavern__Outside" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="38" name="Test_Room" tags="System" position="650,500" size="100,100">[[Refresh|Test_Room]]
-[[index page|index]]
-
-
-
-&lt;&lt;link &#39;Tryout Paperwork&#39; &#39;Tryout&#39;&gt;&gt;     &lt;&lt;run setup.runTryout(&#39;paperwork&#39;)&gt;&gt; &lt;&lt;/link&gt;&gt; 
-&lt;&lt;link &#39;Tryout Archery&#39; &#39;Tryout&#39;&gt;&gt;     &lt;&lt;run setup.runTryout(&#39;archery&#39;)&gt;&gt; &lt;&lt;/link&gt;&gt; 
-&lt;&lt;link &#39;Tryout Beer&#39; &#39;Tryout&#39;&gt;&gt;     &lt;&lt;run setup.runTryout(&#39;beer&#39;)&gt;&gt; &lt;&lt;/link&gt;&gt; 
-&lt;&lt;link &#39;Tryout TBA&#39; &#39;Tryout&#39;&gt;&gt;     &lt;&lt;run setup.runTryout(&#39;tba&#39;)&gt;&gt; &lt;&lt;/link&gt;&gt; 
-
-
-&lt;&lt;link &#39;Add 450 xp&#39; &#39;Test_Room&#39;&gt;&gt;  &lt;&lt;run setup.addXp(450)&gt;&gt; &lt;&lt;/link&gt;&gt; 
-&lt;&lt;link &#39;Add 250 xp&#39; &#39;Test_Room&#39;&gt;&gt;  &lt;&lt;run setup.addXp(250)&gt;&gt; &lt;&lt;/link&gt;&gt; 
-&lt;&lt;link &#39;Add 100 xp&#39; &#39;Test_Room&#39;&gt;&gt;  &lt;&lt;run setup.addXp(100)&gt;&gt; &lt;&lt;/link&gt;&gt; 
-&lt;&lt;link &#39;Add 50 xp&#39; &#39;Test_Room&#39;&gt;&gt;  &lt;&lt;run setup.addXp(50)&gt;&gt; &lt;&lt;/link&gt;&gt;
-&lt;&lt;link &#39;Add 30 xp&#39; &#39;Test_Room&#39;&gt;&gt;  &lt;&lt;run setup.addXp(30)&gt;&gt; &lt;&lt;/link&gt;&gt;
-
-
-&lt;&lt;link &#39;Add 35 coin&#39; &#39;Test_Room&#39;&gt;&gt;  &lt;&lt;run setup.changeProtectedValue(&#39;money&#39;, 35, &#39;add&#39;)&gt;&gt; &lt;&lt;/link&gt;&gt;
-&lt;&lt;link &#39;Add 3500 coin&#39; &#39;Test_Room&#39;&gt;&gt;  &lt;&lt;run setup.changeProtectedValue(&#39;money&#39;, 3500, &#39;add&#39;)&gt;&gt; &lt;&lt;/link&gt;&gt;
-&lt;&lt;link &#39;recalculateLevelsT&#39; &#39;Test_Room&#39;&gt;&gt;  &lt;&lt;run setup.recalculateLevels()&gt;&gt; &lt;&lt;/link&gt;&gt;
-&lt;&lt;link &#39;Region_Travel&#39; &#39;Region_Travel&#39;&gt;&gt;   &lt;&lt;/link&gt;&gt; 
-
-&lt;&lt;print setup.drawShop(&#39;mystery&#39;)&gt;&gt;
-
-&lt;&lt;print setup.drawShop(&#39;gifts&#39;)&gt;&gt;
-&lt;&lt;print setup.drawShop(&#39;potions&#39;)&gt;&gt;</tw-passagedata><tw-passagedata pid="39" name="Tryout" tags="nobr special_passage" position="650,500" size="100,100">&lt;div id=&quot;tryout-root&quot;&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="40" name="Tryout2" tags="nobr" position="650,500" size="100,100">/* &lt;div id=&quot;menu&quot;&gt;
-  &lt;label&gt;Mod: &lt;select id=&quot;mod&quot;&gt;
-    &lt;option value=&quot;medieval&quot; selected&gt;Fantasy&lt;/option&gt;
-    &lt;option value=&quot;apocalypse&quot;&gt;Apocalypse&lt;/option&gt;
-    &lt;option value=&quot;modern&quot;&gt;Modern&lt;/option&gt;
-  &lt;/select&gt;&lt;/label&gt;
-    &lt;!-- Player controls (unchanged) --&gt;
-  &lt;label&gt;Difficulty:
-    &lt;select id=&quot;player-difficulty&quot;&gt;
-      &lt;option value=&quot;easy&quot;&gt;Easy (45s + tip)&lt;/option&gt;
-      &lt;option value=&quot;normal&quot; selected&gt;Normal (30s + tip)&lt;/option&gt;
-      &lt;option value=&quot;hard&quot;&gt;Hard (20s, no tip)&lt;/option&gt;
-    &lt;/select&gt;
-  &lt;/label&gt;
-  &lt;button id=&quot;start-btn&quot;&gt;Start Game&lt;/button&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;paperwork-game&quot;&gt;
-  &lt;div id=&quot;score&quot;&gt;Score: 0&lt;/div&gt;
-  &lt;div id=&quot;timer&quot;&gt;Time Left: 30s&lt;/div&gt;
-  &lt;div class=&quot;stamp-palette&quot; id=&quot;stamp-palette&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;document-box&quot; id=&quot;document-box&quot;&gt;&lt;div id=&quot;doc-text&quot;&gt;Loading…&lt;/div&gt;&lt;/div&gt;
-  &lt;div id=&quot;result-message&quot;&gt;&lt;/div&gt;
-  &lt;button id=&quot;continue-btn&quot; onclick=&quot;Engine.play(&#39;NextPassage&#39;)&quot;&gt;Continue&lt;/button&gt;
-&lt;/div&gt; */</tw-passagedata><tw-passagedata pid="41" name="Widget" tags="System widget" position="500,100" size="100,100">&lt;&lt;widget &#39;narration&#39;&gt;&gt; &lt;&lt;nobr&gt;&gt;
+    &lt;&lt;br 4&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="28" name="StoryInit" tags="System" position="1025,100" size="100,100">&lt;&lt;run setup.storyInit()&gt;&gt;</tw-passagedata><tw-passagedata pid="29" name="Tavern__Bedroom" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="30" name="Tavern__Corridor" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="31" name="Tavern__Hall" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="32" name="Tavern__Outside" tags="nobr shadowing location" position="650,500" size="100,100"></tw-passagedata><tw-passagedata pid="33" name="Widget" tags="System widget" position="500,100" size="100,100">&lt;&lt;widget &#39;narration&#39;&gt;&gt; &lt;&lt;nobr&gt;&gt;
 	&lt;div class=&quot;narration-block&quot;&gt;
 		&lt;img class=&quot;narration-icon narration-icon--hidden&quot; alt=&quot;Narration&quot; title=&quot;Narration&quot;&gt;
 		&lt;p class=&quot;narration-text&quot; title=&quot;Narration&quot;&gt;_args[0]&lt;/p&gt;
@@ -8874,12 +9004,12 @@ renderRegionTravel(&quot;trade_road&quot;, &quot;wagon&quot;);
 
 
 &lt;&lt;nobr&gt;&gt;&lt;&lt;widget &#39;media_mode_selector&#39;&gt;&gt;
-&lt;&lt;if $settings.media_mode &gt; 1&gt;&gt;&lt;&lt;set $settings.media_mode = 1&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;listbox &quot;$settings.media_mode&quot; autoselect&gt;&gt;
 	&lt;&lt;option &quot;No media&quot; 0&gt;&gt;
 	&lt;&lt;option &quot;AI media&quot; 1&gt;&gt;
+	&lt;&lt;option &quot;3rd party media&quot; 2&gt;&gt;
 &lt;&lt;/listbox&gt;&gt; &lt;&lt;br 2&gt;&gt;
-&lt;&lt;/widget&gt;&gt;&lt;&lt;/nobr&gt;&gt;</tw-passagedata><tw-passagedata pid="42" name="index" tags="System nobr" position="650,225" size="100,100">&lt;h1 id=&quot;index-title&quot;&gt;Hero&#39;s companion&lt;/h1&gt;
+&lt;&lt;/widget&gt;&gt;&lt;&lt;/nobr&gt;&gt;</tw-passagedata><tw-passagedata pid="34" name="index" tags="System nobr" position="650,225" size="100,100">&lt;h1 id=&quot;index-title&quot;&gt;Hero&#39;s companion&lt;/h1&gt;
 
 &lt;i class=&quot;index-tagline&quot;&gt;A story about trials, loyalty, doubts and getting exiled from the Hero&#39;s party... probably.&lt;/i&gt;
 
@@ -8890,19 +9020,19 @@ renderRegionTravel(&quot;trade_road&quot;, &quot;wagon&quot;);
 
 &lt;&lt;br&gt;&gt;
 &lt;h3 class=&quot;index-section&quot;&gt;Game Info&lt;/h3&gt;
-&lt;p&gt;Current Version: 0.3&lt;/p&gt;
+&lt;p&gt;Current Version: 0.3.1 Maintenance Build&lt;/p&gt;
 &lt;ul class=&quot;index-list&quot;&gt;
-    &lt;li&gt;Main Story: Day 1&lt;/li&gt;
+    &lt;li&gt;Main Story: Prologue through Day 1&lt;/li&gt;
     &lt;li&gt;Free-roam city and tavern navigation&lt;/li&gt;
     &lt;li&gt;Time-of-day activity flow&lt;/li&gt;
-    &lt;li&gt;Choice tracking about MC behavior stat feature&lt;/li&gt;
+    &lt;li&gt;Choice tracking for MC behavior stats&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Next Update:&lt;/p&gt;
+&lt;p&gt;Planned for a next content release:&lt;/p&gt;
 &lt;ul class=&quot;index-list index-list--compact&quot;&gt;
     &lt;li&gt;Main Story: Day 2&lt;/li&gt;
-    &lt;li&gt;UI/UX updates&lt;/li&gt;
-    &lt;li&gt;Tryout system&lt;/li&gt;
+    &lt;li&gt;Inventory system&lt;/li&gt;
+    &lt;li&gt;Additional media and presentation polish&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 class=&quot;index-section&quot;&gt;Release Notes&lt;/h3&gt;
@@ -8910,125 +9040,38 @@ renderRegionTravel(&quot;trade_road&quot;, &quot;wagon&quot;);
 &lt;details class=&quot;index-release-notes&quot;&gt;
     &lt;summary&gt;
         &lt;span class=&quot;index-release-notes__arrow&quot;&gt;&lt;/span&gt;
-        &lt;span class=&quot;index-release-notes__title&quot;&gt;Version 0.3&lt;/span&gt;
+        &lt;span class=&quot;index-release-notes__title&quot;&gt;Version 0.3.0 -&gt; 0.3.1&lt;/span&gt;
         &lt;span class=&quot;index-release-notes__hint&quot;&gt;Click to expand&lt;/span&gt;
     &lt;/summary&gt;
 
     &lt;div class=&quot;index-release-notes__body&quot;&gt;
-        &lt;p&gt;&lt;strong&gt;Moto&lt;/strong&gt;&lt;/p&gt;
-        &lt;p&gt;Explore Still Waters on your first training day: &lt;&lt;br&gt;&gt;
-        meet Penny, visit Administration, begin Sensei&#39;s examinations and deal with party tension. &lt;&lt;br&gt;&gt;
-        New free-roam navigation, time-of-day and choice-tracking systems. &lt;&lt;br&gt;&gt;
-        Inventory, shops, gifting, objectives and mini-games coming in future updates.&lt;/p&gt; &lt;&lt;br&gt;&gt;
+        &lt;p&gt;A maintenance update for the Prologue and Day 1, focused on revised text, refreshed media and presentation improvements.&lt;/p&gt; &lt;&lt;br&gt;&gt;
 
         &lt;p&gt;&lt;strong&gt;Story / Content&lt;/strong&gt;&lt;/p&gt;
         &lt;ul class=&quot;index-list&quot;&gt;
-            &lt;li&gt;Added the full Day 1 story path.&lt;/li&gt;
-            &lt;li&gt;Added the start of the tavern side route with Nancy.&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;&lt;strong&gt;Locations&lt;/strong&gt;&lt;/p&gt;
-        &lt;ul class=&quot;index-list&quot;&gt;
-            &lt;li&gt;Added Tavern locations: Bedroom, Hall, Corridor and Outside.&lt;/li&gt;
-            &lt;li&gt;Added City locations: Entrance, Center, Road, Marketplace, Marketplace Shops, Westroad Street, Parchment Lane and Administration.&lt;/li&gt;
-            &lt;li&gt;Added Penny&#39;s Shop locations: Entrance, Inside and Backrooms.&lt;/li&gt;
-            &lt;li&gt;Added Sensei Mansion locations: Entrance, Yard, Headroom, Archery Grounds, Combat Room and Baths.&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;&lt;strong&gt;UI / UX&lt;/strong&gt;&lt;/p&gt;
-        &lt;ul class=&quot;index-list&quot;&gt;
-            &lt;li&gt;Added blocked links: unavailable choices show MC&#39;s inner reaction instead of dead links.&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;&lt;strong&gt;Technical / Gameplay&lt;/strong&gt;&lt;/p&gt;
-        &lt;ul class=&quot;index-list&quot;&gt;
-            &lt;li&gt;Added free-roam navigation with dynamic links.&lt;/li&gt;
-            &lt;li&gt;Added a time-of-day system where activities consume periods.&lt;/li&gt;
-            &lt;li&gt;Added MC behavior stats: confidence, team spirit, cautiousness and related traits tracked from choices (influence certain dialogues and choices).&lt;/li&gt;
+            &lt;li&gt;Reworked Nancy&#39;s portrait.&lt;/li&gt;
+            &lt;li&gt;Reworked the AI-version media for the first Prologue city scene.&lt;/li&gt;
+            &lt;li&gt;Added the animated Jina breakfast media to the AI version.&lt;/li&gt;
+            &lt;li&gt;Updated character portraits with corrected and upscaled versions.&lt;/li&gt;
+            &lt;li&gt;Added automatic scrolling during long fading scenes.&lt;/li&gt;
+            &lt;li&gt;Updated saves UI.&lt;/li&gt; 
+            &lt;li&gt;Updated text in scenes:
+            the opening recovery scene, party introductions, last-battle memories, Alaric and Jina&#39;s corridor encounter, Prologue breakfast, the first Sensei meeting, the start of Day 1, Penny&#39;s Day 1 route, Sensei&#39;s examination and the Margaret and Alaric evening event.&lt;/li&gt;
         &lt;/ul&gt;
     &lt;/div&gt;
 &lt;/details&gt;
 
-
-
-
-
-
-
-
-
-
-
-
-/* &lt;h3 class=&quot;index-section&quot;&gt;Game Info&lt;/h3&gt;
-&lt;p&gt;Current Version: 0.2&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Update Summary&lt;/strong&gt;&lt;/p&gt;
-&lt;ul class=&quot;index-list&quot;&gt;
-    &lt;li&gt;Prologue update&lt;/li&gt;
-    &lt;li&gt;UI/UX updates&lt;/li&gt;
-    &lt;li&gt;Event tracking feature&lt;/li&gt;
-    &lt;li&gt;Prepared foundations for future gameplay systems&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Next Update:&lt;/p&gt;
-&lt;ul class=&quot;index-list index-list--compact&quot;&gt;
-    &lt;li&gt;Main Story: Day 1&lt;/li&gt;
-    &lt;li&gt;Free-roam city and tavern navigation&lt;/li&gt;
-    &lt;li&gt;Time-of-day activity flow&lt;/li&gt;
-    &lt;li&gt;Choice tracking about MC behavior stat feature&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 class=&quot;index-section&quot;&gt;Release Notes&lt;/h3&gt;
-
-&lt;details class=&quot;index-release-notes&quot;&gt;
-    &lt;summary&gt;
-        &lt;span class=&quot;index-release-notes__arrow&quot;&gt;&lt;/span&gt;
-        &lt;span class=&quot;index-release-notes__title&quot;&gt;Version 0.2&lt;/span&gt;
-        &lt;span class=&quot;index-release-notes__hint&quot;&gt;Click to expand&lt;/span&gt;
-    &lt;/summary&gt;
-
-    &lt;div class=&quot;index-release-notes__body&quot;&gt;
-        &lt;p&gt;&lt;strong&gt;Story / Content&lt;/strong&gt;&lt;/p&gt;
-        &lt;ul class=&quot;index-list&quot;&gt;
-            &lt;li&gt;Updated the Prologue with revised dialogue, character introductions and scene flow.&lt;/li&gt;
-            &lt;li&gt;Introduced Nancy as a new character planned for a separate optional branch.&lt;/li&gt;
-            &lt;li&gt;Prepared images for main locations.&lt;/li&gt;
-            &lt;li&gt;Added location banners to key Prologue moments.&lt;/li&gt;
-            &lt;li&gt;Added pages with additional game information (to be updated with new releases).&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;&lt;strong&gt;UI / UX&lt;/strong&gt;&lt;/p&gt;
-        &lt;ul class=&quot;index-list&quot;&gt;
-            &lt;li&gt;Added inline portrait selection during character creation.&lt;/li&gt;
-            &lt;li&gt;Redesigned speech, narration, thought and system-note widgets.&lt;/li&gt;
-            &lt;li&gt;Styled links replaced old plain link blocks.&lt;/li&gt;
-            &lt;li&gt;Made small adjustments to Twine-native components.&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;&lt;strong&gt;Technical / Gameplay&lt;/strong&gt;&lt;/p&gt;
-        &lt;ul class=&quot;index-list&quot;&gt;
-            &lt;li&gt;Added scene and event tracking: seen scenes, peek counters and one-time events (can influence certain dialogues).&lt;/li&gt;
-            &lt;li&gt;Added save versioning with the current save version set to 0.1 and a migration scaffold in compatibility functions.&lt;/li&gt;
-            &lt;li&gt;Updated relation notifications and the party relations screen with fixes and small updates.&lt;/li&gt;
-            &lt;li&gt;Added error catching and validation (for easier bug catching and player support).&lt;/li&gt;
-            &lt;li&gt;Systematized scene naming.&lt;/li&gt;
-            &lt;li&gt;Improved fading functionality (required for future UX updates).&lt;/li&gt;
-            &lt;li&gt;Added encapsulation for important variables (protecting them from direct SugarCube State manipulation through the console).&lt;/li&gt;
-            &lt;li&gt;Prepared foundations for future features: inventory, shops, gifting, tryouts, sound system, objectives and more.&lt;/li&gt;
-        &lt;/ul&gt;
-    &lt;/div&gt;
-&lt;/details&gt; */
-
 &lt;&lt;br&gt;&gt;
-&lt;h3 class=&quot;index-section&quot;&gt;📢 Join the Community&lt;/h3&gt;
+&lt;h3 class=&quot;index-section&quot;&gt;Join the Community&lt;/h3&gt;
 
 &lt;p class=&quot;company-intro&quot;&gt;
     I am &lt;span class=&quot;company-intro__name&quot;&gt;keksX4&lt;img src=&quot;media/icons/company_logo.svg&quot; class=&quot;company-intro__logo&quot; alt=&quot;Company logo&quot; title=&quot;keksX4&quot;/&gt;&lt;/span&gt;,
     the developer. Your thoughts and feedback shape this game&#39;s future.
 &lt;/p&gt;
 
-&lt;p class=&quot;index-discord&quot;&gt;💬 &lt;a href=&quot;https://discord.gg/TEy6n3A5gE&quot; target=&quot;_blank&quot;&gt;Join our Discord&lt;/a&gt; - Share feedback, discuss your ideas and opinions.&lt;/p&gt;
-/* &lt;a href=&quot;https://keksx4.itch.io&quot; target=&quot;_blank&quot;&gt;Play on Itch.io&lt;/a&gt; - Follow for new public releases and patch notes. */
+&lt;p class=&quot;index-discord&quot;&gt;&lt;a href=&quot;https://discord.gg/TEy6n3A5gE&quot; target=&quot;_blank&quot;&gt;Join our Discord&lt;/a&gt; - Share feedback, discuss your ideas and opinions.&lt;/p&gt;
+&lt;p class=&quot;index-discord&quot;&gt;&lt;a href=&quot;https://keksx4.itch.io/heros-companion&quot; target=&quot;_blank&quot;&gt;Play on Itch.io&lt;/a&gt; - Follow for new public releases and patch notes.&lt;/p&gt;
+&lt;p class=&quot;index-discord&quot;&gt;&lt;a href=&quot;https://www.patreon.com/cw/keksx4&quot; target=&quot;_blank&quot;&gt;Support on Patreon&lt;/a&gt; - Support development and follow project updates.&lt;/p&gt;
 
 &lt;p&gt;Your feedback is very welcome!&lt;/p&gt;
 
