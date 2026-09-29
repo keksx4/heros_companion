@@ -5626,7 +5626,7 @@ const scene_list = {
         <<narration "As you approach, the muffled sounds become clearer and you start to recognize what they might mean.">>
         <<narration "The door is slightly ajar, leaving a narrow gap that tempts your curiosity.">>
         <<narration "Curiosity gets the best of you and you lean closer to peek inside.">>
-        <<media_scene "prologue_alaric_jina_1" "video" "image">>
+        <<media_scene "prologue_alaric_jina_1" "video">>
 
         <<narration "Your eyes widen as you take in the scene: Jina is fucking Alaric right at the moment.">>
         <<narration "Seeing Jina naked and in such erotic poses makes you hard in an instant.">>
@@ -5634,7 +5634,7 @@ const scene_list = {
         <<narration "You feel strange unsettling feeling that can hardly be described, but has an unpleasant taste.">>
         <<thought "I'd better leave and not disturb the couple.">>
         <<narration "You cast one last glance toward the room...">>
-        <<media_scene "prologue_alaric_jina_2" "video" "image">>
+        <<media_scene "prologue_alaric_jina_2" "video">>
 
         <<narration "...then quietly step back, intending to retreat unnoticed.">>
         <<thought "It must be nice to have a hot girlfriend.">>
@@ -5698,7 +5698,7 @@ const scene_list = {
         <<thought "Ahh, anyway... good food first, bad thoughts later!">>    
         <<narration "Determined to shake off the lingering pain and unsettling thoughts, you leave your room and head downstairs.">>    
         <<narration "You barely reach the bottom step before Margaret rushes toward you, practically tackling you in a hug.">>    
-        <<media_scene "prologue_margaret_hug" "video" "image">>
+        <<media_scene "prologue_margaret_hug" "video">>
 
         <<speech "corin" "Whoa, whoa, easy there, sis! I'm not fully recovered yet!">>
         <<narration "She clings to you tightly, her voice muffled against your shoulder.">>       
@@ -5772,7 +5772,7 @@ const scene_list = {
         <<narration "The meal is mostly quiet, filled with the occasional small talk.">>
         <<narration "Jina joins late, looking exhausted even thought it's early morning. <br>
             She silently sliding into a chair near the end of breakfast. ">>
-        <<media_scene "prologue_jina_tired_breakfast" "video" "none">>
+        <<media_scene "prologue_jina_tired_breakfast" "video">>
 
         <<narration "After finishing her meal quickly, she suddenly stands and speaks with a sharp tone and an uneasy look.">>
         <<speech "jina" "I want to call for a parley!">>
@@ -6610,7 +6610,7 @@ const scene_list = {
         <<thought "Not sure how it happened, but I'm almost broke now.">>
         <<thought "I need money for the common share and new training fees. What else, hm? ">>
         <<thought "I guess giving some presents for Penny would be nice. She'd surely blush cutely.">>
-        <<media_scene "prologue_picture_penny_blush" "video" "image">>
+        <<media_scene "prologue_picture_penny_blush" "video">>
 
         <<thought "Yeah, I can picture that...">>
         <<thought "Maybe something for the team members, as well. Or I could just be attentive and assist them with their deals. <br> 
@@ -6995,7 +6995,7 @@ const scene_list = {
 
         <<br>>
         <<fadein 3s 12s>>
-            <<media_scene "tranquil_dreams" "video" "image" >>
+            <<media_scene "tranquil_dreams" "video" >>
         <</fadein>> 
 
         <<br>>
@@ -7519,7 +7519,7 @@ const scene_list = {
         <<speech 'corin' "Okay, yes. " >> 
         <<speech 'corin' "But now, I'll get going." >> 
         <<narration "As you turn toward the door, Penny reaches out and grabs your sleeve. Her fingers are trembling slightly." >> 
-        <<media_scene "penny_grab_sleeve" "video" "image" >>
+        <<media_scene "penny_grab_sleeve" "video" >>
         
         <<speech 'penny' "I mean it, I'll really repay you! Just please don't forget about me." >> 
         <<speech 'corin' "I... sure." >> 
@@ -8102,18 +8102,16 @@ Macro.add('media_scene', {
     handler() {
       // Ensure the arguments are valid
       if (this.args.length < 1) {
-        return this.error('Insufficient arguments provided. Usage: <<media_scene "mediaNameWithoutExtension|none" ["image|video|none"] ["image|video|none"] ["width"] ["height"]>>');
+        return this.error('Insufficient arguments provided. Usage: <<media_scene "mediaNameWithoutExtension|none" ["image|video|none"] ["width"] ["height"]>>');
       }
   
       // Get the media name (without extension) and optional media types.
       // Usage:
-      //   <<media_scene "name">>                  image for both modes
-      //   <<media_scene "name" "video">>          video for both modes
-      //   <<media_scene "name" "video" "image">>  AI video, real-world image
-      //   <<media_scene "name" "video" "none">>   AI video, nothing in real-world mode
-      //   <<media_scene "none">>                    nothing in either mode
-      //   <<media_scene "name" "420px" "240px">>  image for both modes, custom size
-      //   <<media_scene "name" "video" "image" "420px" "240px">>
+      //   <<media_scene "name">>                    image
+      //   <<media_scene "name" "video">>            video
+      //   <<media_scene "none">>                     nothing
+      //   <<media_scene "name" "420px" "240px">>   image with a custom size
+      //   <<media_scene "name" "video" "420px" "240px">>
       const mediaName = this.args[0];
 
       if (mediaName === 'none') {
@@ -8122,25 +8120,18 @@ Macro.add('media_scene', {
 
       const validMediaTypes = ['image', 'video', 'none'];
       let nextArgIndex = 1;
-      let aiMediaType = 'image';
-      let realMediaType = 'image';
+      let mediaType = 'image';
 
       if (validMediaTypes.includes(this.args[nextArgIndex])) {
-        aiMediaType = this.args[nextArgIndex];
-        realMediaType = aiMediaType;
+        mediaType = this.args[nextArgIndex];
         nextArgIndex += 1;
-
-        if (validMediaTypes.includes(this.args[nextArgIndex])) {
-          realMediaType = this.args[nextArgIndex];
-          nextArgIndex += 1;
-        }
       }
 
       const mediaWidth = this.args[nextArgIndex] || '';
       const mediaHeight = this.args[nextArgIndex + 1] || '';
 
-      if (!validMediaTypes.includes(aiMediaType) || !validMediaTypes.includes(realMediaType)) {
-        return this.error('Invalid media type. Use "image", "video" or "none". Usage: <<media_scene "mediaNameWithoutExtension|none" ["aiType"] ["realType"] ["width"] ["height"]>>');
+      if (!validMediaTypes.includes(mediaType)) {
+        return this.error('Invalid media type. Use "image", "video" or "none". Usage: <<media_scene "mediaNameWithoutExtension|none" ["mediaType"] ["width"] ["height"]>>');
       }
 
       const generateSizeStyle = () => {
@@ -8160,18 +8151,15 @@ Macro.add('media_scene', {
       };
   
       // Define paths and formats
-      const aiMediaPath = "1/";  // Folder for AI-generated media
-      const realMediaPath = "2/"; // Folder for real-world media
+      const mediaPath = "1/";
       const videoFormats = [".mp4", ".webm", ".avif"]; // Possible formats for videos
       const imageFormats = [".png", ".webp"];          // Possible formats for images
   
       // Determine the actual file paths based on formats
       const fullMediaPaths = (path, formats) =>
         formats.map(format => `media/scenes/${path}${mediaName}${format}`);
-      const realImagePaths = fullMediaPaths(realMediaPath, imageFormats);
-      const realVideoPaths = fullMediaPaths(realMediaPath, videoFormats);
-      const aiImagePaths = fullMediaPaths(aiMediaPath, imageFormats);
-      const aiVideoPaths = fullMediaPaths(aiMediaPath, videoFormats);
+      const imagePaths = fullMediaPaths(mediaPath, imageFormats);
+      const videoPaths = fullMediaPaths(mediaPath, videoFormats);
   
       // Helper function to generate HTML for media
       const generateMediaHTML = (paths, tag) => {
@@ -8186,30 +8174,19 @@ Macro.add('media_scene', {
         return '<p>Invalid media type specified.</p>';
       };
   
-      // Based on $settings.media_mode and media type, determine what to display
+      // Based on $settings.media_mode and media type, determine what to display.
       let content = '';
       switch (State.getVar('$settings.media_mode')) {
         case 0: // Do not show anything
           content = '';
           break;
-        case 1: // Show AI-generated media
-          if (aiMediaType === 'none') {
+        case 1: // Show public scene media
+          if (mediaType === 'none') {
             content = '';
-          } else if (aiMediaType === 'video') {
-            content = generateMediaHTML(aiVideoPaths, 'video');
-          } else if (aiMediaType === 'image') {
-            content = generateMediaHTML(aiImagePaths, 'image');
-          } else {
-            content = '<p>Invalid media type specified.</p>';
-          }
-          break;
-        case 2: // Show 3rd-party media
-          if (realMediaType === 'none') {
-            content = '';
-          } else if (realMediaType === 'video') {
-            content = generateMediaHTML(realVideoPaths, 'video');
-          } else if (realMediaType === 'image') {
-            content = generateMediaHTML(realImagePaths, 'image');
+          } else if (mediaType === 'video') {
+            content = generateMediaHTML(videoPaths, 'video');
+          } else if (mediaType === 'image') {
+            content = generateMediaHTML(imagePaths, 'image');
           } else {
             content = '<p>Invalid media type specified.</p>';
           }
@@ -8342,8 +8319,7 @@ All characters featured in romantic or sexual content are fictional adults aged 
 The content of this game is purely fictional and meant for entertainment purposes. &lt;&lt;br&gt;&gt;
 It does not depict or encourage real-life behavior. Player discretion is advised. &lt;&lt;br 2&gt;&gt;
 
-Scene images are illustrated or AI-generated fiction and do not depict real people. &lt;&lt;br&gt;&gt;
-Some public builds may include temporary third-party placeholder images planned to be replaced. &lt;&lt;br 2&gt;&gt;
+Scene images in this public build are illustrated or AI-generated fiction and do not depict real people. &lt;&lt;br 2&gt;&gt;
 
 The game is free to play. No payment is required. &lt;&lt;br&gt;&gt;
 Optional supporter accounts on donation platforms may be added in the future. &lt;&lt;br&gt;&gt;
@@ -8358,7 +8334,7 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
 &lt;div class=&quot;link-system&quot;&gt;
 	[[Confirm and proceed|Menu_Settings][$temp.from_disclaimer = 1]]
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="End_Of_Content" tags="system nobr special_passage" position="650,500" size="100,100">&lt;&lt;fadein 2s&gt;&gt;
-  &lt;p class=&quot;eoc-prologue&quot;&gt;END of the Version v0.3.1 Maintenance Build&lt;/p&gt;
+  &lt;p class=&quot;eoc-prologue&quot;&gt;END of the Version v0.3.1 Public Maintenance Build&lt;/p&gt;
 &lt;&lt;/fadein&gt;&gt;
 
 &lt;div class=&quot;eoc-thanks-block&quot;&gt;
@@ -8367,7 +8343,7 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
     &lt;&lt;/fadein&gt;&gt;
     &lt;&lt;fadein 2s 4s&gt;&gt;
         &lt;p&gt;You have reached the end of Day 1 and the end of this build.&lt;/p&gt;
-        &lt;p style=&quot;margin-bottom: 15px;&quot;&gt;This is still an early-development placeholder build, so some media and gameplay systems are still in development.&lt;/p&gt;
+        &lt;p style=&quot;margin-bottom: 15px;&quot;&gt;This is still an early-development public build, so some media and gameplay systems are still in development.&lt;/p&gt;
         &lt;p&gt;Stay tuned for future updates and more content.&lt;/p&gt;
     &lt;&lt;/fadein&gt;&gt;
     &lt;&lt;br&gt;&gt;
@@ -9007,7 +8983,6 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
 &lt;&lt;listbox &quot;$settings.media_mode&quot; autoselect&gt;&gt;
 	&lt;&lt;option &quot;No media&quot; 0&gt;&gt;
 	&lt;&lt;option &quot;AI media&quot; 1&gt;&gt;
-	&lt;&lt;option &quot;3rd party media&quot; 2&gt;&gt;
 &lt;&lt;/listbox&gt;&gt; &lt;&lt;br 2&gt;&gt;
 &lt;&lt;/widget&gt;&gt;&lt;&lt;/nobr&gt;&gt;</tw-passagedata><tw-passagedata pid="34" name="index" tags="System nobr" position="650,225" size="100,100">&lt;h1 id=&quot;index-title&quot;&gt;Hero&#39;s companion&lt;/h1&gt;
 
@@ -9020,7 +8995,7 @@ If you agree to the terms above and wish to proceed, click the button below: &lt
 
 &lt;&lt;br&gt;&gt;
 &lt;h3 class=&quot;index-section&quot;&gt;Game Info&lt;/h3&gt;
-&lt;p&gt;Current Version: 0.3.1 Maintenance Build&lt;/p&gt;
+&lt;p&gt;Current Version: 0.3.1 Public Maintenance Build&lt;/p&gt;
 &lt;ul class=&quot;index-list&quot;&gt;
     &lt;li&gt;Main Story: Prologue through Day 1&lt;/li&gt;
     &lt;li&gt;Free-roam city and tavern navigation&lt;/li&gt;
